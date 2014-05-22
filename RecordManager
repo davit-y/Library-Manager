@@ -101,9 +101,9 @@ public class RecordManager extends JPanel implements ActionListener
    */
   String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humor", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
   /**
-   * shouldSave (boolean) stores whether the information has been modified or not.
+   * recSaved (boolean) stores whether the information has been modified or not.
    */
-  boolean shouldSave = false;
+  boolean recSaved = false;
   /**
    * The name of the file.
    */ 
@@ -116,6 +116,9 @@ public class RecordManager extends JPanel implements ActionListener
    * Stores value from the error dialogue box.
    */ 
   int optionPaneResult;
+  /**
+  * Holds whether a user or guest is using the program.
+  */
   boolean user = true;
     /**
    * columnNames stores the names of columns
