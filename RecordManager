@@ -15,8 +15,8 @@ import javax.swing.table.*;
 
 /**
  * Creates a library manager in which users can create a number of book records. Information will
- * be stored in an ArrayList. There is a tool bar that has five buttons: previous, next, 
- * save, new, and delete. The user can cycle through the previous profiles created as well as
+ * be stored in an ArrayList. There is a tool bar that has six buttons: previous, next, 
+ * save, new, delete, and borrow. The user can cycle through the previous profiles created as well as
  * create new ones and delete old ones. The user can also save and open files.
  * 
  * @author Lily Xiao
@@ -37,7 +37,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   ArrayList <BookRecord> book = new ArrayList <BookRecord> ();
   /**
-   *
+   * The panel in which all components are placed.
    */
   JPanel thePanel;
   /**
@@ -101,26 +101,26 @@ public class RecordManager extends JPanel implements ActionListener
    */
   String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humor", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
   /**
-   * recSaved (boolean) stores whether the information has been modified or not.
+   * shouldSave (boolean) stores whether the information has been modified or not.
    */
-  boolean recSaved = false;
+  boolean shouldSave = false;
   /**
-   * The name of the file.
+   * fileName The name of the file.
    */ 
   String fileName;
   /**
-   * The file that will be saved and opened.
+   * theFile The file that will be saved and opened.
    */ 
   File theFile;
   /**
-   * Stores value from the error dialogue box.
+   * optionPaneResult Stores value from the error dialogue box.
    */ 
   int optionPaneResult;
   /**
-  * Holds whether a user or guest is using the program.
-  */
+   * user is true if the admin is accessing the program, false if it is a guest
+   */
   boolean user = true;
-    /**
+  /**
    * columnNames stores the names of columns
    */
   Object columnNames[];
@@ -128,7 +128,7 @@ public class RecordManager extends JPanel implements ActionListener
    * dataValues stores the data for the table
    */
   Object dataValues[] [];
-   /**
+  /**
    * myTable creates a new JTable
    */
   JTable myTable;
@@ -147,6 +147,9 @@ public class RecordManager extends JPanel implements ActionListener
     setVisible (true);
   }
   
+  /**
+   * Switches from an alternate view to the textfield view.
+   */
   public void fieldView ()
   {
     spring = new SpringLayout();
@@ -323,7 +326,7 @@ public class RecordManager extends JPanel implements ActionListener
     
     return button;
   }
-    /**
+  /**
    * Updates the info being displayed.
    */
   public void updateDisplay ()
@@ -338,25 +341,25 @@ public class RecordManager extends JPanel implements ActionListener
     entryLabel.setText ("Entry " + (currentRec + 1) + " out of " + (BookRecord.recNum + 1) + " records.");
   }
   
-/**
- * Finds the index of the item in the genreBoxItem array.
- * 
- * @param item (String) the item that needs to be found in the array.
- * @return the index of the item
- */
+  /**
+   * Finds the index of the item in the genreBoxItem array.
+   * 
+   * @param item (String) the item that needs to be found in the array.
+   * @return the index of the item
+   */
   public int findIndex (String item)
   {
-      for (int x = 0; x < 12; x++)
+    for (int x = 0; x < 12; x++)
+    {
+      if (genreBoxItems [x].equals (item))
       {
-        if (genreBoxItems [x].equals (item))
-        {
-          return x;
-        }
+        return x;
       }
-      return -1;
+    }
+    return -1;
   }
   
-    /**
+  /**
    * Shows the previous profile from the current one. Allows for wrapping (if the current
    * profile is the first one, it shows the last one).
    */
@@ -390,7 +393,7 @@ public class RecordManager extends JPanel implements ActionListener
     updateDisplay (); 
   }
   
-    /**
+  /**
    * Creates a new profile IF all the fields are not empty.
    */
   private void newRec ()
@@ -418,6 +421,18 @@ public class RecordManager extends JPanel implements ActionListener
     shouldSave = true;
   }
   
+  /**
+   * Takes the current date and sets the borrow date and also adds 10 days for the return date.
+   * 
+   * @param tempBDate stores the borrow date
+   * @param tempRDate stores the return date
+   * @param returnDay stores the day the book is returned from 1-28/29/30/31
+   * @param returnMonth stores the month the book is returned from 1-12
+   * @param returnYear stores the year the book is returned
+   * @param dateFormat stores the format the date is displayed
+   * @param date gets the current date
+   * @param isLeapYear true if the year is a leap year, false if not
+   */
   public void borrowBook ()
   {
     String tempBDate = "";
@@ -425,7 +440,6 @@ public class RecordManager extends JPanel implements ActionListener
     int returnDay = 0;
     int returnMonth = 0;
     int returnYear = 0;
-    String temp = "";
     //Get the current date
     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     Date date = new Date();
@@ -455,17 +469,17 @@ public class RecordManager extends JPanel implements ActionListener
       boolean isLeapYear = ((returnYear % 4 == 0) && (returnYear % 100 != 0) || (returnYear % 400 == 0));
       if (isLeapYear)
       {
-        if (returnDay > 30)
+        if (returnDay > 29)
         {
-          returnDay = returnDay - 30;
+          returnDay = returnDay - 29;
           returnMonth ++;
         }
       }
       else
       {
-        if (returnDay > 29)
+        if (returnDay > 28)
         {
-          returnDay = returnDay - 29;
+          returnDay = returnDay - 28;
           returnMonth ++;
         }
       }
@@ -495,10 +509,10 @@ public class RecordManager extends JPanel implements ActionListener
     book.get(currentRec).setBorrowDate(tempBDate);
     book.get(currentRec).setReturnDate(tempRDate);
     updateDisplay ();
-        
+    
   }
   
-    /**
+  /**
    * Saves the information to the ArrayList if the fields are not empty.
    * 
    * @param title (String) the book title to be stored
@@ -539,7 +553,7 @@ public class RecordManager extends JPanel implements ActionListener
     updateDisplay ();
   }
   
-    /**
+  /**
    * Runs the appropriate method according to the action of the user input.
    * 
    * @param ae points to the ActionEvent class.
@@ -547,7 +561,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void actionPerformed (ActionEvent e)
   {
-
+    
     String cmd = e.getActionCommand ();
     
     if (PREVIOUS.equals (cmd))
@@ -577,7 +591,7 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
-    /**
+  /**
    * This method saves data onto a previously existing file or creates a new file.
    * 
    * @param pw References the PrintWriter class and makes its methods and features available.
@@ -613,7 +627,7 @@ public class RecordManager extends JPanel implements ActionListener
       saveAs ();
   }
   
-   /**
+  /**
    * This method creates a new file to store the current data and allows the user to name the file.
    * 
    * @param fileChooser references the JFileChooser class.
@@ -655,7 +669,7 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
-    /**
+  /**
    * This method adds the ".lmf" extension
    * 
    * @param fileName the original filename to be added onto.
@@ -670,7 +684,7 @@ public class RecordManager extends JPanel implements ActionListener
     return (fileName + ".lmf");
   }
   
-    /**
+  /**
    * This method opens a user chosen file.
    * 
    * @param headerLine this is the first line of all dab files.
@@ -800,7 +814,12 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
-  
+  /**
+   * Switches from an alternate view to the JTable view, and creates the JTable.
+   * 
+   * @param tableModel sets the table model for the JTable.
+   * @param scroll creates a scroll bar.
+   */
   public void tableView() 
   {
     thePanel.removeAll();
@@ -825,7 +844,7 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add(scroll, BorderLayout.CENTER);
   }
   
-      /**
+  /**
    * Sets the name of the columns.
    */
   private void CreateColumns ()
@@ -841,12 +860,9 @@ public class RecordManager extends JPanel implements ActionListener
     columnNames [6] = "Return Date";
   }
   
-    /**
+  /**
    * Creates the data to be stored in the JTable.
    * 
-   * @param toSort determines whether the data must be sorted or not
-   * @param typeSort determines the type of sort to be used
-   * @param sortThis determines the field to be sorted
    * @param order stores the order of indices
    * @param size stores the size of the arraylist
    * @param arraySize stores the size of the arraylist
@@ -872,10 +888,10 @@ public class RecordManager extends JPanel implements ActionListener
 //    }
 //    else
 //    {
-      for (int x = 0; x < book.size (); x++)
-      {
-        order [x] = x;
-      }
+    for (int x = 0; x < book.size (); x++)
+    {
+      order [x] = x;
+    }
 //    }
     int size = book.size();
     int arraySize = size;
@@ -911,13 +927,12 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
-      /**
+  /**
    * Gets the data from the chart and stores it back in the arraylist.
    * 
-   * @param tempPerson the arraylist to be returned
+   * @param tempBook the arraylist to be returned
    * @param tableModel points to the TableModel class
    * @param order the order of indices
-   * @return the new arraylist
    */
   public void getChartData ()
   {
