@@ -6,10 +6,9 @@
  * <p>
  * @param title The string that holds the book title.
  * @param author The string that holds the author's name.
+ * @param conAuthor The string that holds the contributing author's name.
  * @param genre The string that holds the genre.
  * @param location The string that holds the location of the book.
- * @param borrowDate Stores the date the book was borrowed if it is borrowed.
- * @param returnDate Stores the date the book will be returned if it is borrowed.
  * @param recNum Keeps track of the number of records.
  */
 
@@ -24,6 +23,10 @@ public class BookRecord
    */ 
   private String author;
   /**
+   * The string that holds the contributing author's name.
+   */
+  private String conAuthor;
+  /**
    * The string that holds the genre.
    */ 
   private String genre;
@@ -31,10 +34,6 @@ public class BookRecord
    * The string that holds the location of the book.
    */ 
   private String location;
-  /**
-   * Stores the date the book was borrowed if it is borrowed.
-   */ 
-  private String borrowDate;
   /**
    * Stores the date the book will be returned if it is borrowed.
    */ 
@@ -52,13 +51,13 @@ public class BookRecord
    * @param genre The user entered genre
    * @param location The user entered location number
    */
-  public BookRecord (String title, String author, String genre, String location, String borrowDate, String returnDate)
+  public BookRecord (String title, String author, String conAuthor, String location, String genre, String returnDate)
   {
     this.title = formatName (title);
     this.author = formatName (author);
+    this.conAuthor = formatName (conAuthor);
     this.genre = genre;
     this.location = location;
-    this.borrowDate = borrowDate;
     this.returnDate = returnDate;
     
     recNum ++;
@@ -93,11 +92,22 @@ public class BookRecord
   }
   
   /**
+   * This method sets a new contributing author's name.
+   * 
+   * @param newName String the new author name to be set.
+   */ 
+  public void setConAuthor (String newAuthor)
+  {
+    conAuthor = formatName (newAuthor);
+  }
+  
+  
+  /**
    * This method sets a new genre.
    * 
    * @param newName String the genre to be set.
    */ 
-  public void setGenre (String newGenre)
+  public void setgenre (String newGenre)
   {
     genre = newGenre;
   }
@@ -110,16 +120,6 @@ public class BookRecord
   public void setLocation (String newLocation)
   {
     location = newLocation;
-  }
-  
-  /**
-   * This method sets a new borrow date.
-   * 
-   * @param newDate String the date to be set.
-   */ 
-  public void setBorrowDate (String newDate)
-  {
-    returnDate = newDate;
   }
   
   /**
@@ -147,7 +147,15 @@ public class BookRecord
   {
     return author;
   }
-    
+  
+  /**
+   * This method returns the current author name.
+   */ 
+  public String getConAuthor()
+  {
+    return conAuthor;
+  }
+  
   /**
    * This method returns the current genre.
    */ 
@@ -162,14 +170,6 @@ public class BookRecord
   public String getLocation ()
   {
     return location;
-  }
-  
-  /**
-   * This method returns the current borrow date.
-   */ 
-  public String getBorrowDate ()
-  {
-    return borrowDate;
   }
   
   /**

@@ -11,8 +11,6 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 
-//check out BarChart class
-
 /**
  * Creates a library manager in which users can create a number of book records. Information will
  * be stored in an ArrayList. There is a tool bar that has six buttons: previous, next, 
@@ -132,6 +130,50 @@ public class RecordManager extends JPanel implements ActionListener
    * myTable creates a new JTable
    */
   JTable myTable;
+    /**
+   * This is the order of the records to be displayed
+   */
+  int [] order;
+  /**
+   * This stores which field will be sorted.
+   */ 
+  int sortWhichField = 0;
+  /**
+   *The constructor creates a new entry in the array list and starts the display method.
+   */
+  SearchAndSort s = new SearchAndSort ();
+  /**
+   *Boolean variable to identify whether the JTable is sorted.
+   */ 
+  boolean sorted = false;
+  /**
+   *Boolean variable to identify whether the JTable should display search results.
+   */ 
+  boolean searchMode = false;
+  /**
+   * This is the index of records found by the search
+   */
+  int [] searchIndex;
+  /**
+   * This stores which field will be searched.
+   */ 
+  int searchWhichField = 0;
+  /**
+   * This stores which type of search to use.
+   */ 
+  int whichSearch = 0;
+  /**
+   * Variable which holds whether a partial search or whole search is requested.
+   */
+  int partialOrWhole = 0;
+  /**
+   * The text to be searched.
+   */ 
+  String searchText = "";
+  /**
+   * This variable keeps track of amount of searches found.
+   */ 
+  int amountFound = 0;
   
   public RecordManager ()
   {
@@ -400,7 +442,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (!(titleField.getText ().equals ("")))
     {
-      currentRec = book.size ();
+      currentRec = BookRecord.recNum;
       book.add (new BookRecord());
       updateDisplay ();
     }
@@ -413,7 +455,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     book.remove(currentRec);
     BookRecord.recNum --;
-    if (book.size () == 0)
+    if (BookRecord.recNum == 0)
     {
       book.add (new BookRecord());
     }
@@ -786,8 +828,8 @@ public class RecordManager extends JPanel implements ActionListener
   {
     thePanel.removeAll();
     thePanel.setLayout(new BorderLayout());
-    CreateColumns();
-    CreateData();
+    createColumns();
+    createData();
     DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
     myTable.setModel (tableModel);
     myTable.setColumnSelectionAllowed(false);
@@ -809,7 +851,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * Sets the name of the columns.
    */
-  private void CreateColumns ()
+  private void createColumns ()
   {
     columnNames = new Object [7];
     
@@ -823,70 +865,39 @@ public class RecordManager extends JPanel implements ActionListener
   }
   
   /**
-   * Creates the data to be stored in the JTable.
-   * 
-   * @param order stores the order of indices
-   * @param size stores the size of the arraylist
-   * @param arraySize stores the size of the arraylist
+   * This metohd inputs the data onto the table.
    */
-  public void CreateData ()
+  public void createData() 
   {
-    int [] order = new int [book.size ()];
-    
-//    if (toSort == true)
-//    {
-//      if (typeSort.equals ("Selection"))
-//      {
-//        order = as.selectionSort (a.person, sortThis);
-//      }
-//      else if (typeSort.equals ("Bubble"))
-//      {
-//        order = as.bubbleSort (a.person, sortThis);
-//      }
-//      else if (typeSort.equals ("Insertion"))
-//      {
-//        order = as.insertionSort (a.person, sortThis);
-//      }
-//    }
-//    else
-//    {
-    for (int x = 0; x < book.size (); x++)
+    dataValues = new String[BookRecord.recNum][5];
+    if (searchMode)
     {
-      order [x] = x;
-    }
-//    }
-    int size = book.size();
-    int arraySize = size;
-    if (arraySize == 0)
-      arraySize = 1;
-    dataValues = new String [arraySize] [7];
-    int iZ = 0;
-    for ( int iY = 0 ; iY < size ; iY++)
-    {
-      dataValues [iY] [0] = "" + (order [iY] + 1);
-      dataValues [iY] [1] = "" + book.get(order [iY]).getTitle ();
-      dataValues [iY] [2] = "" + book.get(order [iY]).getAuthor ();
-      dataValues [iY] [3] = "" + book.get(order [iY]).getGenre ();
-      dataValues [iY] [4] = "" + book.get(order [iY]).getLocation ();
-      dataValues [iY] [5] = "" + book.get(order [iY]).getBorrowDate();
-      dataValues [iY] [6] = "" + book.get(order [iY]).getReturnDate();
-      
-      for (int iX = 1; iX < 7; iX++)
+      for (int i = 0; i < BookRecord.recNum; i++) 
       {
-        if (dataValues [iY] [iX].equals ("null"))
-          dataValues [iY] [iX] = "";
+        if (order[i] != -1)
+        {
+          dataValues[i][0] = "" + (order[i] + 1);
+          dataValues[i][1] = "" + (book.get(order[i]).getTitle());
+          dataValues[i][2] = "" + (book.get(order[i]).getAuthor());
+          dataValues[i][3] = "" + (book.get(order[i]).getGenre());
+          dataValues[i][4] = "" + (book.get(order[i]).getLocation());
+          amountFound ++;
+        }
       }
-      iZ ++;
     }
-    if (size == 0) {
-      dataValues [iZ] [0] = "" + (iZ + 1);
-      dataValues [iZ] [1] = "";
-      dataValues [iZ] [2] = "";
-      dataValues [iZ] [3] = "";
-      dataValues [iZ] [4] = "";
-      dataValues [iZ] [5] = "";
-      dataValues [iZ] [6] = "";
-    }
+    else
+    {
+      sorter();
+      for (int i = 0; i < BookRecord.recNum; i++) 
+      {
+        dataValues[i][0] = "" + (order[i] + 1);
+        dataValues[i][1] = "" + (book.get(order[i]).getTitle());
+        dataValues[i][2] = "" + (book.get(order[i]).getAuthor());
+        dataValues[i][3] = "" + (book.get(order[i]).getGenre());
+        dataValues[i][4] = "" + (book.get(order[i]).getLocation());
+      }
+    } 
+    currentRec = 0;
   }
   
   /**
@@ -930,6 +941,108 @@ public class RecordManager extends JPanel implements ActionListener
   }
   
   /**
+   * This method sorts the fields.
+   * 
+   * @param original Holds the unsorted array.
+   */ 
+  public void sorter ()
+  {
+    order = new int [BookRecord.recNum];
+    for (int i = 0; i < BookRecord.recNum; i++)
+      order [i]=i;
+    if (sortWhichField != 0)
+    {
+      String [] original = new String [BookRecord.recNum];
+      
+      for (int i = 0; i < BookRecord.recNum; i++)
+      {
+        if (sortWhichField == 1)
+        {
+          if ((book.get(i).getTitle()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getTitle()).toUpperCase();
+        }
+        else if (sortWhichField == 2)
+        {
+          if ((book.get(i).getAuthor()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getAuthor()).toUpperCase();
+        }
+        else if (sortWhichField == 3)
+        {
+          if ((book.get(i).getGenre()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getGenre()).toUpperCase();
+        }
+        else if (sortWhichField == 4)
+        {
+          if ((book.get(i).getLocation()).equals (""))
+            original [i] = " ";
+          else
+            original [i] = (book.get(i).getLocation());
+        }
+      } 
+        order = s.bubbleSort (original);
+    }
+  }
+  /**
+   * This method searches for a piece of text
+   * 
+   * @param original Holds the unsorted array.
+   */ 
+  public void searcher ()
+  {
+    String [] original = new String [BookRecord.recNum];
+    
+    if (partialOrWhole == 2)
+    {
+      for (int i = 0; i < BookRecord.recNum; i++)
+      {
+        if (searchWhichField == 1)
+          original [i] = (book.get(i).getTitle()).toUpperCase();
+        else if (searchWhichField == 2)
+          original [i] = (book.get(i).getAuthor()).toUpperCase();
+        else if (searchWhichField == 3)
+          original [i] = (book.get(i).getGenre()).toUpperCase();
+        else if (searchWhichField == 4)
+          original [i] = (book.get(i).getLocation());
+      }
+    }
+    else
+    {
+      for (int i = 0; i < BookRecord.recNum; i++)
+      {
+        if (searchWhichField == 1)
+          original [i] = (book.get(i).getTitle()).toUpperCase() + "                                            ";
+        else if (searchWhichField == 2)
+          original [i] = (book.get(i).getAuthor()).toUpperCase() + "                                            ";
+        else if (searchWhichField == 3)
+          original [i] = (book.get(i).getGenre()).toUpperCase() + "                                            ";
+        else if (searchWhichField == 4)
+          original [i] = (book.get(i).getLocation() + "                                            ");
+        
+        original [i] = original[i].substring (0,searchText.length());
+      }
+    }
+    
+    order = s.sequentialSearch (original,searchText);
+    
+    sorted = false;
+    searchMode = true;
+    tableView();
+    if (amountFound > 1)
+      JOptionPane.showMessageDialog(this,amountFound + " matches were found.");
+    else if (amountFound == 1)
+      JOptionPane.showMessageDialog(this,"1 match was found.");
+    else
+      JOptionPane.showMessageDialog(this,"No matches were found.");
+    amountFound = 0;
+  }  
+  
+  /**
    * Runs the appropriate method according to the action of the user input.
    * 
    * @param ae points to the ActionEvent class.
@@ -937,7 +1050,6 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void actionPerformed (ActionEvent e)
   {
-    
     String cmd = e.getActionCommand ();
     
     if (PREVIOUS.equals (cmd))
