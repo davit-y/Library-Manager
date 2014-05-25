@@ -554,6 +554,44 @@ public class RecordManager extends JPanel implements ActionListener
   }
   
   /**
+   * Runs the appropriate method according to the action of the user input.
+   * 
+   * @param ae points to the ActionEvent class.
+   * @param cmd (String) gets the action command.
+   */
+  public void actionPerformed (ActionEvent e)
+  {
+    
+    String cmd = e.getActionCommand ();
+    
+    if (PREVIOUS.equals (cmd))
+    { 
+      prevRec ();
+    }
+    else if (NEXT.equals (cmd))
+    { 
+      nextRec ();
+    }
+    else if (NEW.equals (cmd))
+    { 
+      newRec ();
+    }
+    else if (SAVE.equals (cmd))
+    { 
+      saveRec (titleField.getText (), authorField.getText (), (String)(genreBox.getSelectedItem ()), locationField.getText (), 
+               borrowField.getText (), returnField.getText ());
+    }
+    else if (DELETE.equals (cmd))
+    {
+      deleteRec ();
+    }
+    else if (BORROW.equals (cmd))
+    {
+      borrowBook ();
+    }
+  }
+  
+  /**
    * This method saves data onto a previously existing file or creates a new file.
    * 
    * @param pw References the PrintWriter class and makes its methods and features available.
@@ -927,43 +965,5 @@ public class RecordManager extends JPanel implements ActionListener
     
     BookRecord.recNum = tableModel.getRowCount () - 1;
     book = tempBook;
-  }
-  
-  /**
-   * Runs the appropriate method according to the action of the user input.
-   * 
-   * @param ae points to the ActionEvent class.
-   * @param cmd (String) gets the action command.
-   */
-  public void actionPerformed (ActionEvent e)
-  {
-    
-    String cmd = e.getActionCommand ();
-    
-    if (PREVIOUS.equals (cmd))
-    { 
-      prevRec ();
-    }
-    else if (NEXT.equals (cmd))
-    { 
-      nextRec ();
-    }
-    else if (NEW.equals (cmd))
-    { 
-      newRec ();
-    }
-    else if (SAVE.equals (cmd))
-    { 
-      saveRec (titleField.getText (), authorField.getText (), (String)(genreBox.getSelectedItem ()), locationField.getText (), 
-               borrowField.getText (), returnField.getText ());
-    }
-    else if (DELETE.equals (cmd))
-    {
-      deleteRec ();
-    }
-    else if (BORROW.equals (cmd))
-    {
-      borrowBook ();
-    }
   }
 }
