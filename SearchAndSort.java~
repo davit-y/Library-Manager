@@ -23,14 +23,14 @@ public class SearchAndSort
   {
     String temp = "";
     int temp2 = 0;
-    int theOrder [] = new int [BookRecord.recNum];
+    int theOrder [] = new int [PersonRecord.recNum];
     
-    for (int i = 0 ; i< BookRecord.recNum; i++) 
+    for (int i = 0 ; i< PersonRecord.recNum; i++) 
       theOrder [i]=i;
     
-    for (int i = 0 ; i< BookRecord.recNum-1 ; i++) 
+    for (int i = 0 ; i< PersonRecord.recNum-1 ; i++) 
     {
-      for (int j = i+1 ; j< BookRecord.recNum ; j++) 
+      for (int j = i+1 ; j< PersonRecord.recNum ; j++) 
       {
         if (sortedList[i].compareTo(sortedList[j]) > 0) 
         {
