@@ -55,7 +55,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * This is the radio buttons to choose which field to search.
    */ 
-  JRadioButton searchLocation, searchGenre, searchTitle, searchAuthor, searchBorrow, searchReturn;
+  JRadioButton searchLocation, searchGenre, searchTitle, searchAuthor;
   /**
    * This is the dialogue box to choose which field to search.
    */ 
@@ -169,19 +169,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     JButton okButton = new JButton ("Ok");
     JButton closeButton = new JButton("Close");  
     
-    sortBox.setSize (80,280);
+    sortBox.setSize (80,250);
     sortTitle = new JRadioButton ("Title");
     sortAuthor = new JRadioButton ("Author");
     sortGenre = new JRadioButton ("Genre");
     sortLocation = new JRadioButton ("Location");
     
-    group.add(sortTitle);
-    group.add(sortAuthor);
     group.add(sortGenre);
     group.add(sortLocation);
-    group.add(sortBorrow);
-    group.add(sortReturn);
-
+    group.add(sortTitle);
+    group.add(sortAuthor);
     sortBox.setLayout (new FlowLayout(FlowLayout.LEADING));
     sortBox.setVisible (true);
     sortBox.add(sortGenre);
@@ -190,30 +187,22 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortBox.add(sortAuthor);
     sortBox.add(closeButton);
     sortBox.add(okButton);
-    
     okButton.addActionListener (new ActionListener()
                                   {
       public void actionPerformed(ActionEvent e){
         if (sortGenre.isSelected ())
-          r.sortWhichField = 1;
+          //r.sortWhichField = 1;
         
         if (sortLocation.isSelected ())
-          r.sortWhichField = 2;
+          //r.sortWhichField = 2;
         
         if (sortTitle.isSelected ())
-          r.sortWhichField = 3;
+          ///r.sortWhichField = 3;
         
         if (sortAuthor.isSelected ())
-          r.sortWhichField = 4;
-        
-        if (sortBorrow.isSelected ())
-          r.sortWhichField = 5;
-        
-        if (sortReturn.isSelected ())
-          r.sortWhichField = 6;
-        
+          //r.sortWhichField = 4;
         sortBox.dispose();    
-        r.sorter();
+        //r.tableView();
         invalidate();
         validate();
         repaint();
@@ -246,7 +235,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JLabel searchLabel = new JLabel ("Input text below:");
     searchLabel.setFont (new Font ("Serif", Font.PLAIN, 16)); 
     
-    searchBox.setSize (220,350);
+    searchBox.setSize (220,302);
     searchTitle = new JRadioButton ("Title");
     searchAuthor = new JRadioButton ("Author");
     searchLocation = new JRadioButton ("Location");
@@ -258,19 +247,14 @@ public class DataBaseApp extends JFrame implements ActionListener
     group.add(searchAuthor);
     group.add(searchLocation);
     group.add(searchGenre);
-    group.add(searchBorrow);
-    group.add(searchReturn);
     group2.add(partialSearch);
     group2.add(wholeSearch);
-    
     searchBox.setLayout (new BoxLayout(searchBox.getContentPane(),BoxLayout.Y_AXIS));
     searchBox.setVisible (true);
     searchBox.add(searchTitle);
     searchBox.add(searchAuthor);
     searchBox.add(searchLocation);
     searchBox.add(searchGenre);
-    searchBox.add(searchBorrow);
-    searchBox.add(searchReturn);
     searchBox.add(Box.createRigidArea(new Dimension(0,10)));
     searchBox.add(partialSearch);
     searchBox.add(wholeSearch);
@@ -285,32 +269,26 @@ public class DataBaseApp extends JFrame implements ActionListener
                                   {
       public void actionPerformed(ActionEvent e){
         if (searchTitle.isSelected ())
-          r.searchWhichField = 1;
+          //r.searchWhichField = 1;
         
         if (searchAuthor.isSelected ())
-          r.searchWhichField = 2;
+          //r.searchWhichField = 2;
         
         if (searchLocation.isSelected ())
-          r.searchWhichField = 3;
+          //r.searchWhichField = 3;
         
         if (searchGenre.isSelected ())
-          r.searchWhichField = 4;
-        
-        if (searchBorrow.isSelected ())
-          r.searchWhichField = 5;
-        
-        if (searchReturn.isSelected ())
-          r.searchWhichField = 6;
+          //r.searchWhichField = 4;
         
         if (partialSearch.isSelected ())
-          r.partialOrWhole = 1;
+          //r.partialOrWhole = 1;
         
         if (wholeSearch.isSelected ())
-          r.partialOrWhole = 2;
+         // r.partialOrWhole = 2;
         
-        r.searchText = searchField.getText ();
+        //r.searchText = searchField.getText ();
         searchBox.dispose();    
-        r.tableView();
+        //r.tableView();
         invalidate();
         validate();
         repaint();
@@ -334,11 +312,11 @@ public class DataBaseApp extends JFrame implements ActionListener
   {
     if (ae.getActionCommand ().equals("New"))
     {
-      r.saveChecker();
-      r.newDatabase();
-      r.fileName = null;
-      r.fieldView();
-      r.updateDisplay();
+      //r.saveChecker();
+      //r.newDatabase();
+      //r.fileName = null;
+      //r.fieldView();
+      //r.updater();
     }
     
     else if (ae.getActionCommand ().equals("About"))
@@ -349,52 +327,53 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("Open"))
     {
-      r.saveChecker();
-      r.openFile ();
-      r.fieldView();
-      r.updateDisplay();
+      //r.saveChecker();
+      //r.openFile ();
+      //r.fieldView();
+      //r.updater();
     }    
     else if (ae.getActionCommand ().equals("Save"))
-      r.save (r.fileName);
-    
+      //r.save (r.fileName);
+      System.out.println ("Take out");
     else if (ae.getActionCommand ().equals("Save As"))
-      r.saveAs ();
-    
+      //r.saveAs ();
+      System.out.println ("Take out");
     else if (ae.getActionCommand().equals("Chart")) 
     {
       currentView = "Chart";
-      r.sortWhichField = 0;
-      if (r.recSaved)
-        r.tableView();
+      //r.sortWhichField = 0;
+      //if (r.recSaved)
+        //r.tableView();
     }
     else if (ae.getActionCommand().equals("Browse")) 
     {
       currentView = "Text";
-      r.getChartData();
-      r.fieldView();
-      r.updateDisplay();
+      //r.fieldsConvertor();
+      //r.fieldView();
+      //r.updater();
     }
     else if (ae.getActionCommand().equals("Sort")) 
     {
-      if (r.recSaved)
+    //  if (r.recSaved)
       {
         if (currentView.equals("Chart"))
-          r.getChartData();
+      //    r.fieldsConvertor();
         chooseSort ();
       }
     }
     else if (ae.getActionCommand().equals("Search")) 
     {
-      if (r.recSaved)
-      {
-        if (currentView.equals("Chart"))
-          r.getChartData();
-        chooseSearch ();
-      }
+      chooseSearch();
+      /* if (a.recSaved)
+       {
+       if (currentView.equals("Chart"))
+       r.fieldsConvertor();
+       chooseSort ();
+       }*/
     }
     else if (ae.getActionCommand ().equals ("Quit"))
     {
-      r.saveChecker();
+      //r.saveChecker();
       System.exit (0);
     }
     this.invalidate();
