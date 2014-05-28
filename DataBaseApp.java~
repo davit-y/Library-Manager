@@ -27,19 +27,27 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * The string that holds the author name.
    */ 
-  private String location;
-  /**
-   * The string that holds the location.
-   */ 
   private String author;
-  /**
+    /**
    * The string that holds the genre number.
    */ 
   private String genre;
   /**
+   * The string that holds the location.
+   */ 
+  private String location;
+  /**
+   * The string that holds the borrow date.
+   */ 
+  private String borrowdate;
+  /**
+   * The string that holds the return date.
+   */ 
+  private String returnDate;
+  /**
    * This is the radio buttons to choose which field to sort.
    */ 
-  JRadioButton sortGenre, sortLocation, sortTitle, sortAuthor;
+  JRadioButton sortTitle, sortAuthor, sortGenre, sortLocation, sortBorrow, sortReturn;
   /**
    * This is the dialogue box to choose which field to sort.
    */ 

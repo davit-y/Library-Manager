@@ -4,7 +4,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.io.*; 
 import java.util.*;
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import javax.swing.event.TableModelListener;
@@ -17,7 +16,7 @@ import javax.swing.table.*;
  * save, new, delete, and borrow. The user can cycle through the previous profiles created as well as
  * create new ones and delete old ones. The user can also save and open files.
  * 
- * @author Lily Xiao
+ * @author JDL Development - Lily&David
  * @version 1.0, May 12/14
  */
 public class RecordManager extends JPanel implements ActionListener
@@ -98,6 +97,10 @@ public class RecordManager extends JPanel implements ActionListener
    * genreBoxItems (String []) stores an array of the items to be stored in genreBox.
    */
   String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humor", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
+  /**
+   * This is a boolean statement that holds weather or not the current record has been saved.
+   */ 
+  boolean recSaved;
   /**
    * shouldSave (boolean) stores whether the information has been modified or not.
    */
@@ -289,7 +292,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * Empties the old database and creates a new one.
    */
-  public void addDatabase ()
+  public void newDatabase ()
   {
     book.clear ();
     book.add (new BookRecord());
@@ -440,12 +443,20 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private void newRec ()
   {
-    if (!(titleField.getText ().equals ("")))
+    if (recSaved==true)
     {
-      currentRec = BookRecord.recNum;
-      book.add (new BookRecord());
-      updateDisplay ();
+      recSaved=false;
+      if (!(titleField.getText ().equals ("")))
+      {
+        currentRec = BookRecord.recNum;
+        book.add (new BookRecord());
+        updateDisplay ();
+      }
+      else
+        JOptionPane.showMessageDialog(this,"Please input a value.","No Input",JOptionPane.WARNING_MESSAGE);
     }
+    else
+      JOptionPane.showMessageDialog(this,"Please save before continuing.","No Save Error",JOptionPane.WARNING_MESSAGE);
   }
   
   /**
@@ -588,9 +599,8 @@ public class RecordManager extends JPanel implements ActionListener
       book.add (new BookRecord (title, author, genre, location, borrowD, returnD));
     }
     else
-    {
       JOptionPane.showMessageDialog (this, "You must fill in at least the book title for a valid entry!", "BOOK FIELD EMPTY", JOptionPane.INFORMATION_MESSAGE);
-    }
+    recSaved = true;    
     shouldSave = true;
     updateDisplay ();
   }
@@ -792,6 +802,7 @@ public class RecordManager extends JPanel implements ActionListener
         BookRecord.recNum = recAmount;
         input.close();
         currentRec=0;
+        recSaved=true;
         shouldSave = false;
         updateDisplay();        
       }
