@@ -93,7 +93,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param DISPOSE_ON_CLOSE clears the RAM and closes the program when it is complete.
    */
   public DataBaseApp ()
-  {         
+  { 
+    //SplashScreen ss = new SplashScreen ();
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
     JMenu viewMenu = new JMenu ("View");

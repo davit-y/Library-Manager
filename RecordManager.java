@@ -10,6 +10,13 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+
 /**
  * Creates a library manager in which users can create a number of book records. Information will
  * be stored in an ArrayList. There is a tool bar that has six buttons: previous, next, 
@@ -181,15 +188,29 @@ public class RecordManager extends JPanel implements ActionListener
   public RecordManager ()
   {
     thePanel = new JPanel ();
-    fieldView ();
-    book.add (new BookRecord());
-    currentRec = 0;
-    BookRecord.recNum = 0;
+    Icon icon = new ImageIcon("Username.gif");
+    JLabel label = new JLabel(icon);
+    JLabel label2 = new JLabel("hi");
+    thePanel.setVisible (true);
+    this.add (label2);
+    this.add (label);
+    try {
+      Thread.sleep(2000); }
+    catch (Exception e)   {
+          
+    }
+    this.add (label2);
+    /*
+     fieldView ();
+     book.add (new BookRecord());
+     currentRec = 0;
+     BookRecord.recNum = 0;
     
     shouldSave = false;
     add (thePanel);
     thePanel.setVisible (true);
     setVisible (true);
+    */
   }
   
   /**
