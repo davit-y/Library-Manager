@@ -22,7 +22,7 @@ public class SplashScreen extends JWindow
   public SplashScreen ()
   {
     
-    Icon icon = new ImageIcon("/Graphics/Splash-Screen.gif");
+    Icon icon = new ImageIcon(".//Graphics/Splash-Screen.gif");
     JLabel label = new JLabel(icon);
     JFrame f = new JFrame("Animation");
     f.getContentPane().add(label);
@@ -37,7 +37,7 @@ public class SplashScreen extends JWindow
       f.setLocationRelativeTo (null);
       
       f.show();
-      Thread.sleep(7000);
+      Thread.sleep(6100);
       f.dispose();      
     }
     catch (Exception e)

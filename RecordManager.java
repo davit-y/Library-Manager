@@ -29,10 +29,6 @@ import java.awt.event.ActionListener;
 public class RecordManager extends JPanel implements ActionListener
 {
   /**
-   * spring (reference) points to the SpringLayout class
-   */
-  SpringLayout spring;
-  /**
    * d (JDialog) points to the JDialog class
    */
   JDialog d;
@@ -43,7 +39,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * The panel in which all components are placed.
    */
-  JPanel thePanel;
+  JPanel thePanel = new JPanel ();
   /**
    * currentRec (int) signals the current record being viewed.
    */
@@ -187,19 +183,11 @@ public class RecordManager extends JPanel implements ActionListener
   
   public RecordManager ()
   {
-    thePanel = new JPanel ();
-    Icon icon = new ImageIcon("Username.gif");
-    JLabel label = new JLabel(icon);
-    JLabel label2 = new JLabel("hi");
-    thePanel.setVisible (true);
-    this.add (label2);
-    this.add (label);
-    try {
-      Thread.sleep(2000); }
-    catch (Exception e)   {
-          
-    }
-    this.add (label2);
+   //  add (thePanel);
+    // thePanel.setVisible (true);
+
+    usernameOpener ();
+
     /*
      fieldView ();
      book.add (new BookRecord());
@@ -213,14 +201,36 @@ public class RecordManager extends JPanel implements ActionListener
     */
   }
   
+  public void usernameOpener ()
+  {  
+    
+        JButton ok = new JButton (">");
+    ok.setBounds (325,205,51,32);
+    //ok.setText ("OK");
+    this.add (ok);
+    
+        JTextField usernameField = new JTextField ();
+    usernameField.setBounds(74, 205, 251, 31);
+    this.add (usernameField);
+    
+
+    
+    this.setLayout (null);
+    Icon icon = new ImageIcon(".//Graphics/Username.gif");
+    JLabel label = new JLabel(icon);
+    label.setBounds (0,0,400,500);
+    this.add (label);
+    
+
+  }
+  
+  
   /**
    * Switches from an alternate view to the textfield view.
    */
   public void fieldView ()
   {
-    spring = new SpringLayout();
     thePanel.removeAll();
-    thePanel.setLayout(spring);
     textFields ();
     addToolBar (); 
   }
@@ -264,35 +274,6 @@ public class RecordManager extends JPanel implements ActionListener
     JLabel returnLabel = new JLabel ("Return Date :");
     returnLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
     
-    spring.putConstraint(spring.NORTH, titleLabel,30,spring.NORTH, thePanel);
-    spring.putConstraint(spring.WEST, titleLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, titleField,0,spring.NORTH, titleLabel);
-    spring.putConstraint(spring.WEST, titleField,110,spring.WEST, titleLabel);
-    
-    spring.putConstraint(spring.SOUTH, authorLabel,30,spring.SOUTH, titleLabel);
-    spring.putConstraint(spring.WEST, authorLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, authorField,0,spring.NORTH,authorLabel);
-    spring.putConstraint(spring.WEST, authorField,110,spring.WEST, authorLabel);
-    
-    spring.putConstraint(spring.SOUTH, genreLabel,30,spring.SOUTH, authorLabel);
-    spring.putConstraint(spring.WEST, genreLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, genreBox,0,spring.NORTH,genreLabel);
-    spring.putConstraint(spring.WEST, genreBox,110,spring.WEST, genreLabel);
-    
-    spring.putConstraint(spring.SOUTH, locationLabel,30,spring.SOUTH, genreLabel);
-    spring.putConstraint(spring.WEST, locationLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, locationField,0,spring.NORTH,locationLabel);
-    spring.putConstraint(spring.WEST, locationField,110,spring.WEST, locationLabel);
-    
-    spring.putConstraint(spring.SOUTH, borrowLabel,30,spring.SOUTH, locationLabel);
-    spring.putConstraint(spring.WEST, borrowLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, borrowField,0,spring.NORTH,borrowLabel);
-    spring.putConstraint(spring.WEST, borrowField,110,spring.WEST, borrowLabel);
-    
-    spring.putConstraint(spring.SOUTH, returnLabel,30,spring.SOUTH, borrowLabel);
-    spring.putConstraint(spring.WEST, returnLabel,10,spring.WEST, thePanel);
-    spring.putConstraint(spring.NORTH, returnField,0,spring.NORTH,returnLabel);
-    spring.putConstraint(spring.WEST, returnField,110,spring.WEST, returnLabel);
     
     thePanel.add (entryLabel);
     thePanel.add (titleLabel);
@@ -336,7 +317,6 @@ public class RecordManager extends JPanel implements ActionListener
     toolbar.setFloatable (false);
     addButtons (toolbar);
     thePanel.add (toolbar);
-    spring.putConstraint(spring.NORTH, toolbar,150,spring.NORTH, thePanel);
   }
   
   /**

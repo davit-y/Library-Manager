@@ -1,21 +1,17 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.AlphaComposite;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+//import java.awt.AlphaComposite;
+//import java.awt.event.ActionEvent;
+//import java.awt.event.ActionListener;
 
 /**
- * This program creates a splashscreen to be shown before the program starts.. 
+ * This class creates the splash screen.
  * 
- * @author Wendy Fu
- * @version 2.0, May 23, 2014      
+ * @author David Yeghshatyan
+ * @version 1.0, May 27, 2014      
  */
 public class SplashScreen extends JWindow
 {
-  /**
-   * @param label creates a new JLabel.
-   */
-  static JLabel label;
 /**
    * The SplashScreen constructor that creates a borderless screen and displays the Plat Engine loading screen.
    * <p>
@@ -26,7 +22,7 @@ public class SplashScreen extends JWindow
   public SplashScreen ()
   {
     
-    Icon icon = new ImageIcon("Splash-Screen.gif");
+    Icon icon = new ImageIcon("/Graphics/Splash-Screen.gif");
     JLabel label = new JLabel(icon);
     JFrame f = new JFrame("Animation");
     f.getContentPane().add(label);
