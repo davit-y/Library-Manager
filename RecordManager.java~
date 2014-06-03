@@ -44,6 +44,14 @@ public class RecordManager extends JPanel implements ActionListener
    * currentRec (int) signals the current record being viewed.
    */
   private static int currentRec;
+    /**
+   * LOGINHELP (String) stores a string used to reference the help button.
+   */
+  static final private String LOGINHELP = "Log In Help";
+      /**
+   * LOGINOK (String) stores a string used to reference the ok button.
+   */
+  static final private String LOGINOK = "Log In OK";
   /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
@@ -183,40 +191,36 @@ public class RecordManager extends JPanel implements ActionListener
   
   public RecordManager ()
   {
-   //  add (thePanel);
-    // thePanel.setVisible (true);
-
     usernameOpener ();
-
-    /*
-     fieldView ();
-     book.add (new BookRecord());
-     currentRec = 0;
-     BookRecord.recNum = 0;
-    
-    shouldSave = false;
-    add (thePanel);
-    thePanel.setVisible (true);
-    setVisible (true);
-    */
   }
   
   public void usernameOpener ()
-  {
-    this.setLayout (null);
+  {  
+    JButton ok = new JButton ("OK");
+    ok.setBounds (285,205,51,32);
+    ok.setActionCommand ("Log In OK");
+    ok.setToolTipText ("Log In");
+    ok.addActionListener (this);
+    add(ok);
+        
+    JButton help = new JButton ("?");
+    help.setBounds (325,205,31,32);
+    help.setActionCommand ("Log In Help");
+    help.setToolTipText ("Help");
+    help.addActionListener (this);
+    add(help);
+    add (help);
+
+    JTextField usernameField = new JTextField ();
+    usernameField.setBounds(74, 205, 251, 31);
+    add (usernameField);
+    
+    setLayout (null);
     Icon icon = new ImageIcon(".//Graphics/Username.gif");
     JLabel label = new JLabel(icon);
     label.setBounds (0,0,400,500);
-    this.add (label);
-    
-    try {
-    Thread.sleep(2000); }
-    catch (Exception e)   {}
-    
-    JTextField usernameField = new JTextField ();
-    usernameField.setBounds(77, 205, 250, 30);
-    this.add (usernameField);
-  }
+    add (label);
+    }
   
   
   /**
@@ -225,8 +229,8 @@ public class RecordManager extends JPanel implements ActionListener
   public void fieldView ()
   {
     thePanel.removeAll();
-    textFields ();
     addToolBar (); 
+    textFields ();
   }
   
   /**
@@ -250,39 +254,12 @@ public class RecordManager extends JPanel implements ActionListener
     borrowField = new JTextField (20);
     returnField = new JTextField (20);
     
-    JLabel titleLabel = new JLabel ("Book Title :");
-    titleLabel.setFont (new Font ("Serif", Font.PLAIN, 16));  
-    
-    JLabel authorLabel = new JLabel ("Author Name(s) :");
-    authorLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel genreLabel = new JLabel ("Genre :");
-    genreLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel locationLabel = new JLabel ("Location :");
-    locationLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel borrowLabel = new JLabel ("Borrow Date :");
-    borrowLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel returnLabel = new JLabel ("Return Date :");
-    returnLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    
-    thePanel.add (entryLabel);
-    thePanel.add (titleLabel);
     thePanel.add (titleField);
-    thePanel.add (authorLabel);
     thePanel.add (authorField);
-    thePanel.add (genreLabel);
     thePanel.add (genreBox);
-    thePanel.add (locationLabel);
     thePanel.add (locationField);
-    thePanel.add (borrowLabel);
     thePanel.add (borrowField);
-    thePanel.add (returnLabel);
     thePanel.add (returnField);
-    
   }
   
   /**
@@ -1083,5 +1060,43 @@ public class RecordManager extends JPanel implements ActionListener
     {
       borrowBook ();
     }
+    else if (LOGINHELP.equals(cmd))
+    {
+      JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);  
+    }
+    else if (LOGINOK.equals(cmd))
+    {
+      tempMethod();
+    }
+    this.invalidate();
+    this.validate();
+    this.repaint();
+  }
+  
+  public void tempMethod ()
+  {
+    removeAll();
+    add (thePanel);
+    thePanel.setPreferredSize(new Dimension(400, 500));
+    thePanel.setLayout(new BoxLayout(thePanel, BoxLayout.Y_AXIS));
+    
+//    JTextField blah = new JTextField (20);
+//    thePanel.add (blah);
+
+    Icon icon = new ImageIcon(".//Graphics/MouseOver.png");
+    JLabel label = new JLabel(icon);
+    label.setBounds (0,0,400,500);
+    thePanel.add (label);
+
+    
+//      book.add (new BookRecord());
+//      currentRec = 0;
+//      BookRecord.recNum = 0;
+//      
+//      shouldSave = false;
+//      fieldView ();
+
+//      
+
   }
 }

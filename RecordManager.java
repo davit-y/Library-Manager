@@ -45,6 +45,18 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private static int currentRec;
   /**
+   * toolBarTop This is the toolbar at the top of the window.
+   */ 
+  JToolBar toolBarTop = new JToolBar ("Top Bar");
+    /**
+   * LOGINHELP (String) stores a string used to reference the help button.
+   */
+  static final private String LOGINHELP = "Log In Help";
+      /**
+   * LOGINOK (String) stores a string used to reference the ok button.
+   */
+  static final private String LOGINOK = "Log In OK";
+  /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
   static final private String PREVIOUS = "previous";
@@ -68,6 +80,14 @@ public class RecordManager extends JPanel implements ActionListener
    * BORROW (String) stores a string used to reference the button.
    */
   static final private String BORROW = "borrow";
+  /**
+   * This variable holds the username of the current user.
+   */ 
+  String username;
+   /**
+   * This text field allows he user to input their username.
+   */ 
+  JTextField usernameField;
   /**
    * entryLabel (JLabel) points to the JLabel class.
    */
@@ -181,114 +201,142 @@ public class RecordManager extends JPanel implements ActionListener
    */ 
   int amountFound = 0;
   
+  
   public RecordManager ()
   {
-   //  add (thePanel);
-    // thePanel.setVisible (true);
-
+    toolbarMaker();
     usernameOpener ();
-
-    /*
-     fieldView ();
-     book.add (new BookRecord());
-     currentRec = 0;
-     BookRecord.recNum = 0;
-    
-    shouldSave = false;
-    add (thePanel);
-    thePanel.setVisible (true);
-    setVisible (true);
-    */
   }
   
+  /**
+   * This method opens the username screen.
+   * 
+   * @param help this button displays useful tips to the user.
+   * @param ok this button let's the user continue into the program.
+   */ 
   public void usernameOpener ()
   {  
+    add (thePanel);
+    thePanel.setPreferredSize (new Dimension (400,500));
+    thePanel.setLayout (null);
     
-        JButton ok = new JButton (">");
-    ok.setBounds (325,205,51,32);
-    //ok.setText ("OK");
-    this.add (ok);
+    JButton ok = new JButton ("OK");
+    ok.setBounds (270,200,51,30);
+    ok.setActionCommand ("Log In OK");
+    ok.setToolTipText ("Log In");
+    ok.addActionListener (this);
+    thePanel.add(ok);
+        
+    JButton help = new JButton ("?");
+    help.setBounds (321,200,41,30);
+    help.setActionCommand ("Log In Help");
+    help.setToolTipText ("Help");
+    help.addActionListener (this);
+    thePanel.add(help);
     
-        JTextField usernameField = new JTextField ();
-    usernameField.setBounds(74, 205, 251, 31);
-    this.add (usernameField);
+    usernameField = new JTextField ();
+    usernameField.setBounds(20, 200, 250, 30);
+    thePanel.add (usernameField);
     
-
-    
-    this.setLayout (null);
     Icon icon = new ImageIcon(".//Graphics/Username.gif");
     JLabel label = new JLabel(icon);
     label.setBounds (0,0,400,500);
-    this.add (label);
-    
-
+    thePanel.add (label);
   }
   
   
   /**
    * Switches from an alternate view to the textfield view.
+   * 
+   * @param icon icon that holds the background image.
+   * @param bg label that holds background image.
    */
   public void fieldView ()
   {
     thePanel.removeAll();
-    textFields ();
-    addToolBar (); 
+    thePanel.setLayout(null);
+      
+    entryLabel = new JLabel ("Entry " + (currentRec + 1) + " of " + (BookRecord.recNum + 1));
+    entryLabel.setFont (new Font ("Calibri", Font.PLAIN, 24)); 
+    
+    titleField = new JTextField (30);
+    authorField = new JTextField (30);
+    genreBox = new JComboBox (genreBoxItems);
+    locationField = new JTextField (30);
+    borrowField = new JTextField (30);
+    returnField = new JTextField (30);
+    
+    toolBarTop.setBounds (0,0,400,50);
+    entryLabel.setBounds (243,349,200,200);
+    titleField.setBounds (30,120,170, 25);
+    authorField.setBounds (30,200,170, 25);
+    genreBox.setBounds (30,260,170, 25);
+    locationField.setBounds (30,320,170, 25);
+    borrowField.setBounds (30,380,170, 25);
+    returnField.setBounds (30,440,170, 25);
+      
+    Icon icon = new ImageIcon(".//Graphics/TextFieldBG.jpg");
+    JLabel bg = new JLabel(icon);
+    bg.setBounds (0,50,400,450);
+    
+    
+    thePanel.add (toolBarTop);
+    thePanel.add (entryLabel);
+    thePanel.add (titleField);
+    thePanel.add (authorField);
+    thePanel.add (genreBox);
+    thePanel.add (locationField);
+    thePanel.add (borrowField);
+    thePanel.add (returnField);
+    thePanel.add (bg);
+  }
+
+
+    /**
+   * This method creates the toolbar.
+   * 
+   * @param button This is a new JButton.
+   */ 
+  public void toolbarMaker ()
+  {
+    toolBarTop.setLayout (new FlowLayout (FlowLayout.CENTER));
+    JButton button = null;
+    button = makeNavigationButton ("previous", PREVIOUS, "Previous Record", "Previous");
+    toolBarTop.add (button);
+    button = makeNavigationButton ("next", NEXT, "Next Record", "Next");
+    toolBarTop.add (button);   
+    button = makeNavigationButton ("save", SAVE, "Save Record", "Save");
+    toolBarTop.add (button);
+    button = makeNavigationButton ("delete", DELETE, "Delete Record", "Del");
+    toolBarTop.add (button);
+    button = makeNavigationButton ("new", NEW, "New Record", "New");
+    toolBarTop.add (button);
   }
   
   /**
-   * Creates the textfields for the input. Also sets the constraints as it is in SpringLayout.
+   * This method creates the butons for the toolbar.
    * 
-   * @param titleLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   * @param authorLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   * @param genreLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   * @param locationLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   * @param borrowLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   * @param returnLabel (JLabel) creates a label to inform the user of the input needed for that particular textfield.
-   */
-  public void textFields ()
+   * @param imageName is the name of the image to be added
+   * @param actionCommand this is the string value that ActionPerformed will pick up
+   * @param toolTipText this is the text that appears on mouse-over
+   * @param altText this the alternate text for the button
+   * @param imgLocation is the location of the image to be added
+   * @param imageGIF is the image that will be added to the button
+   * @param button is a new JButton
+   */ 
+  protected JButton makeNavigationButton (String imageName, String actionCommand, String toolTipText, String altText)
   {
-    entryLabel = new JLabel ("Entry " + (currentRec + 1) + " out of " + (BookRecord.recNum + 1) + " records.");
+    String imgLocation = "Graphics/"+imageName + ".png";
+    Image imageGIF = Toolkit.getDefaultToolkit ().getImage (imgLocation);
     
-    titleField = new JTextField (20);
-    authorField = new JTextField (20);
-    genreBox = new JComboBox (genreBoxItems);
-    locationField = new JTextField (20);
-    borrowField = new JTextField (20);
-    returnField = new JTextField (20);
+    JButton button = new JButton ();
+    button.setActionCommand (actionCommand);
+    button.setToolTipText (toolTipText);
+    button.addActionListener (this);
     
-    JLabel titleLabel = new JLabel ("Book Title :");
-    titleLabel.setFont (new Font ("Serif", Font.PLAIN, 16));  
+    button.setIcon (new ImageIcon (imageGIF, altText));
     
-    JLabel authorLabel = new JLabel ("Author Name(s) :");
-    authorLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel genreLabel = new JLabel ("Genre :");
-    genreLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel locationLabel = new JLabel ("Location :");
-    locationLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel borrowLabel = new JLabel ("Borrow Date :");
-    borrowLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    JLabel returnLabel = new JLabel ("Return Date :");
-    returnLabel.setFont (new Font ("Serif", Font.PLAIN, 16));
-    
-    
-    thePanel.add (entryLabel);
-    thePanel.add (titleLabel);
-    thePanel.add (titleField);
-    thePanel.add (authorLabel);
-    thePanel.add (authorField);
-    thePanel.add (genreLabel);
-    thePanel.add (genreBox);
-    thePanel.add (locationLabel);
-    thePanel.add (locationField);
-    thePanel.add (borrowLabel);
-    thePanel.add (borrowField);
-    thePanel.add (returnLabel);
-    thePanel.add (returnField);
-    
+    return button;
   }
   
   /**
@@ -300,78 +348,11 @@ public class RecordManager extends JPanel implements ActionListener
     book.add (new BookRecord());
     currentRec = 0;
     BookRecord.recNum = 0;
-    updateDisplay ();
+    //updateDisplay ();
     shouldSave = false;
   }
   
-  /**
-   * Creates the toolbar and calls the addButtons method to add the buttons onto it.
-   * Also sets the constraints.
-   * 
-   * @param toolbar (JToolBar) creates a new toolbar.
-   */
-  public void addToolBar ()
-  {
-    JToolBar toolbar = new JToolBar ();
-    toolbar.setLayout (new FlowLayout (FlowLayout.CENTER));
-    toolbar.setFloatable (false);
-    addButtons (toolbar);
-    thePanel.add (toolbar);
-  }
   
-  /**
-   * Adds the buttons to the appropriate tool bar.
-   * 
-   * @param toolBar (JToolBar) references the specific tool bar that the buttons are added to.
-   * @param button (JButton) is a temporary variable to set up the button.
-   */
-  protected void addButtons (JToolBar toolBar)
-  {
-    JButton button = null;
-    button = makeNavigationButton ("back", PREVIOUS, "Previous");
-    toolBar.add (button);
-    button = makeNavigationButton ("forward", NEXT, "Next");
-    toolBar.add (button);
-    if (user)
-    {
-      button = makeNavigationButton ("add", NEW, "New");
-      toolBar.add (button);
-      button = makeNavigationButton ("save", SAVE, "Save");
-      toolBar.add (button);
-      button = makeNavigationButton ("delete", DELETE, "Delete");
-      toolBar.add (button);
-    }
-    else
-    {
-      button = makeNavigationButton ("borrow", BORROW, "Borrow");
-      toolBar.add (button);
-    }
-  }
-  
-  /**
-   * Sets the icon, action command, tool tip text, and action listener to the button being created.
-   * 
-   * @param imageName (String) stores the name of the image in order to retrieve it.
-   * @param actionCommand (String) stores the action command to be given to the button.
-   * @param toolTipText (String) stores the tool tip text to be given to the button.
-   * @param button (JButton) points to the JButton class and returns it to the addButtons method.
-   * 
-   * @return the button created with the newly set icon, action command string, tool tip text, and action listener.
-   */
-  protected JButton makeNavigationButton (String imageName, String actionCommand, String toolTipText)
-  {
-    String imgLocation = "Graphics/" + imageName + ".png";
-    Image imageGIF = Toolkit.getDefaultToolkit ().getImage (imgLocation);
-    
-    JButton button = new JButton ();
-    button.setActionCommand (actionCommand);
-    button.setToolTipText (toolTipText);
-    button.addActionListener (this);
-    
-    button.setIcon (new ImageIcon (imageGIF, actionCommand));
-    
-    return button;
-  }
   /**
    * Updates the info being displayed.
    */
@@ -1089,5 +1070,19 @@ public class RecordManager extends JPanel implements ActionListener
     {
       borrowBook ();
     }
+    else if (LOGINHELP.equals(cmd))
+    {
+      JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);  
+    }
+    else if (LOGINOK.equals(cmd))
+    {
+      username = usernameField.getText ();
+      newDatabase ();
+      fieldView ();
+      System.out.print (username);
+    }
+    this.invalidate();
+    this.validate();
+    this.repaint();
   }
 }

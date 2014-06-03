@@ -94,12 +94,12 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+    //SplashScreen ss = new SplashScreen ();
+    
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
     JMenu viewMenu = new JMenu ("View");
-    JMenu sortMenu = new JMenu ("Sort/Search");
-    JMenu searchMenu = new JMenu ("Search");
+    JMenu toolsMenu = new JMenu ("Tools");
     
     JMenuItem quitItem = new JMenuItem ("Quit");
     JMenuItem helpItem = new JMenuItem ("Help");
@@ -108,6 +108,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem saveItem = new JMenuItem ("Save");
     JMenuItem saveAsItem = new JMenuItem ("Save As");
     JMenuItem openItem = new JMenuItem ("Open");
+    JMenuItem signOutItem = new JMenuItem ("Sign Out");
     JMenuItem chartItem = new JMenuItem("Chart");
     JMenuItem browseItem = new JMenuItem("Browse");
     JMenuItem sortItem = new JMenuItem("Sort");
@@ -117,20 +118,20 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (openItem);
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
+    fileMenu.add (signOutItem);
     fileMenu.add (quitItem);
     helpMenu.add (helpItem);
     helpMenu.add (aboutItem);
     viewMenu.add (chartItem);
     viewMenu.add (sortItem);
-    sortMenu.add (sortItem);
-    searchMenu.add (searchItem);
+    toolsMenu.add (sortItem);
+    toolsMenu.add (searchItem);
     
     JMenuBar myMenus = new JMenuBar ();
     
     myMenus.add (fileMenu);
+    myMenus.add (toolsMenu);
     myMenus.add (viewMenu);
-    myMenus.add (sortMenu);
-    myMenus.add (searchMenu);
     myMenus.add (helpMenu);
     
     setJMenuBar (myMenus);
@@ -149,9 +150,10 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     add(r);
     
-    setSize (400,400);
+    setSize (400,550);
     setResizable (false);
     setVisible (true);
+    setLocationRelativeTo(null);
     
     setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
   }
