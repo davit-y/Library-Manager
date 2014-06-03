@@ -37,7 +37,7 @@ public class SplashScreen extends JWindow
       f.setLocationRelativeTo (null);
       
       f.show();
-      Thread.sleep(7100);
+      Thread.sleep(6100);
       f.dispose();      
     }
     catch (Exception e)
