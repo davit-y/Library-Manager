@@ -141,9 +141,9 @@ public class RecordManager extends JPanel implements ActionListener
    */ 
   int optionPaneResult;
   /**
-   * user is true if the admin is accessing the program, false if it is a guest
+   * admin is true if the admin is accessing the program, false if it is a guest
    */
-  boolean user = true;
+  boolean admin;
   /**
    * columnNames stores the names of columns
    */
@@ -200,6 +200,7 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
+  boolean successPass;
   
   
   public RecordManager ()
@@ -244,6 +245,71 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add (label);
   }
   
+  public void adminLogin ()
+  {
+    successPass = false;
+    d = new JDialog ();
+    d.setSize (500, 300);
+    d.setResizable (false);
+    d.setLayout (new FlowLayout());
+    
+    JLabel enterPass = new JLabel ("You are attempting to log in as admin. Please enter the password (CASE SENSITIVE) :");
+    final JTextField PASSFIELD = new JTextField (20);
+    JButton ok = new JButton ("OK");
+    JButton cancel = new JButton ("Cancel");
+    d.add (enterPass);
+    d.add (PASSFIELD);
+    d.add (ok);
+    d.add (cancel);
+    d.setVisible (true);
+    ok.addActionListener (new ActionListener ()
+                            {
+      public void actionPerformed (ActionEvent e)
+      {
+        try
+        {
+          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          if (passFile.readLine ().equals (PASSFIELD.getText ()))
+          {
+            successPass = true;
+            JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
+          }
+          else
+          {
+            JOptionPane.showMessageDialog (thePanel, "Wrong password. Please try again.", "Failed to Log-In", JOptionPane.ERROR_MESSAGE);
+          }
+          d.dispose ();
+          continueLogIn ();
+        }
+        catch (Exception no)
+        {
+        }
+      }
+    });
+    cancel.addActionListener (new ActionListener ()
+                                {
+      public void actionPerformed (ActionEvent e)
+      {
+        d.dispose ();
+      }});
+    
+  }
+  
+  public void continueLogIn ()
+  {
+    if (successPass)
+    {
+      newDatabase ();
+      fieldView ();
+      this.invalidate();
+    this.validate();
+    this.repaint();
+    }
+    else
+    {
+      adminLogin ();
+    }
+  }
   
   /**
    * Switches from an alternate view to the textfield view.
@@ -1072,8 +1138,13 @@ public class RecordManager extends JPanel implements ActionListener
     else if (LOGINOK.equals(cmd))
     {
       username = usernameField.getText ();
-      newDatabase ();
-      fieldView ();
+      if (username.equals ("admin"))
+        adminLogin();
+      else
+      {
+        successPass = true;
+        continueLogIn ();
+      }
     }
     this.invalidate();
     this.validate();

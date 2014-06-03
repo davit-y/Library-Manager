@@ -256,7 +256,7 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.removeAll();
     thePanel.setLayout(null);
       
-    entryLabel = new JLabel ("Entry " + (currentRec + 1) + " of " + (BookRecord.recNum + 1));
+    entryLabel = new JLabel ("Entry " + currentRec + " of " + BookRecord.recNum);
     entryLabel.setFont (new Font ("Calibri", Font.PLAIN, 24)); 
     
     titleField = new JTextField (30);
@@ -345,10 +345,9 @@ public class RecordManager extends JPanel implements ActionListener
   public void newDatabase ()
   {
     book.clear ();
-    book.add (new BookRecord());
-    currentRec = 0;
     BookRecord.recNum = 0;
-    //updateDisplay ();
+    book.add (new BookRecord());
+    currentRec = 1;
     shouldSave = false;
   }
   
@@ -358,14 +357,14 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void updateDisplay ()
   {
-    titleField.setText (book.get(currentRec).getTitle());
-    authorField.setText (book.get(currentRec).getAuthor());
-    genreBox.setSelectedIndex (findIndex (book.get(currentRec).getGenre ()));
-    locationField.setText (book.get(currentRec).getLocation());                       
-    borrowField.setText (book.get(currentRec).getBorrowDate());
-    returnField.setText (book.get(currentRec).getReturnDate());
+    titleField.setText (book.get(currentRec-1).getTitle());
+    authorField.setText (book.get(currentRec-1).getAuthor());
+    genreBox.setSelectedIndex (findIndex (book.get(currentRec-1).getGenre ()));
+    locationField.setText (book.get(currentRec-1).getLocation());                       
+    borrowField.setText (book.get(currentRec-1).getBorrowDate());
+    returnField.setText (book.get(currentRec-1).getReturnDate());
     
-    entryLabel.setText ("Entry " + (currentRec + 1) + " out of " + (BookRecord.recNum + 1) + " records.");
+    entryLabel.setText ("Entry " + currentRec + " of " + BookRecord.recNum);
   }
   
   /**
@@ -392,7 +391,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private void prevRec ()
   {
-    if (currentRec == 0)
+    if (currentRec == 1)
     {
       currentRec = BookRecord.recNum;
     }
@@ -411,7 +410,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (currentRec == BookRecord.recNum)
     {
-      currentRec = 0;
+      currentRec = 1;
     }
     else
     {
@@ -427,15 +426,9 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (recSaved==true)
     {
-      recSaved=false;
-      if (!(titleField.getText ().equals ("")))
-      {
-        currentRec = BookRecord.recNum;
         book.add (new BookRecord());
+        currentRec = BookRecord.recNum;
         updateDisplay ();
-      }
-      else
-        JOptionPane.showMessageDialog(this,"Please input a value.","No Input",JOptionPane.WARNING_MESSAGE);
     }
     else
       JOptionPane.showMessageDialog(this,"Please save before continuing.","No Save Error",JOptionPane.WARNING_MESSAGE);
@@ -561,27 +554,29 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (!title.equals (""))
     {
-      book.remove(currentRec);
-      if (!borrowD.equals (""))
-      {
         if (DataCheck.checkDate (borrowD) == false)
         {
           borrowD = "";
-          JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
         }
-      }
-      if (!returnD.equals (""))
-      {
-        if (DataCheck.checkDate (returnD) == false)
+        else if (DataCheck.checkDate (returnD) == false)
         {
           returnD = "";
-          JOptionPane.showMessageDialog (this, "The return date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);
+          JOptionPane.showMessageDialog (this, "The return date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
         }
-      }
-      book.add (new BookRecord (title, author, genre, location, borrowD, returnD));
+        else
+        {
+          book.get(currentRec-1).setTitle (title);
+          book.get(currentRec-1).setAuthor (author);
+          book.get(currentRec-1).setGenre (genre);
+          book.get(currentRec-1).setLocation (location);
+          book.get(currentRec-1).setBorrowDate (borrowD);
+          book.get(currentRec-1).setReturnDate(returnD);
+        }
     }
     else
       JOptionPane.showMessageDialog (this, "You must fill in at least the book title for a valid entry!", "BOOK FIELD EMPTY", JOptionPane.INFORMATION_MESSAGE);
+    
     recSaved = true;    
     shouldSave = true;
     updateDisplay ();
@@ -1079,7 +1074,6 @@ public class RecordManager extends JPanel implements ActionListener
       username = usernameField.getText ();
       newDatabase ();
       fieldView ();
-      System.out.print (username);
     }
     this.invalidate();
     this.validate();

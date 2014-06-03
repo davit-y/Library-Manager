@@ -94,7 +94,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+    //SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
