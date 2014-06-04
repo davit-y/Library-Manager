@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 
 /**
  * The purpose of this class to run the program and create JFrame.
