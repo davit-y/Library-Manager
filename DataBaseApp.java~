@@ -386,6 +386,18 @@ public class DataBaseApp extends JFrame implements ActionListener
         chooseSort ();
       }
     }
+    else if (ae.getActionCommand().equals("Help"))
+    {
+      String progpath = new String ("hh.exe youtube.chm");
+      try
+      {
+        Runtime.getRuntime ().exec (progpath);
+      }
+      catch (IOException e)
+      {
+        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
+      }
+    }
     else if (ae.getActionCommand().equals("Search")) 
     {
       if (r.recSaved)
