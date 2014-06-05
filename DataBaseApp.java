@@ -347,7 +347,10 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
+<<<<<<< HEAD
       
+=======
+>>>>>>> 16a7824889f49a8dcaa75c519b4a527f3b5c4cee
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
