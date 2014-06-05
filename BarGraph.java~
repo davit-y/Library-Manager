@@ -18,7 +18,7 @@ public class BarGraph extends JPanel {
    * values holds all the data to go into the graph. (Temporary data at the moment)
    */
   int [] values = {23, 56, 68, 100, 23, 45, 45, 25, 26, 78, 91, 12};
-  
+  JFrame frame = new JFrame("BarGraph");
   /**
    * Constructor for the BarGraph class.
    * 
@@ -26,8 +26,10 @@ public class BarGraph extends JPanel {
    */
   public BarGraph ()
   {
-    JFrame frame = new JFrame("BarGraph");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    JLabel title;
+    title = new JLabel ("Book Genres");
+    title.setFont (new Font ("Serif", Font.PLAIN, 50));
+    add (title);
     frame.add(this);
     frame.setSize(700, 500);
     frame.setLocationRelativeTo(null);
@@ -76,7 +78,7 @@ public class BarGraph extends JPanel {
       {
         tempValues [6] ++;
       }
-      else if (tempBook.get (x).getGenre ().equals ("Sci-Fi/Fantasy"))
+      else if (tempBook.get (x).getGenre ().equals ("Sci-fi/Fantasy"))
       {
         tempValues [7] ++;
       }
@@ -131,10 +133,7 @@ public class BarGraph extends JPanel {
     Graphics2D g2d = (Graphics2D) g;
     double scale = 300/deterMax (values);
     
-    JLabel title;
-    title = new JLabel ("Book Genres");
-    title.setFont (new Font ("Serif", Font.PLAIN, 50));
-    add (title);
+
     
       g2d.drawLine(150, 400, 150, 100);
       g2d.drawLine(150, 400, 650, 400);
@@ -205,14 +204,18 @@ public class BarGraph extends JPanel {
     
   }
 
-  /**
-   * TEMPORARY main method to test out the class.
-   * 
-   * @param args - Args is a parameter pass for the main method
-   */
-  public static void main(String[] args) 
-  {
-    new BarGraph ();
-    
-  }
+//  /**
+//   * TEMPORARY main method to test out the class.
+//   * 
+//   * @param args - Args is a parameter pass for the main method
+//   */
+//  public static void main(String[] args) 
+//  {
+//    new BarGraph ();
+//    
+//  }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d1fa3aa2cb46faeea4353d97670feaa1e101a1af

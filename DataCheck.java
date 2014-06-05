@@ -59,7 +59,7 @@ public class DataCheck
     return true;
   }
   
-//    public static boolean checkGenre (String inputted)
+  //    public static boolean checkGenre (String inputted)
 //  {
 //    if (inputted == null || inputted.equals(""))
 //      return true;
