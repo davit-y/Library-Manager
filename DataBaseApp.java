@@ -385,6 +385,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         currentView = "Chart";
         r.sortWhichField = 0;
         //if (r.recSaved)
+        setSize (600,550);
           r.tableView();
       }
     }
@@ -397,7 +398,7 @@ public class DataBaseApp extends JFrame implements ActionListener
           r.getChartData();
         }
         currentView = "Text";
-        
+        setSize (400,550);
         r.fieldView();
         r.updateDisplay();
       }

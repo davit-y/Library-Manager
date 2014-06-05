@@ -81,10 +81,6 @@ public class RecordManager extends JPanel implements ActionListener
    */
   static final private String BORROW = "borrow";
   /**
-   * RETURN (String) stores a string used to reference the button.
-   */
-  static final private String RETURN = "return";
-  /**
    * This variable holds the username of the current user.
    */ 
   String username;
@@ -391,9 +387,7 @@ public class RecordManager extends JPanel implements ActionListener
     }
     else
     {
-      button = makeNavigationButton ("borrow", BORROW, "Borrow this Book", "Borrow");
-      toolBarTop.add (button);
-      button = makeNavigationButton ("return", RETURN, "Return this Book", "Return");
+      button = makeNavigationButton ("borrow", BORROW, "Borrow this Book", "Book");
       toolBarTop.add (button);
     }
   }
@@ -568,38 +562,17 @@ public class RecordManager extends JPanel implements ActionListener
   {
     String tempBDate = "";
     String tempRDate = "";
-    //Get the current date
-    if (!(book.get(currentRec).getBorrowDate() == null || book.get(currentRec).getBorrowDate().equals ("") || book.get(currentRec).getLocation().substring (12).equals (username)))
-    {
-      JOptionPane.showMessageDialog (this, "This book has already been borrowed by someone else!", "Unavailable", JOptionPane.ERROR_MESSAGE);
-    }
-    else
-    {
-      DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-      Date date = new Date();
-      
-      tempBDate = (String)(dateFormat.format(date));
-      
-      tempRDate = determineReturnDate (tempBDate);
-      book.get(currentRec).setBorrowDate(tempBDate);
-      book.get(currentRec).setReturnDate(tempRDate);
-      book.get(currentRec).setLocation("Borrowed by " + username);
-      save (fileName);
-      updateDisplay ();
-    }
-    
-  }
-  
-  public String determineReturnDate (String tempBDate)
-  {
     int returnDay = 0;
     int returnMonth = 0;
     int returnYear = 0;
-    String tempRDate = "";
+    //Get the current date
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    Date date = new Date();
     
-    returnDay = Integer.parseInt (tempBDate.substring (0, 2)) + 10;
-    returnMonth = Integer.parseInt (tempBDate.substring (3, 5));
-    returnYear = Integer.parseInt (tempBDate.substring (6, 10));
+    tempBDate = (String)(dateFormat.format(date));
+    returnDay = Integer.parseInt (tempBDate.substring (0, 3)) + 10;
+    returnMonth = Integer.parseInt (tempBDate.substring (4, 6));
+    returnYear = Integer.parseInt (tempBDate.substring (7, 11));
     if (returnMonth == 1 || returnMonth == 3 || returnMonth == 5 || returnMonth == 7 || returnMonth == 8 || returnMonth == 10 || returnMonth == 12)
     {
       if (returnDay > 31)
@@ -657,37 +630,11 @@ public class RecordManager extends JPanel implements ActionListener
     {
       tempRDate = tempRDate + returnMonth + "/";
     }
-    return (tempRDate + returnYear);
-  }
-  
-  public void returnBook ()
-  {
-    if (!(book.get(currentRec).getBorrowDate() == null || book.get(currentRec).getBorrowDate().equals ("")))
-    {
-      try
-      {
-        if (book.get(currentRec).getLocation().substring (12).equals (username))
-        {
-          book.get(currentRec).setBorrowDate("");
-          book.get(currentRec).setReturnDate("");
-          book.get(currentRec).setLocation("");
-          save (fileName);
-          updateDisplay ();
-        }
-        else
-        {
-          JOptionPane.showMessageDialog (this, "This book has been borrowed by someone else, so you cannot return it!", "Unavailable", JOptionPane.ERROR_MESSAGE);
-        }
-      }
-      catch (Exception e)
-      {
-        JOptionPane.showMessageDialog (this, "This book has been borrowed by someone else, so you cannot return it!", "Unavailable", JOptionPane.ERROR_MESSAGE);
-      }
-    }
-    else
-    {
-      JOptionPane.showMessageDialog (this, "This book is already in the library!", "Unavailable", JOptionPane.ERROR_MESSAGE);
-    }
+    tempRDate = tempRDate + returnYear;
+    book.get(currentRec).setBorrowDate(tempBDate);
+    book.get(currentRec).setReturnDate(tempRDate);
+    updateDisplay ();
+    
   }
   
   /**
@@ -716,25 +663,6 @@ public class RecordManager extends JPanel implements ActionListener
         }
         else
         {
-          if (!(borrowD == null || borrowD.equals ("")))
-          {
-            location = "Borrowed";
-            returnD = determineReturnDate (borrowD);
-          }
-          else
-          {
-            if (!(location == null || location.equals ("")))
-            {
-                if (location.charAt (0) == 'B')
-                {
-                  if (location.substring (0, 8).equals ("Borrowed"))
-                  {
-                    location = "";
-                  }
-              }
-              returnD = "";
-            }
-          }
           book.get(currentRec).setTitle (title);
           book.get(currentRec).setAuthor (author);
           book.get(currentRec).setGenre (genre);
@@ -952,7 +880,6 @@ public class RecordManager extends JPanel implements ActionListener
         currentRec=0;
         recSaved=true;
         fileSaved = true;
-        fileName = theFile.getName ();
         updateDisplay();        
       }
       catch (Exception e) 
@@ -996,7 +923,6 @@ public class RecordManager extends JPanel implements ActionListener
     myTable.setCellSelectionEnabled(true);
     myTable.setRowSelectionAllowed(true);
     myTable.setRowHeight(20);
-    myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
     myTable.setShowVerticalLines(true);
     myTable.setShowHorizontalLines(true);
     
@@ -1022,8 +948,6 @@ public class RecordManager extends JPanel implements ActionListener
     columnNames [4] = "Location";
     columnNames [5] = "Borrow Date";
     columnNames [6] = "Return Date";
-    
-
   }
   
   /**
@@ -1031,7 +955,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void createData() 
   {
-    dataValues = new String[BookRecord.recNum][7];
+    dataValues = new String[BookRecord.recNum][5];
     if (searchMode)
     {
       for (int i = 0; i < BookRecord.recNum; i++) 
@@ -1043,8 +967,6 @@ public class RecordManager extends JPanel implements ActionListener
           dataValues[i][2] = "" + (book.get(order[i]).getAuthor());
           dataValues[i][3] = "" + (book.get(order[i]).getGenre());
           dataValues[i][4] = "" + (book.get(order[i]).getLocation());
-          dataValues[i][5] = "" + (book.get(order[i]).getBorrowDate());
-          dataValues[i][6] = "" + (book.get(order[i]).getReturnDate());
           amountFound ++;
         }
       }
@@ -1059,8 +981,6 @@ public class RecordManager extends JPanel implements ActionListener
         dataValues[i][2] = "" + (book.get(order[i]).getAuthor());
         dataValues[i][3] = "" + (book.get(order[i]).getGenre());
         dataValues[i][4] = "" + (book.get(order[i]).getLocation());
-        dataValues[i][5] = "" + (book.get(order[i]).getBorrowDate());
-        dataValues[i][6] = "" + (book.get(order[i]).getReturnDate());
       }
     } 
     currentRec = 0;
@@ -1249,10 +1169,6 @@ public class RecordManager extends JPanel implements ActionListener
     else if (BORROW.equals (cmd))
     {
       borrowBook ();
-    }
-    else if (RETURN.equals (cmd))
-    {
-      returnBook ();
     }
     else if (LOGINHELP.equals(cmd))
     {

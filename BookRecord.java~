@@ -119,7 +119,7 @@ public class BookRecord
    */ 
   public void setBorrowDate (String newDate)
   {
-    borrowDate = newDate;
+    returnDate = newDate;
   }
   
   /**
