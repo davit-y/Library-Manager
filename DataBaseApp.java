@@ -77,6 +77,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    */ 
   String currentView = "Text";
   
+  BarGraph b = new BarGraph ();
+  
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
    * @param quitItem creates a new JMenuItem with the title Quit.
@@ -95,6 +97,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   public DataBaseApp ()
   { 
     //SplashScreen ss = new SplashScreen ();
+    b.frame.setVisible (false);
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -111,6 +114,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem signOutItem = new JMenuItem ("Sign Out");
     JMenuItem chartItem = new JMenuItem("Chart");
     JMenuItem browseItem = new JMenuItem("Browse");
+    JMenuItem graphItem = new JMenuItem ("Graph");
     JMenuItem sortItem = new JMenuItem("Sort");
     JMenuItem searchItem = new JMenuItem("Search");
     
@@ -122,7 +126,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (quitItem);
     helpMenu.add (helpItem);
     helpMenu.add (aboutItem);
+    viewMenu.add (browseItem);
     viewMenu.add (chartItem);
+    viewMenu.add (graphItem);
     viewMenu.add (sortItem);
     toolsMenu.add (sortItem);
     toolsMenu.add (searchItem);
@@ -143,7 +149,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveItem.addActionListener (this);
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
+    browseItem.addActionListener (this);
     chartItem.addActionListener (this);
+    graphItem.addActionListener (this);
     sortItem.addActionListener (this);
     sortItem.addActionListener (this);
     searchItem.addActionListener (this);
@@ -168,15 +176,18 @@ public class DataBaseApp extends JFrame implements ActionListener
   public void chooseSort()
   {
     sortBox = new JDialog (this,"Field");
+    sortBox.setResizable (false);
     ButtonGroup group = new ButtonGroup ();
     JButton okButton = new JButton ("Ok");
     JButton closeButton = new JButton("Close");  
     
-    sortBox.setSize (80,280);
+    sortBox.setSize (80,480);
     sortTitle = new JRadioButton ("Title");
     sortAuthor = new JRadioButton ("Author");
     sortGenre = new JRadioButton ("Genre");
     sortLocation = new JRadioButton ("Location");
+    sortBorrow = new JRadioButton ("Borrow Date");
+    sortReturn = new JRadioButton ("Return Date");
     
     group.add(sortTitle);
     group.add(sortAuthor);
@@ -191,12 +202,15 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortBox.add(sortLocation);
     sortBox.add(sortTitle);
     sortBox.add(sortAuthor);
+    sortBox.add(sortBorrow);
+    sortBox.add(sortReturn);
     sortBox.add(closeButton);
     sortBox.add(okButton);
     
     okButton.addActionListener (new ActionListener()
                                   {
       public void actionPerformed(ActionEvent e){
+        
         if (sortGenre.isSelected ())
           r.sortWhichField = 1;
         
@@ -215,11 +229,14 @@ public class DataBaseApp extends JFrame implements ActionListener
         if (sortReturn.isSelected ())
           r.sortWhichField = 6;
         
-        sortBox.dispose();    
+         
         r.sorter();
+        r.tableView ();
+        sortBox.dispose();   
         invalidate();
         validate();
         repaint();
+        
       }
     });
     
@@ -365,26 +382,42 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand().equals("Chart")) 
     {
-      currentView = "Chart";
-      r.sortWhichField = 0;
-      if (r.recSaved)
-        r.tableView();
+      if (!currentView.equals ("Chart"))
+      {
+        currentView = "Chart";
+        r.sortWhichField = 0;
+        //if (r.recSaved)
+          r.tableView();
+      }
     }
     else if (ae.getActionCommand().equals("Browse")) 
     {
-      currentView = "Text";
-      r.getChartData();
-      r.fieldView();
-      r.updateDisplay();
+      if (!currentView.equals ("Text"))
+      {
+        if (currentView.equals ("Chart"))
+        {
+          r.getChartData();
+        }
+        currentView = "Text";
+        
+        r.fieldView();
+        r.updateDisplay();
+      }
+    }
+    else if (ae.getActionCommand().equals("Graph")) 
+    {
+      if (!currentView.equals ("Graph"))
+      {
+        currentView = "Graph";
+      }
+      r.graphView (b);
+      b.frame.setVisible (true);
     }
     else if (ae.getActionCommand().equals("Sort")) 
     {
-      if (r.recSaved)
-      {
         if (currentView.equals("Chart"))
           r.getChartData();
         chooseSort ();
-      }
     }
     else if (ae.getActionCommand().equals("Help"))
     {
@@ -393,19 +426,19 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         Runtime.getRuntime ().exec (progpath);
       }
-      catch (IOException e)
+      catch (Exception e)
       {
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
     }
     else if (ae.getActionCommand().equals("Search")) 
     {
-      if (r.recSaved)
-      {
+//      if (r.recSaved)
+//      {
         if (currentView.equals("Chart"))
           r.getChartData();
         chooseSearch ();
-      }
+//      }
     }
     else if (ae.getActionCommand ().equals ("Quit"))
     {

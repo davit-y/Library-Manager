@@ -119,15 +119,15 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * genreBoxItems (String []) stores an array of the items to be stored in genreBox.
    */
-  String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humor", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
+  String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humour", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
   /**
    * This is a boolean statement that holds weather or not the current record has been saved.
    */ 
   boolean recSaved;
   /**
-   * shouldSave (boolean) stores whether the information has been modified or not.
+   * 
    */
-  boolean shouldSave = false;
+  boolean fileSaved = true;
   /**
    * fileName The name of the file.
    */ 
@@ -143,7 +143,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * admin is true if the admin is accessing the program, false if it is a guest
    */
-  boolean admin;
+  boolean admin = true;
   /**
    * columnNames stores the names of columns
    */
@@ -155,7 +155,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * myTable creates a new JTable
    */
-  JTable myTable;
+  JTable myTable = new JTable ();
     /**
    * This is the order of the records to be displayed
    */
@@ -205,7 +205,9 @@ public class RecordManager extends JPanel implements ActionListener
   
   public RecordManager ()
   {
-    toolbarMaker();
+    recSaved = true;
+    fileSaved = true;
+    currentRec = 0;
     usernameOpener ();
   }
   
@@ -273,6 +275,7 @@ public class RecordManager extends JPanel implements ActionListener
           {
             successPass = true;
             JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
+            admin = true;
           }
           else
           {
@@ -321,13 +324,14 @@ public class RecordManager extends JPanel implements ActionListener
   {
     thePanel.removeAll();
     thePanel.setLayout(null);
-      
-    entryLabel = new JLabel ("Entry " + currentRec + " of " + BookRecord.recNum);
+    
+    entryLabel = new JLabel ("Entry " + (currentRec + 1) + " of " + BookRecord.recNum);
     entryLabel.setFont (new Font ("Calibri", Font.PLAIN, 24)); 
     
     titleField = new JTextField (30);
     authorField = new JTextField (30);
     genreBox = new JComboBox (genreBoxItems);
+    genreBox.setSelectedItem ("---");
     locationField = new JTextField (30);
     borrowField = new JTextField (30);
     returnField = new JTextField (30);
@@ -366,17 +370,26 @@ public class RecordManager extends JPanel implements ActionListener
   public void toolbarMaker ()
   {
     toolBarTop.setLayout (new FlowLayout (FlowLayout.CENTER));
+    toolBarTop.setFloatable (false);
     JButton button = null;
     button = makeNavigationButton ("previous", PREVIOUS, "Previous Record", "Previous");
     toolBarTop.add (button);
     button = makeNavigationButton ("next", NEXT, "Next Record", "Next");
     toolBarTop.add (button);   
-    button = makeNavigationButton ("save", SAVE, "Save Record", "Save");
-    toolBarTop.add (button);
-    button = makeNavigationButton ("delete", DELETE, "Delete Record", "Del");
-    toolBarTop.add (button);
-    button = makeNavigationButton ("new", NEW, "New Record", "New");
-    toolBarTop.add (button);
+    if (admin == true)
+    {
+      button = makeNavigationButton ("save", SAVE, "Save Record", "Save");
+      toolBarTop.add (button);
+      button = makeNavigationButton ("delete", DELETE, "Delete Record", "Del");
+      toolBarTop.add (button);
+      button = makeNavigationButton ("new", NEW, "New Record", "New");
+      toolBarTop.add (button);
+    }
+    else
+    {
+      button = makeNavigationButton ("borrow", BORROW, "Borrow this Book", "Book");
+      toolBarTop.add (button);
+    }
   }
   
   /**
@@ -413,8 +426,9 @@ public class RecordManager extends JPanel implements ActionListener
     book.clear ();
     BookRecord.recNum = 0;
     book.add (new BookRecord());
-    currentRec = 1;
-    shouldSave = false;
+    currentRec = 0;
+    recSaved = true;
+    fileSaved = true;
   }
   
   
@@ -423,14 +437,15 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void updateDisplay ()
   {
-    titleField.setText (book.get(currentRec-1).getTitle());
-    authorField.setText (book.get(currentRec-1).getAuthor());
-    genreBox.setSelectedIndex (findIndex (book.get(currentRec-1).getGenre ()));
-    locationField.setText (book.get(currentRec-1).getLocation());                       
-    borrowField.setText (book.get(currentRec-1).getBorrowDate());
-    returnField.setText (book.get(currentRec-1).getReturnDate());
+    titleField.setText (book.get(currentRec).getTitle());
+    authorField.setText (book.get(currentRec).getAuthor());
+    genreBox.setSelectedIndex (findIndex (book.get(currentRec).getGenre ()));
+    locationField.setText (book.get(currentRec).getLocation());                       
+    borrowField.setText (book.get(currentRec).getBorrowDate());
+    returnField.setText (book.get(currentRec).getReturnDate());
     
-    entryLabel.setText ("Entry " + currentRec + " of " + BookRecord.recNum);
+    entryLabel.setText ("Entry " + (currentRec + 1) + " of " + BookRecord.recNum);
+    fileSaved = false;
   }
   
   /**
@@ -457,15 +472,22 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private void prevRec ()
   {
-    if (currentRec == 1)
+    if (recSaved)
     {
-      currentRec = BookRecord.recNum;
+      if (currentRec == 0)
+      {
+        currentRec = BookRecord.recNum;
+      }
+      else
+      {
+        currentRec --;
+      }
+      updateDisplay ();
     }
     else
     {
-      currentRec --;
+      JOptionPane.showMessageDialog (this, "Please save/delete this record first!", "Not Saved", JOptionPane.ERROR_MESSAGE);
     }
-    updateDisplay ();
   }
   
   /**
@@ -474,15 +496,22 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private void nextRec ()
   {
-    if (currentRec == BookRecord.recNum)
+    if (recSaved)
     {
-      currentRec = 1;
+      if ((currentRec + 1) == BookRecord.recNum)
+      {
+        currentRec = 0;
+      }
+      else
+      {
+        currentRec ++;
+      }
+      updateDisplay (); 
     }
     else
     {
-      currentRec ++;
+      JOptionPane.showMessageDialog (this, "Please save/delete this record first!", "Not Saved", JOptionPane.ERROR_MESSAGE);
     }
-    updateDisplay (); 
   }
   
   /**
@@ -490,14 +519,15 @@ public class RecordManager extends JPanel implements ActionListener
    */
   private void newRec ()
   {
-    if (recSaved==true)
+    if (!(titleField.getText ().equals ("") && recSaved == false))
     {
         book.add (new BookRecord());
-        currentRec = BookRecord.recNum;
+        currentRec = BookRecord.recNum - 1;
         updateDisplay ();
+        genreBox.setSelectedItem ("---");
+        recSaved = false;
+        fileSaved = false;
     }
-    else
-      JOptionPane.showMessageDialog(this,"Please save before continuing.","No Save Error",JOptionPane.WARNING_MESSAGE);
   }
   
   /**
@@ -511,8 +541,9 @@ public class RecordManager extends JPanel implements ActionListener
     {
       book.add (new BookRecord());
     }
+    recSaved = true;
     prevRec ();
-    shouldSave = true;
+    fileSaved = false;
   }
   
   /**
@@ -632,19 +663,19 @@ public class RecordManager extends JPanel implements ActionListener
         }
         else
         {
-          book.get(currentRec-1).setTitle (title);
-          book.get(currentRec-1).setAuthor (author);
-          book.get(currentRec-1).setGenre (genre);
-          book.get(currentRec-1).setLocation (location);
-          book.get(currentRec-1).setBorrowDate (borrowD);
-          book.get(currentRec-1).setReturnDate(returnD);
+          book.get(currentRec).setTitle (title);
+          book.get(currentRec).setAuthor (author);
+          book.get(currentRec).setGenre (genre);
+          book.get(currentRec).setLocation (location);
+          book.get(currentRec).setBorrowDate (borrowD);
+          book.get(currentRec).setReturnDate(returnD);
         }
     }
     else
       JOptionPane.showMessageDialog (this, "You must fill in at least the book title for a valid entry!", "BOOK FIELD EMPTY", JOptionPane.INFORMATION_MESSAGE);
     
-    recSaved = true;    
-    shouldSave = true;
+    recSaved = true;
+    fileSaved = false;
     updateDisplay ();
   }
   
@@ -674,6 +705,7 @@ public class RecordManager extends JPanel implements ActionListener
           ouput.println (book.get(z).getReturnDate());
         }
         ouput.close(); 
+        fileSaved = true;
       }
       catch (IOException e) 
       {
@@ -744,7 +776,7 @@ public class RecordManager extends JPanel implements ActionListener
   /**
    * This method opens a user chosen file.
    * 
-   * @param headerLine this is the first line of all dab files.
+   * @param headerLine this is the first line of all lmf files.
    * @param titleLine this stores the book title taken from the file.
    * @param authorLine this stores the author name taken from the file.
    * @param genreLine this stores the genre taken from the file.
@@ -769,8 +801,8 @@ public class RecordManager extends JPanel implements ActionListener
     JFileChooser fileChooser = new JFileChooser (".\\Documents");
     int recAmount;
     ExampleFileFilter filter = new ExampleFileFilter ( );
-    filter.addExtension ("dab");
-    filter.setDescription ("David Address Book");
+    filter.addExtension ("lmf");
+    filter.setDescription ("Library Manager Files");
     fileChooser.setFileFilter (filter);
     
     int openDialog = fileChooser.showOpenDialog (this);
@@ -794,12 +826,12 @@ public class RecordManager extends JPanel implements ActionListener
       theFile = null;
     }
     
-    else if (!(filter.getExtension (theFile)).equals ("dab"))
+    else if (!(filter.getExtension (theFile)).equals ("lmf"))
     {
       JOptionPane.showMessageDialog (this, "Wrong Extension", "Invalid Extension", JOptionPane.ERROR_MESSAGE);
       theFile = null;
     }
-    else if (!headerLine.equals ("The Official David Y Address Book."))
+    else if (!headerLine.equals ("Storing the library data like a boss."))
     {
       JOptionPane.showMessageDialog (this, "Incorrect Header.", "Invalid Header", JOptionPane.ERROR_MESSAGE);
       theFile = null;
@@ -812,6 +844,7 @@ public class RecordManager extends JPanel implements ActionListener
         input.readLine ();
         recAmount = Integer.parseInt(input.readLine());
         currentRec = 0;
+        book.clear ();
         BookRecord.recNum = 0;
         
         for (int i = 0 ; i < recAmount ; i++)
@@ -846,7 +879,7 @@ public class RecordManager extends JPanel implements ActionListener
         input.close();
         currentRec=0;
         recSaved=true;
-        shouldSave = false;
+        fileSaved = true;
         updateDisplay();        
       }
       catch (Exception e) 
@@ -862,7 +895,7 @@ public class RecordManager extends JPanel implements ActionListener
    */ 
   public void saveChecker ()
   {
-    if (!shouldSave)
+    if (!fileSaved)
     {
       optionPaneResult = JOptionPane.showConfirmDialog (this, "Would you like to save changes?", "Save Changes?", JOptionPane.YES_NO_OPTION);
       if (optionPaneResult == 0)
@@ -889,7 +922,6 @@ public class RecordManager extends JPanel implements ActionListener
     myTable.setColumnSelectionAllowed(false);
     myTable.setCellSelectionEnabled(true);
     myTable.setRowSelectionAllowed(true);
-    
     myTable.setRowHeight(20);
     myTable.setShowVerticalLines(true);
     myTable.setShowHorizontalLines(true);
@@ -978,19 +1010,19 @@ public class RecordManager extends JPanel implements ActionListener
     {
       tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
       tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
-      tempBook.get(order [x]).setGenre (tableModel.getValueAt (x , 3).toString ());
+      tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
       tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
-      if (DataCheck.checkDate (tableModel.getValueAt (x , 5).toString ()) == true)
+      if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
       {
         tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
       }
-      if (DataCheck.checkDate (tableModel.getValueAt (x , 6).toString ()) == true)
+      if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
       {
         tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
       }
     }
     
-    BookRecord.recNum = tableModel.getRowCount () - 1;
+    BookRecord.recNum = tableModel.getRowCount ();
     book = tempBook;
   }
   
@@ -1012,34 +1044,36 @@ public class RecordManager extends JPanel implements ActionListener
       {
         if (sortWhichField == 1)
         {
-          if ((book.get(i).getTitle()).equals (""))
-            original [i] = (" ");
-          else
-            original [i] = (book.get(i).getTitle()).toUpperCase();
-        }
-        else if (sortWhichField == 2)
-        {
-          if ((book.get(i).getAuthor()).equals (""))
-            original [i] = (" ");
-          else
-            original [i] = (book.get(i).getAuthor()).toUpperCase();
-        }
-        else if (sortWhichField == 3)
-        {
           if ((book.get(i).getGenre()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getGenre()).toUpperCase();
         }
-        else if (sortWhichField == 4)
+        else if (sortWhichField == 2)
         {
           if ((book.get(i).getLocation()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getLocation()).toUpperCase();
+        }
+        else if (sortWhichField == 3)
+        {
+          if ((book.get(i).getTitle()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getTitle()).toUpperCase();
+        }
+        else if (sortWhichField == 4)
+        {
+          if ((book.get(i).getAuthor()).equals (""))
             original [i] = " ";
           else
-            original [i] = (book.get(i).getLocation());
+            original [i] = (book.get(i).getAuthor());
         }
+        System.out.println (original [i]);
       } 
         order = s.bubbleSort (original);
+        
     }
   }
   /**
@@ -1096,6 +1130,11 @@ public class RecordManager extends JPanel implements ActionListener
     amountFound = 0;
   }  
   
+  
+  public void graphView (BarGraph b)
+  {
+    b.countValues (book);
+  }
   /**
    * Runs the appropriate method according to the action of the user input.
    * 
@@ -1138,13 +1177,17 @@ public class RecordManager extends JPanel implements ActionListener
     else if (LOGINOK.equals(cmd))
     {
       username = usernameField.getText ();
-      if (username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        continueLogIn ();
-      }
+//      if (username.equals ("admin"))
+//        adminLogin();
+//      else
+//      {
+//        successPass = true;
+//        admin = false;
+//        continueLogIn ();
+//      }
+      toolbarMaker();
+      successPass = true;
+      continueLogIn ();
     }
     this.invalidate();
     this.validate();
