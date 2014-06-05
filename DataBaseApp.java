@@ -347,10 +347,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
-    
-    else if (ae.getActionCommand ().equals("Help"))
-      JOptionPane.showMessageDialog(this,"This is Library Manager. It will keep track of all of your books. Make sure that you don't leave all the records blank.");
-    
+      
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -389,7 +386,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     }
     else if (ae.getActionCommand().equals("Help"))
     {
-   /*   String progpath = new String ("hh.exe youtube.chm");
+      String progpath = new String ("hh.exe youtube.chm");
       try
       {
         Runtime.getRuntime ().exec (progpath);
@@ -397,7 +394,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       catch (IOException e)
       {
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
-      }*/
+      }
     }
     else if (ae.getActionCommand().equals("Search")) 
     {
