@@ -553,7 +553,7 @@ public class RecordManager extends JPanel implements ActionListener
     {
       if (currentRec == 0)
       {
-        currentRec = BookRecord.recNum;
+        currentRec = BookRecord.recNum-1;
       }
       else
       {
@@ -575,7 +575,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (recSaved)
     {
-      if ((currentRec + 1) == BookRecord.recNum)
+      if (currentRec == (BookRecord.recNum - 1))
       {
         currentRec = 0;
       }
@@ -1221,11 +1221,10 @@ public class RecordManager extends JPanel implements ActionListener
           else
             original [i] = (book.get(i).getAuthor());
         }
-        System.out.println (original [i]);
       } 
         order = s.bubbleSort (original);
-        
     }
+    tableView();
   }
   /**
    * This method searches for a piece of text
@@ -1272,6 +1271,7 @@ public class RecordManager extends JPanel implements ActionListener
     sorted = false;
     searchMode = true;
     tableView();
+    
     if (amountFound > 1)
       JOptionPane.showMessageDialog(this,amountFound + " matches were found.");
     else if (amountFound == 1)

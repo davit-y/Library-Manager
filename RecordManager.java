@@ -1057,7 +1057,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void tableView() 
   {
-    thePanel.removeAll();
+    //thePanel.removeAll();
     thePanel.setLayout(new BorderLayout());
     createColumns();
     createData();
@@ -1195,31 +1195,46 @@ public class RecordManager extends JPanel implements ActionListener
       {
         if (sortWhichField == 1)
         {
+                    if ((book.get(i).getTitle()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getTitle()).toUpperCase();
+          
+        }
+        else if (sortWhichField == 2)
+        {
+                    if ((book.get(i).getAuthor()).equals (""))
+            original [i] = " ";
+          else
+            original [i] = (book.get(i).getAuthor());
+        }
+        else if (sortWhichField == 3)
+        {
           if ((book.get(i).getGenre()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getGenre()).toUpperCase();
         }
-        else if (sortWhichField == 2)
+        else if (sortWhichField == 4)
         {
           if ((book.get(i).getLocation()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getLocation()).toUpperCase();
         }
-        else if (sortWhichField == 3)
+         else if (sortWhichField == 5)
         {
-          if ((book.get(i).getTitle()).equals (""))
+          if ((book.get(i).getBorrowDate()).equals (""))
             original [i] = (" ");
           else
-            original [i] = (book.get(i).getTitle()).toUpperCase();
+            original [i] = (book.get(i).getBorrowDate()).toUpperCase();
         }
-        else if (sortWhichField == 4)
+         else if (sortWhichField == 4)
         {
-          if ((book.get(i).getAuthor()).equals (""))
-            original [i] = " ";
+          if ((book.get(i).getReturnDate()).equals (""))
+            original [i] = (" ");
           else
-            original [i] = (book.get(i).getAuthor());
+            original [i] = (book.get(i).getReturnDate()).toUpperCase();
         }
       } 
         order = s.bubbleSort (original);
