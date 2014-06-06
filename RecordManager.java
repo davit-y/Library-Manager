@@ -318,6 +318,82 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
+  public void changePassword ()
+  {
+    d = new JDialog ();
+    d.setSize (300, 300);
+    d.setResizable (false);
+    JLabel changePassword1 = new JLabel ("Change the admin password");
+    JLabel changePassword2 = new JLabel ("Old password");
+    JLabel changePassword3 = new JLabel ("New password");
+    JLabel changePassword4 = new JLabel ("Confirm password");
+    final JTextField OLDPASSFIELD = new JTextField (20);
+    final JTextField NEWPASSFIELD = new JTextField (20);
+    final JTextField NEWPASSFIELD2 = new JTextField (20);
+    JButton ok = new JButton ("Change Password");
+    JButton cancel = new JButton ("Cancel");
+    
+    d.setLayout (new BoxLayout(d.getContentPane(),BoxLayout.Y_AXIS));
+    d.add (changePassword1);
+    d.add(Box.createRigidArea(new Dimension(0,10)));
+    d.add (changePassword2);
+    d.add (OLDPASSFIELD);
+    d.add(Box.createRigidArea(new Dimension(0,10)));
+    d.add (changePassword3);
+    d.add (NEWPASSFIELD);
+    d.add(Box.createRigidArea(new Dimension(0,10)));
+    d.add (changePassword4);
+    d.add (NEWPASSFIELD2);
+    d.add(Box.createRigidArea(new Dimension(0,10)));
+    d.add (ok);
+    d.add (cancel);
+    
+    
+    ok.addActionListener(new ActionListener() 
+                           {
+      public void actionPerformed(ActionEvent e) {
+        try
+        {
+        BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          if (passFile.readLine ().equals (OLDPASSFIELD.getText ()))
+          {
+            if (NEWPASSFIELD.getText ().equals (NEWPASSFIELD2.getText ()))
+            {
+              PrintWriter newPassFile = new PrintWriter (new FileWriter ("pass.txt"));
+              newPassFile.print (NEWPASSFIELD.getText ());
+              newPassFile.close ();
+              JOptionPane.showMessageDialog (thePanel, "You have successfully changed your password.", "Successful", JOptionPane.INFORMATION_MESSAGE);
+              d.dispose ();
+            }
+            else
+            {
+              JOptionPane.showMessageDialog (thePanel, "The new passwords do not match. Please try again.", "New Passwords Don't Match", JOptionPane.ERROR_MESSAGE);
+              NEWPASSFIELD2.requestFocus ();
+              NEWPASSFIELD2.setText ("");
+            }
+          }
+          else
+          {
+            JOptionPane.showMessageDialog (thePanel, "Incorrect old password. Please try again.", "Old Password Incorrect", JOptionPane.ERROR_MESSAGE);
+            OLDPASSFIELD.requestFocus ();
+            OLDPASSFIELD.setText ("");
+          }
+        }
+        catch (IOException ie)
+        {
+        }
+      }
+    });
+    
+    cancel.addActionListener(new ActionListener() 
+                               {
+      public void actionPerformed(ActionEvent e) {
+        d.dispose();
+      }
+    });
+    d.setVisible (true);
+  }
+  
   /**
    * Switches from an alternate view to the textfield view.
    * 
