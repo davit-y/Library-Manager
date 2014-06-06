@@ -1057,7 +1057,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void tableView() 
   {
-    //thePanel.removeAll();
+    thePanel.removeAll();
     thePanel.setLayout(new BorderLayout());
     createColumns();
     createData();
@@ -1239,7 +1239,6 @@ public class RecordManager extends JPanel implements ActionListener
       } 
         order = s.bubbleSort (original);
     }
-    tableView();
   }
   /**
    * This method searches for a piece of text

@@ -182,20 +182,20 @@ public class DataBaseApp extends JFrame implements ActionListener
   public void specifySort ()
   {
     sortDialogue = new JDialog (this,"Choose Field");
-    sortDialogue.setSize (35,300);
+    sortDialogue.setSize (30,300);
     sortDialogue.setLocationRelativeTo (null);
     sortDialogue.setVisible(true);
     sortDialogue.setLayout (new FlowLayout(FlowLayout.LEADING));
     
     ButtonGroup group = new ButtonGroup ();
-    JButton okButton = new JButton ("         OK         ");
+    JButton okButton = new JButton ("          OK          ");
     okButton.setSize (new Dimension (35,40));
     JLabel pickLabel = new JLabel ("Pick a field to sort:");
     JLabel title = new JLabel ("Specify Search");
     title.setFont (new Font ("Serif", Font.BOLD, 17)); 
     
-    sortTitle = new JRadioButton ("Title");
-    sortAuthor = new JRadioButton ("Author");
+    sortTitle = new JRadioButton ("Title Field");
+    sortAuthor = new JRadioButton ("Author Field");
     sortGenre = new JRadioButton ("Genre");
     sortLocation = new JRadioButton ("Location");
     sortBorrow = new JRadioButton ("Borrow Date");
@@ -216,7 +216,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortDialogue.add(sortLocation);
     sortDialogue.add(sortBorrow);
     sortDialogue.add(sortReturn);
-    sortDialogue.setLayout (new FlowLayout(FlowLayout.LEFT));
     sortDialogue.add (okButton);
     
     okButton.addActionListener (new ActionListener()
