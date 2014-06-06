@@ -117,6 +117,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem saveAsItem = new JMenuItem ("Save As");
     JMenuItem openItem = new JMenuItem ("Open");
     JMenuItem signOutItem = new JMenuItem ("Sign Out");
+    JMenuItem passItem = new JMenuItem ("Change Admin Password");
     JMenuItem chartItem = new JMenuItem("Chart");
     JMenuItem browseItem = new JMenuItem("Browse");
     JMenuItem graphItem = new JMenuItem ("Graph");
@@ -128,6 +129,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
     fileMenu.add (signOutItem);
+    fileMenu.add (passItem);
     fileMenu.add (quitItem);
     helpMenu.add (helpItem);
     helpMenu.add (aboutItem);
@@ -154,6 +156,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveItem.addActionListener (this);
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
+    passItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -170,7 +173,92 @@ public class DataBaseApp extends JFrame implements ActionListener
     setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
   }
   
+<<<<<<< HEAD
   
+=======
+  /**
+   * This method opens a dialogue box to choose which field to sort.
+   * 
+   * @param group This holds the group of buttons.
+   * @param okButton This button allows the suer to submit his choice.
+   * @param closeButton This button allows the user to close the dialogue box.
+   */ 
+  public void chooseSort()
+  {
+    sortBox = new JDialog (this,"Field");
+    sortBox.setSize (80,480);
+    sortBox.setResizable (false);
+    ButtonGroup group = new ButtonGroup ();
+    JButton okButton = new JButton ("Ok");
+    JButton closeButton = new JButton("Close");  
+    
+    
+    sortTitle = new JRadioButton ("Title");
+    sortAuthor = new JRadioButton ("Author");
+    sortGenre = new JRadioButton ("Genre");
+    sortLocation = new JRadioButton ("Location");
+    sortBorrow = new JRadioButton ("Borrow Date");
+    sortReturn = new JRadioButton ("Return Date");
+    
+    group.add(sortTitle);
+    group.add(sortAuthor);
+    group.add(sortGenre);
+    group.add(sortLocation);
+    group.add(sortBorrow);
+    group.add(sortReturn);
+
+    sortBox.setLayout (new FlowLayout(FlowLayout.LEADING));
+    sortBox.add(sortGenre);
+    sortBox.add(sortLocation);
+    sortBox.add(sortTitle);
+    sortBox.add(sortAuthor);
+    sortBox.add(sortBorrow);
+    sortBox.add(sortReturn);
+    sortBox.add(closeButton);
+    sortBox.add(okButton);
+    
+    okButton.addActionListener (new ActionListener()
+                                  {
+      public void actionPerformed(ActionEvent e){
+        
+        if (sortGenre.isSelected ())
+          r.sortWhichField = 1;
+        
+        if (sortLocation.isSelected ())
+          r.sortWhichField = 2;
+        
+        if (sortTitle.isSelected ())
+          r.sortWhichField = 3;
+        
+        if (sortAuthor.isSelected ())
+          r.sortWhichField = 4;
+        
+        if (sortBorrow.isSelected ())
+          r.sortWhichField = 5;
+        
+        if (sortReturn.isSelected ())
+          r.sortWhichField = 6;
+        
+         
+        r.sorter();
+        r.tableView ();
+        sortBox.dispose();   
+        invalidate();
+        validate();
+        repaint();
+        
+      }
+    });
+    
+    closeButton.addActionListener(new ActionListener() 
+                                    {
+      public void actionPerformed(ActionEvent e) {
+        sortBox.dispose();
+      }
+    });
+    sortBox.setVisible (true);
+  }  
+>>>>>>> d437638d4d9f690d58d9bd94221142a7eb53d085
   
   /**
    * This method opens a dialogue box to choose what to search.
@@ -395,7 +483,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       if (!currentView.equals ("Text"))
       {
-        if (currentView.equals ("Chart"))
+        if (currentView.equals ("Chart") && r.admin == true)
         {
           r.getChartData();
         }
@@ -443,6 +531,13 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       r.saveChecker();
       System.exit (0);
+    }
+    else if (ae.getActionCommand ().equals ("Change Admin Password"))
+    {
+      if (r.admin)
+      {
+        r.changePassword ();
+      }
     }
     this.invalidate();
     this.validate();
