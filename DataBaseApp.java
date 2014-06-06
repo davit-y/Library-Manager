@@ -172,114 +172,12 @@ public class DataBaseApp extends JFrame implements ActionListener
     setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
   }
   
-  /**
-   * This method opens a dialogue box to choose what to search.
-   * 
-   * @param group This holds the group of buttons.
-   * @param okButton This button allows the suer to submit his choice.
-   * @param closeButton This button allows the user to close the dialogue box.
-   * @param group2 This holds the second group of buttons.
-   */ 
-  public void specifySearch()
-  {
-    searchBox = new JDialog (this,"Choose Criteria");
-    searchBox.setSize (155,430);
-    searchBox.setLocationRelativeTo (null);
-    searchBox.setVisible(true);
-    searchBox.setLayout (new BoxLayout(searchBox.getContentPane(),BoxLayout.Y_AXIS));
-    
-    ButtonGroup group = new ButtonGroup ();
-    ButtonGroup group2 = new ButtonGroup ();
-    JButton okButton = new JButton ("              Ok              ");
-    okButton.setPreferredSize (new Dimension (500,50));
-    JLabel title = new JLabel (" Specify Search");
-    JLabel fieldLabel = new JLabel ("Pick a field to search:");
-    JLabel typeLabel = new JLabel ("Pick a type of search:");
-    JLabel searchLabel = new JLabel ("Input text below:");
-    title.setFont (new Font ("Serif", Font.BOLD, 19)); 
-    
-    searchTitle = new JRadioButton ("Title");
-    searchAuthor = new JRadioButton ("Author");
-    searchLocation = new JRadioButton ("Location");
-    searchGenre = new JRadioButton ("Genre");
-    searchBorrow = new JRadioButton ("Borrow Date");
-    searchReturn = new JRadioButton ("Return Date");
-    partialSearch = new JRadioButton ("Partial Search");
-    wholeSearch = new JRadioButton ("Entire Field");
-    
-    group.add(searchTitle);
-    group.add(searchAuthor);
-    group.add(searchLocation);
-    group.add(searchGenre);
-    group.add(searchBorrow);
-    group.add(searchReturn);
-    group2.add(partialSearch);
-    group2.add(wholeSearch);
-    
-    searchBox.add(title);
-    searchBox.add(Box.createRigidArea(new Dimension(0,10)));
-    searchBox.add (fieldLabel);
-    searchBox.add(searchTitle);
-    searchBox.add(searchAuthor);
-    searchBox.add(searchLocation);
-    searchBox.add(searchGenre);
-    searchBox.add(searchBorrow);
-    searchBox.add(searchReturn);
-    searchBox.add(Box.createRigidArea(new Dimension(0,10)));
-    searchBox.add (typeLabel);
-    searchBox.add(Box.createRigidArea(new Dimension(0,8)));
-    searchBox.add(partialSearch);
-    searchBox.add(wholeSearch);
-    searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
-    searchBox.add(searchLabel);
-    searchBox.add(Box.createRigidArea(new Dimension(0,3)));
-    searchBox.add(searchField);
-    searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
-    searchBox.add(okButton);
-    
-    okButton.addActionListener (new ActionListener()
-                                  {
-      public void actionPerformed(ActionEvent e){
-        if (searchTitle.isSelected ())
-          r.searchWhichField = 1;
-        
-        if (searchAuthor.isSelected ())
-          r.searchWhichField = 2;
-        
-        if (searchLocation.isSelected ())
-          r.searchWhichField = 3;
-        
-        if (searchGenre.isSelected ())
-          r.searchWhichField = 4;
-        
-        if (searchBorrow.isSelected ())
-          r.searchWhichField = 5;
-        
-        if (searchReturn.isSelected ())
-          r.searchWhichField = 6;
-        
-        if (partialSearch.isSelected ())
-          r.partialOrWhole = 1;
-        
-        if (wholeSearch.isSelected ())
-          r.partialOrWhole = 2;
-        
-        r.searchText = searchField.getText ();
-        searchBox.dispose();    
-        r.tableView();
-        invalidate();
-        validate();
-        repaint();
-      }
-    });
-  }
-  
-  /**
+    /**
    * This method opens a dialogue box to choose which field to sort.
    * 
    * @param group This holds the group of buttons.
    * @param okButton This button allows the suer to submit his choice.
-   * @param closeButton This button allows the user to close the dialogue box.
+   * @param title,pickLabel Label for titles.
    */ 
   public void specifySort ()
   {
@@ -290,7 +188,8 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortDialogue.setLayout (new FlowLayout(FlowLayout.LEADING));
     
     ButtonGroup group = new ButtonGroup ();
-    JButton okButton = new JButton ("Ok");
+    JButton okButton = new JButton ("         OK         ");
+    okButton.setSize (new Dimension (35,40));
     JLabel pickLabel = new JLabel ("Pick a field to sort:");
     JLabel title = new JLabel ("Specify Search");
     title.setFont (new Font ("Serif", Font.BOLD, 17)); 
@@ -342,10 +241,109 @@ public class DataBaseApp extends JFrame implements ActionListener
           r.sortWhichField = 6;
         
         sortDialogue.dispose();
+        r.sorter();
       }
     });
   }
   
+  /**
+   * This method opens a dialogue box to choose what to search.
+   * 
+   * @param group This holds the group of buttons.
+   * @param okButton This button allows the suer to submit his choice.
+   * @param closeButton This button allows the user to close the dialogue box.
+   * @param group2 This holds the second group of buttons.
+   */ 
+  public void specifySearch()
+  {
+    searchBox = new JDialog (this,"Choose Criteria");
+    searchBox.setSize (155,410);
+    searchBox.setLocationRelativeTo (null);
+    searchBox.setVisible(true);
+    searchBox.setLayout (new BoxLayout(searchBox.getContentPane(),BoxLayout.Y_AXIS));
+    
+    ButtonGroup group = new ButtonGroup ();
+    ButtonGroup group2 = new ButtonGroup ();
+    JButton okButton = new JButton ("              Ok              ");
+    okButton.setPreferredSize (new Dimension (155,30));
+    JLabel title = new JLabel (" Specify Search");
+    JLabel fieldLabel = new JLabel ("Pick a field to search:");
+    JLabel typeLabel = new JLabel ("Pick a type of search:");
+    JLabel searchLabel = new JLabel ("Input text below:");
+    title.setFont (new Font ("Serif", Font.BOLD, 19)); 
+    
+    searchTitle = new JRadioButton ("Title");
+    searchAuthor = new JRadioButton ("Author");
+    searchLocation = new JRadioButton ("Location");
+    searchGenre = new JRadioButton ("Genre");
+    searchBorrow = new JRadioButton ("Borrow Date");
+    searchReturn = new JRadioButton ("Return Date");
+    partialSearch = new JRadioButton ("Partial Search");
+    wholeSearch = new JRadioButton ("Entire Field");
+    
+    group.add(searchTitle);
+    group.add(searchAuthor);
+    group.add(searchLocation);
+    group.add(searchGenre);
+    group.add(searchBorrow);
+    group.add(searchReturn);
+    group2.add(partialSearch);
+    group2.add(wholeSearch);
+    
+    searchBox.add(title);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10)));
+    searchBox.add (fieldLabel);
+    searchBox.add(Box.createRigidArea(new Dimension(0,5)));
+    searchBox.add(searchTitle);
+    searchBox.add(searchAuthor);
+    searchBox.add(searchLocation);
+    searchBox.add(searchGenre);
+    searchBox.add(searchBorrow);
+    searchBox.add(searchReturn);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10)));
+    searchBox.add (typeLabel);
+    searchBox.add(partialSearch);
+    searchBox.add(wholeSearch);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
+    searchBox.add(searchLabel);
+    searchBox.add(Box.createRigidArea(new Dimension(0,5)));
+    searchBox.add(searchField);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
+    searchBox.add(okButton);
+    
+    okButton.addActionListener (new ActionListener()
+                                  {
+      public void actionPerformed(ActionEvent e){
+        if (searchTitle.isSelected ())
+          r.searchWhichField = 1;
+        
+        if (searchAuthor.isSelected ())
+          r.searchWhichField = 2;
+        
+        if (searchGenre.isSelected ())
+          r.searchWhichField = 3;
+        
+        if (searchLocation.isSelected ())
+          r.searchWhichField = 4;
+        
+        if (searchBorrow.isSelected ())
+          r.searchWhichField = 5;
+        
+        if (searchReturn.isSelected ())
+          r.searchWhichField = 6;
+        
+        if (partialSearch.isSelected ())
+          r.partialOrWhole = 1;
+        
+        if (wholeSearch.isSelected ())
+          r.partialOrWhole = 2;
+        
+        r.searchText = searchField.getText ();
+        searchBox.dispose();    
+        r.searcher();
+      }
+    });
+  }
   
   
   /**
