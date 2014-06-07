@@ -157,7 +157,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+   // SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -311,7 +311,7 @@ public class DataBaseApp extends JFrame implements ActionListener
             buttonEnable ("enable all");
           }
           else
-            JOptionPane.showMessageDialog (d, "Please enter a previously used username. If this is your first time using this application ","Help", JOptionPane.WARNING_MESSAGE);  
+            JOptionPane.showMessageDialog (d, "That password is incorrect, please try again.","Password Error", JOptionPane.WARNING_MESSAGE);  
           d.dispose ();
           continueLogIn ();
         }
@@ -709,8 +709,13 @@ public class DataBaseApp extends JFrame implements ActionListener
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
       r.username = r.usernameField.getText ();
-      if (r.username.equals (""))
+      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+            (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+            (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+            r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+      {
         JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+      }
       else if (r.username.equals ("admin"))
         adminLogin();
       else

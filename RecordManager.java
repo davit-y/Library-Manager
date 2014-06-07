@@ -43,14 +43,6 @@ public class RecordManager extends JPanel implements ActionListener
    * toolBarTop This is the toolbar at the top of the window.
    */ 
   JToolBar toolBarTop = new JToolBar ("Top Bar");
-    /**
-   * LOGINHELP (String) stores a string used to reference the help button.
-   */
-  static final private String LOGINHELP = "Log In Help";
-      /**
-   * LOGINOK (String) stores a string used to reference the ok button.
-   */
-  static final String LOGINOK = "Log In OK";
   /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
@@ -423,7 +415,7 @@ public class RecordManager extends JPanel implements ActionListener
     toolBarTop.add (button);
     button = makeNavigationButton ("next", NEXT, "Next Record", "Next");
     toolBarTop.add (button);   
-    if (admin == true)
+    if (admin)
     {
       button = makeNavigationButton ("save", SAVE, "Save Record", "Save");
       toolBarTop.add (button);
