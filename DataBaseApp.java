@@ -607,8 +607,17 @@ public class DataBaseApp extends JFrame implements ActionListener
     }
     
     else if (ae.getActionCommand ().equals("About"))
-      JOptionPane.showMessageDialog(this,"Copyright JDL Development 2014   -   Version 1.0.0");
-    
+    {
+      String progpath = new String ("hh.exe about.chm");
+      try
+      {
+        Runtime.getRuntime ().exec (progpath);
+      }
+      catch (Exception e)
+      {
+        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
+      }
+    }
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
