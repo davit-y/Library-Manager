@@ -357,7 +357,16 @@ public class DataBaseApp extends JFrame implements ActionListener
       r.saveChecker();
       r.newDatabase();
       r.fileName = null;
-      r.fieldView();
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+      }
       r.updateDisplay();
     }
     
@@ -368,7 +377,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       r.saveChecker();
       r.openFile ();
-      r.fieldView();
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+      }
       r.updateDisplay();
     }    
     else if (ae.getActionCommand ().equals("Save"))

@@ -399,7 +399,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     thePanel.removeAll();
     thePanel.setLayout(null);
-    
+    thePanel.setPreferredSize(new Dimension (400,500));
     entryLabel = new JLabel ("Entry " + (currentRec + 1) + " of " + BookRecord.recNum);
     entryLabel.setFont (new Font ("Calibri", Font.PLAIN, 24)); 
     
@@ -1059,23 +1059,27 @@ public class RecordManager extends JPanel implements ActionListener
   {
     thePanel.removeAll();
     thePanel.setLayout(new BorderLayout());
+    thePanel.setPreferredSize(new Dimension (580,(80+(BookRecord.recNum*20))));
     createColumns();
     createData();
     DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
     myTable.setModel (tableModel);
     myTable.setColumnSelectionAllowed(false);
-    myTable.setCellSelectionEnabled(true);
-    myTable.setRowSelectionAllowed(true);
+    myTable.setCellSelectionEnabled(false);
+    myTable.setRowSelectionAllowed(false);
     myTable.setRowHeight(20);
     myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
+    myTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+    myTable.getColumnModel().getColumn(1).setPreferredWidth(140);
+    myTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+    myTable.getColumnModel().getColumn(3).setPreferredWidth(78);
+    myTable.getColumnModel().getColumn(4).setPreferredWidth(87);
+    myTable.getColumnModel().getColumn(6).setPreferredWidth(73);
     myTable.setShowVerticalLines(true);
     myTable.setShowHorizontalLines(true);
+    myTable.setGridColor(Color.LIGHT_GRAY);
     
-    myTable.setSelectionForeground(Color.red);
-    myTable.setSelectionBackground(Color.orange);
-    myTable.setGridColor(Color.blue);
-    
-    JScrollPane scroll = new JScrollPane(myTable);
+    JScrollPane scroll = new JScrollPane (myTable);
     thePanel.add(scroll, BorderLayout.CENTER);
   }
   
@@ -1086,15 +1090,13 @@ public class RecordManager extends JPanel implements ActionListener
   {
     columnNames = new Object [7];
     
-    columnNames [0] = "Record Number";
+    columnNames [0] = "#";
     columnNames [1] = "Book Title";
     columnNames [2] = "Author Name";
     columnNames [3] = "Genre";
     columnNames [4] = "Location";
     columnNames [5] = "Borrow Date";
     columnNames [6] = "Return Date";
-    
-
   }
   
   /**
@@ -1161,7 +1163,6 @@ public class RecordManager extends JPanel implements ActionListener
     {
       tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
       tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
-      tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
       tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
       if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
       {
