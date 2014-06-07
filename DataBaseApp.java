@@ -29,7 +29,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    * The string that holds the author name.
    */ 
   private String author;
-    /**
+  /**
    * The string that holds the genre number.
    */ 
   private String genre;
@@ -179,15 +179,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
   }
   
-  /**
+    /**
    * This method opens a dialogue box to choose which field to sort.
    * 
    * @param group This holds the group of buttons.
    * @param okButton This button allows the suer to submit his choice.
    * @param closeButton This button allows the user to close the dialogue box.
    * @param e points to the ActionEvent class.
+   * @param title,pickLabel Label for titles.
    */ 
- public void specifySort ()
+  public void specifySort ()
   {
     sortDialogue = new JDialog (this,"Choose Field");
     sortDialogue.setSize (30,300);
@@ -255,7 +256,6 @@ public class DataBaseApp extends JFrame implements ActionListener
         repaint();
       }
     });
-    
   }
   
   /**
@@ -267,14 +267,6 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param group2 This holds the second group of buttons.
    * @param searchLabel creates a new label.
    * @param e points to the ActionEvent class.
-   */ 
- /**
-   * This method opens a dialogue box to choose what to search.
-   * 
-   * @param group This holds the group of buttons.
-   * @param okButton This button allows the suer to submit his choice.
-   * @param closeButton This button allows the user to close the dialogue box.
-   * @param group2 This holds the second group of buttons.
    */ 
   public void specifySearch()
   {
@@ -369,8 +361,8 @@ public class DataBaseApp extends JFrame implements ActionListener
         repaint();
       }
     });
-    
   }
+  
   
   /**
    * This method assigns actions to buttons based on user input.
@@ -390,7 +382,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
-
+    
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -404,45 +396,53 @@ public class DataBaseApp extends JFrame implements ActionListener
     else if (ae.getActionCommand ().equals("Save As"))
       r.saveAs ();
     
+     else if (ae.getActionCommand().equals("Browse")) 
+    {
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+        r.updateDisplay();
+      }
+    }
+     
     else if (ae.getActionCommand().equals("Chart")) 
     {
       if (!currentView.equals ("Chart"))
       {
         currentView = "Chart";
         r.sortWhichField = 0;
-        setSize (600,550);
-          r.tableView();
+        setSize (600,(80+(BookRecord.recNum*20)));
+        r.tableView();
       }
     }
-    else if (ae.getActionCommand().equals("Browse")) 
-    {
-      if (!currentView.equals ("Text"))
-      {
-        if (currentView.equals ("Chart") && r.admin == true)
-        {
-          r.getChartData();
-        }
-        currentView = "Text";
-        setSize (400,550);
-        r.fieldView();
-        r.updateDisplay();
-      }
-    }
+    
     else if (ae.getActionCommand().equals("Graph")) 
     {
       if (!currentView.equals ("Graph"))
-      {
         currentView = "Graph";
-      }
       b = new BarGraph ();
       r.graphView (b);
       b.frame.setVisible (true);
     }
+    
     else if (ae.getActionCommand().equals("Sort")) 
     {
         if (currentView.equals("Chart"))
           r.getChartData();
         specifySort ();
+    }
+    
+    else if (ae.getActionCommand().equals("Search")) 
+    {
+      if (currentView.equals("Chart"))
+        r.getChartData();
+      specifySearch ();
     }
     else if (ae.getActionCommand().equals("Help"))
     {
@@ -455,12 +455,6 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
-    }
-    else if (ae.getActionCommand().equals("Search")) 
-    {
-        if (currentView.equals("Chart"))
-          r.getChartData();
-        specifySearch ();
     }
     else if (ae.getActionCommand ().equals ("Quit"))
     {
@@ -478,6 +472,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     this.validate();
     this.repaint();
   }  
+  
   /**
    * This is the main method of the program.
    * 

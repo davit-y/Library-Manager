@@ -9,12 +9,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.AlphaComposite;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
@@ -394,6 +389,7 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+<<<<<<< HEAD
   
   public void printDatabase ()
   {
@@ -414,6 +410,8 @@ public class RecordManager extends JPanel implements ActionListener
   }
   
   
+=======
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
   /**
    * Switches from an alternate view to the textfield view.
    * 
@@ -578,7 +576,7 @@ public class RecordManager extends JPanel implements ActionListener
     {
       if (currentRec == 0)
       {
-        currentRec = BookRecord.recNum;
+        currentRec = BookRecord.recNum-1;
       }
       else
       {
@@ -600,7 +598,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (recSaved)
     {
-      if ((currentRec + 1) == BookRecord.recNum)
+      if (currentRec == (BookRecord.recNum - 1))
       {
         currentRec = 0;
       }
@@ -1082,7 +1080,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void tableView() 
   {
-    thePanel.removeAll();
+    //thePanel.removeAll();
     thePanel.setLayout(new BorderLayout());
     createColumns();
     createData();
@@ -1220,37 +1218,51 @@ public class RecordManager extends JPanel implements ActionListener
       {
         if (sortWhichField == 1)
         {
+                    if ((book.get(i).getTitle()).equals (""))
+            original [i] = (" ");
+          else
+            original [i] = (book.get(i).getTitle()).toUpperCase();
+          
+        }
+        else if (sortWhichField == 2)
+        {
+                    if ((book.get(i).getAuthor()).equals (""))
+            original [i] = " ";
+          else
+            original [i] = (book.get(i).getAuthor());
+        }
+        else if (sortWhichField == 3)
+        {
           if ((book.get(i).getGenre()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getGenre()).toUpperCase();
         }
-        else if (sortWhichField == 2)
+        else if (sortWhichField == 4)
         {
           if ((book.get(i).getLocation()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getLocation()).toUpperCase();
         }
-        else if (sortWhichField == 3)
+         else if (sortWhichField == 5)
         {
-          if ((book.get(i).getTitle()).equals (""))
+          if ((book.get(i).getBorrowDate()).equals (""))
             original [i] = (" ");
           else
-            original [i] = (book.get(i).getTitle()).toUpperCase();
+            original [i] = (book.get(i).getBorrowDate()).toUpperCase();
         }
-        else if (sortWhichField == 4)
+         else if (sortWhichField == 4)
         {
-          if ((book.get(i).getAuthor()).equals (""))
-            original [i] = " ";
+          if ((book.get(i).getReturnDate()).equals (""))
+            original [i] = (" ");
           else
-            original [i] = (book.get(i).getAuthor());
+            original [i] = (book.get(i).getReturnDate()).toUpperCase();
         }
-        System.out.println (original [i]);
       } 
         order = s.bubbleSort (original);
-        
     }
+    tableView();
   }
   /**
    * This method searches for a piece of text
@@ -1297,6 +1309,7 @@ public class RecordManager extends JPanel implements ActionListener
     sorted = false;
     searchMode = true;
     tableView();
+    
     if (amountFound > 1)
       JOptionPane.showMessageDialog(this,amountFound + " matches were found.");
     else if (amountFound == 1)

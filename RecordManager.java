@@ -9,12 +9,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
-
-import javax.swing.*;
-import java.awt.*;
 import java.awt.AlphaComposite;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 /**
@@ -613,7 +608,7 @@ public class RecordManager extends JPanel implements ActionListener
     {
       if (currentRec == 0)
       {
-        currentRec = BookRecord.recNum;
+        currentRec = BookRecord.recNum-1;
       }
       else
       {
@@ -635,7 +630,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (recSaved)
     {
-      if ((currentRec + 1) == BookRecord.recNum)
+      if (currentRec == (BookRecord.recNum - 1))
       {
         currentRec = 0;
       }
@@ -1354,6 +1349,7 @@ public void sorter ()
     sorted = false;
     searchMode = true;
     tableView();
+    
     if (amountFound > 1)
       JOptionPane.showMessageDialog(this,amountFound + " matches were found.");
     else if (amountFound == 1)

@@ -29,7 +29,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    * The string that holds the author name.
    */ 
   private String author;
-    /**
+  /**
    * The string that holds the genre number.
    */ 
   private String genre;
@@ -52,7 +52,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * This is the dialogue box to choose which field to sort.
    */ 
-  JDialog sortBox;
+  JDialog sortDialogue;
   /**
    * This is the radio buttons to choose which field to search.
    */ 
@@ -77,8 +77,12 @@ public class DataBaseApp extends JFrame implements ActionListener
    * currentView Keeps track of the current view of the program (text or chart).
    */ 
   String currentView = "Text";
+  /**
+   * This is the graph view class.
+   */ 
+  BarGraph b;
   
-  BarGraph b = new BarGraph ();
+  
   
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
@@ -98,7 +102,6 @@ public class DataBaseApp extends JFrame implements ActionListener
   public DataBaseApp ()
   { 
     //SplashScreen ss = new SplashScreen ();
-    b.frame.setVisible (false);
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -157,7 +160,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
     sortItem.addActionListener (this);
-    sortItem.addActionListener (this);
     searchItem.addActionListener (this);
     
     add(r);
@@ -170,25 +172,42 @@ public class DataBaseApp extends JFrame implements ActionListener
     setDefaultCloseOperation (JFrame.DISPOSE_ON_CLOSE);
   }
   
-  /**
+    /**
    * This method opens a dialogue box to choose which field to sort.
    * 
    * @param group This holds the group of buttons.
    * @param okButton This button allows the suer to submit his choice.
-   * @param closeButton This button allows the user to close the dialogue box.
+   * @param title,pickLabel Label for titles.
    */ 
-  public void chooseSort()
+  public void specifySort ()
   {
+<<<<<<< HEAD
     sortBox = new JDialog (this,"Field");
     sortBox.setSize (80,480);
     sortBox.setResizable (false);
-    ButtonGroup group = new ButtonGroup ();
-    JButton okButton = new JButton ("Ok");
-    JButton closeButton = new JButton("Close");  
+=======
+    sortDialogue = new JDialog (this,"Choose Field");
+    sortDialogue.setSize (30,300);
+    sortDialogue.setLocationRelativeTo (null);
+    sortDialogue.setVisible(true);
+    sortDialogue.setLayout (new FlowLayout(FlowLayout.LEADING));
     
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
+    ButtonGroup group = new ButtonGroup ();
+    JButton okButton = new JButton ("          OK          ");
+    okButton.setSize (new Dimension (35,40));
+    JLabel pickLabel = new JLabel ("Pick a field to sort:");
+    JLabel title = new JLabel ("Specify Search");
+    title.setFont (new Font ("Serif", Font.BOLD, 17)); 
+    
+<<<<<<< HEAD
     
     sortTitle = new JRadioButton ("Title");
     sortAuthor = new JRadioButton ("Author");
+=======
+    sortTitle = new JRadioButton ("Title Field");
+    sortAuthor = new JRadioButton ("Author Field");
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     sortGenre = new JRadioButton ("Genre");
     sortLocation = new JRadioButton ("Location");
     sortBorrow = new JRadioButton ("Borrow Date");
@@ -200,6 +219,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     group.add(sortLocation);
     group.add(sortBorrow);
     group.add(sortReturn);
+<<<<<<< HEAD
 
     sortBox.setLayout (new FlowLayout(FlowLayout.LEADING));
     sortBox.add(sortGenre);
@@ -210,21 +230,32 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortBox.add(sortReturn);
     sortBox.add(closeButton);
     sortBox.add(okButton);
+=======
+    
+    sortDialogue.add(title);
+    sortDialogue.add(pickLabel);
+    sortDialogue.add(sortTitle);
+    sortDialogue.add(sortAuthor);
+    sortDialogue.add(sortGenre);
+    sortDialogue.add(sortLocation);
+    sortDialogue.add(sortBorrow);
+    sortDialogue.add(sortReturn);
+    sortDialogue.add (okButton);
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     
     okButton.addActionListener (new ActionListener()
                                   {
       public void actionPerformed(ActionEvent e){
-        
-        if (sortGenre.isSelected ())
+        if (sortTitle.isSelected ())
           r.sortWhichField = 1;
         
-        if (sortLocation.isSelected ())
+        if (sortAuthor.isSelected ())
           r.sortWhichField = 2;
         
-        if (sortTitle.isSelected ())
+        if (sortGenre.isSelected ())
           r.sortWhichField = 3;
         
-        if (sortAuthor.isSelected ())
+        if (sortLocation.isSelected ())
           r.sortWhichField = 4;
         
         if (sortBorrow.isSelected ())
@@ -233,16 +264,11 @@ public class DataBaseApp extends JFrame implements ActionListener
         if (sortReturn.isSelected ())
           r.sortWhichField = 6;
         
-         
+        sortDialogue.dispose();
         r.sorter();
-        r.tableView ();
-        sortBox.dispose();   
-        invalidate();
-        validate();
-        repaint();
-        
       }
     });
+<<<<<<< HEAD
     
     closeButton.addActionListener(new ActionListener() 
                                     {
@@ -252,6 +278,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     });
     sortBox.setVisible (true);
   }  
+=======
+  }
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
   
   /**
    * This method opens a dialogue box to choose what to search.
@@ -261,23 +290,32 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param closeButton This button allows the user to close the dialogue box.
    * @param group2 This holds the second group of buttons.
    */ 
-  public void chooseSearch()
+  public void specifySearch()
   {
-    searchBox = new JDialog (this,"Field");
+    searchBox = new JDialog (this,"Choose Criteria");
+    searchBox.setSize (155,410);
+    searchBox.setLocationRelativeTo (null);
+    searchBox.setVisible(true);
+    searchBox.setLayout (new BoxLayout(searchBox.getContentPane(),BoxLayout.Y_AXIS));
+    
     ButtonGroup group = new ButtonGroup ();
     ButtonGroup group2 = new ButtonGroup ();
-    JButton okButton = new JButton ("Ok");
-    JButton closeButton = new JButton("Close");  
+    JButton okButton = new JButton ("              Ok              ");
+    okButton.setPreferredSize (new Dimension (155,30));
+    JLabel title = new JLabel (" Specify Search");
+    JLabel fieldLabel = new JLabel ("Pick a field to search:");
+    JLabel typeLabel = new JLabel ("Pick a type of search:");
     JLabel searchLabel = new JLabel ("Input text below:");
-    searchLabel.setFont (new Font ("Serif", Font.PLAIN, 16)); 
+    title.setFont (new Font ("Serif", Font.BOLD, 19)); 
     
-    searchBox.setSize (220,350);
     searchTitle = new JRadioButton ("Title");
     searchAuthor = new JRadioButton ("Author");
     searchLocation = new JRadioButton ("Location");
     searchGenre = new JRadioButton ("Genre");
+    searchBorrow = new JRadioButton ("Borrow Date");
+    searchReturn = new JRadioButton ("Return Date");
     partialSearch = new JRadioButton ("Partial Search");
-    wholeSearch = new JRadioButton ("Match Whole Field");
+    wholeSearch = new JRadioButton ("Entire Field");
     
     group.add(searchTitle);
     group.add(searchAuthor);
@@ -288,8 +326,10 @@ public class DataBaseApp extends JFrame implements ActionListener
     group2.add(partialSearch);
     group2.add(wholeSearch);
     
-    searchBox.setLayout (new BoxLayout(searchBox.getContentPane(),BoxLayout.Y_AXIS));
-    searchBox.setVisible (true);
+    searchBox.add(title);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10)));
+    searchBox.add (fieldLabel);
+    searchBox.add(Box.createRigidArea(new Dimension(0,5)));
     searchBox.add(searchTitle);
     searchBox.add(searchAuthor);
     searchBox.add(searchLocation);
@@ -297,15 +337,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     searchBox.add(searchBorrow);
     searchBox.add(searchReturn);
     searchBox.add(Box.createRigidArea(new Dimension(0,10)));
+    searchBox.add (typeLabel);
     searchBox.add(partialSearch);
     searchBox.add(wholeSearch);
     searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
     searchBox.add(searchLabel);
+    searchBox.add(Box.createRigidArea(new Dimension(0,5)));
     searchBox.add(searchField);
-
-    searchBox.add(closeButton);
+    searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
     searchBox.add(okButton);
-
+    
     okButton.addActionListener (new ActionListener()
                                   {
       public void actionPerformed(ActionEvent e){
@@ -315,10 +356,10 @@ public class DataBaseApp extends JFrame implements ActionListener
         if (searchAuthor.isSelected ())
           r.searchWhichField = 2;
         
-        if (searchLocation.isSelected ())
+        if (searchGenre.isSelected ())
           r.searchWhichField = 3;
         
-        if (searchGenre.isSelected ())
+        if (searchLocation.isSelected ())
           r.searchWhichField = 4;
         
         if (searchBorrow.isSelected ())
@@ -335,20 +376,11 @@ public class DataBaseApp extends JFrame implements ActionListener
         
         r.searchText = searchField.getText ();
         searchBox.dispose();    
-        r.tableView();
-        invalidate();
-        validate();
-        repaint();
-      }
-    });
-    
-    closeButton.addActionListener(new ActionListener() 
-                                    {
-      public void actionPerformed(ActionEvent e) {
-        searchBox.dispose();
+        r.searcher();
       }
     });
   }
+  
   
   /**
    * This method assigns actions to buttons based on user input.
@@ -368,7 +400,11 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -390,7 +426,11 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.sortWhichField = 0;
         //if (r.recSaved)
         setSize (600,550);
+<<<<<<< HEAD
           r.tableView();
+=======
+        r.tableView();
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
       }
     }
     else if (ae.getActionCommand().equals("Browse")) 
@@ -413,14 +453,21 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         currentView = "Graph";
       }
+      b = new BarGraph ();
       r.graphView (b);
       b.frame.setVisible (true);
     }
     else if (ae.getActionCommand().equals("Sort")) 
     {
-        if (currentView.equals("Chart"))
-          r.getChartData();
-        chooseSort ();
+      if (currentView.equals("Chart"))
+        r.getChartData();
+      specifySort ();
+    }
+    else if (ae.getActionCommand().equals("Search")) 
+    {
+      if (currentView.equals("Chart"))
+        r.getChartData();
+      specifySearch ();
     }
     else if (ae.getActionCommand().equals("Help"))
     {
@@ -433,15 +480,6 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
-    }
-    else if (ae.getActionCommand().equals("Search")) 
-    {
-//      if (r.recSaved)
-//      {
-        if (currentView.equals("Chart"))
-          r.getChartData();
-        chooseSearch ();
-//      }
     }
     else if (ae.getActionCommand ().equals ("Quit"))
     {
