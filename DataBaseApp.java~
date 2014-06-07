@@ -76,12 +76,11 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * currentView Keeps track of the current view of the program (text or chart).
    */ 
-  String currentView = "Text";
+  String currentView = "Browse";
   /**
    * This is the graph view class.
    */ 
   BarGraph b;
-  
   
   
   /**
@@ -241,6 +240,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         
         sortDialogue.dispose();
         r.sorter();
+        r.tableView ();
       }
     });
   }
@@ -377,47 +377,49 @@ public class DataBaseApp extends JFrame implements ActionListener
     else if (ae.getActionCommand ().equals("Save As"))
       r.saveAs ();
     
+     else if (ae.getActionCommand().equals("Browse")) 
+    {
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+        r.updateDisplay();
+      }
+    }
+     
     else if (ae.getActionCommand().equals("Chart")) 
     {
       if (!currentView.equals ("Chart"))
       {
         currentView = "Chart";
         r.sortWhichField = 0;
-        //if (r.recSaved)
-        setSize (600,550);
+        setSize (600,(80+(BookRecord.recNum*20)));
         r.tableView();
       }
     }
-    else if (ae.getActionCommand().equals("Browse")) 
-    {
-      if (!currentView.equals ("Text"))
-      {
-        if (currentView.equals ("Chart") && r.admin == true)
-        {
-          r.getChartData();
-        }
-        currentView = "Text";
-        setSize (400,550);
-        r.fieldView();
-        r.updateDisplay();
-      }
-    }
+    
     else if (ae.getActionCommand().equals("Graph")) 
     {
       if (!currentView.equals ("Graph"))
-      {
         currentView = "Graph";
-      }
+      
       b = new BarGraph ();
       r.graphView (b);
       b.frame.setVisible (true);
     }
+    
     else if (ae.getActionCommand().equals("Sort")) 
     {
       if (currentView.equals("Chart"))
         r.getChartData();
       specifySort ();
     }
+    
     else if (ae.getActionCommand().equals("Search")) 
     {
       if (currentView.equals("Chart"))
@@ -436,6 +438,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
     }
+    
     else if (ae.getActionCommand ().equals ("Quit"))
     {
       r.saveChecker();
@@ -452,6 +455,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     this.validate();
     this.repaint();
   }  
+  
   /**
    * This is the main method of the program.
    * 
