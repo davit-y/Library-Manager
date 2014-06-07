@@ -389,6 +389,29 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+<<<<<<< HEAD
+  
+  public void printDatabase ()
+  {
+    Print p = new Print ();
+    p.println ("Data in Library Manager");
+    p.println ();
+    for (int x = 0; x < BookRecord.recNum; x ++)
+    {
+      p.println ("Record Number: " + x);
+      p.println ("Book Title: " + book.get(x).getTitle());
+      p.println ("Author Name: " + book.get(x).getAuthor());
+      p.println ("Book Genre: " + book.get(x).getGenre());
+      p.println ("Location: " + book.get(x).getLocation());
+      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
+      p.println ("Return Date: " + book.get(x).getReturnDate());
+      p.println ();
+    }
+  }
+  
+  
+=======
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
   /**
    * Switches from an alternate view to the textfield view.
    * 

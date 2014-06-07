@@ -12,7 +12,7 @@ import java.io.*;
  * @param genre The string that holds the genre number.
  * @param a An instance of the AdressBook class.
  * @param sortGenre, sortLocation,sortEmail, sortPhone The radio buttons that choose which field to sort.
- * @param sortBox The dialog box that allowes the user to choose whih field to sort by.
+ * @param sortDialogue The dialog box that allowes the user to choose whih field to sort by.
  * @param currentView Keeps track of the current view of the program (text or chart).
  * <p>
  * @author David Yeghshatan 
@@ -70,18 +70,17 @@ public class DataBaseApp extends JFrame implements ActionListener
    */ 
   JTextField searchField = new JTextField ();
   /**
-   * a Instance of the AdressBook class.
+   * a Instance of the RecordManager class.
    */ 
   RecordManager r = new RecordManager ();
   /**
    * currentView Keeps track of the current view of the program (text or chart).
    */ 
-  String currentView = "Browse";
+  String currentView = "Text";
   /**
-   * This is the graph view class.
+   * a Instance of the BarGraph class.
    */ 
   BarGraph b;
-  
   
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
@@ -90,17 +89,26 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param aboutItem creates a new JMenuItem with the title About.
    * @param fileMenu creates a JMenu called File.
    * @param helpMenu creates a JMenu called Help.
+   * @param viewMenu creates a JMenu called View.
+   * @param toolsMenu creates a JMenu called Tools.
    * @param myMenus creates a new JMenuBar for the window. 
    * @param newItem creates the JMenuItem "New".
    * @param openItem creates the JMenuItem "Open".
    * @param saveItem creates the JMenuItem "Save".
    * @param saveAsItem creates the JMenuItem "Save As".
+   * @param signOutItem creates the JMenuItem "Sign Out".
+   * @param passItem creates the JMenuItem "Change Admin Password".
+   * @param chartItem creates the JMenuItem "Chart".
+   * @param browseItem creates the JMenuItem "Browse".
+   * @param graphItem creates the JMenuItem "Graph".
+   * @param sortItem creates the JMenuItem "Sort".
+   * @param searchItem creates the JMenuItem "Search".
    * @param ActionListener listens to user input
    * @param DISPOSE_ON_CLOSE clears the RAM and closes the program when it is complete.
    */
   public DataBaseApp ()
   { 
-    //SplashScreen ss = new SplashScreen ();
+    SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -176,6 +184,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * 
    * @param group This holds the group of buttons.
    * @param okButton This button allows the suer to submit his choice.
+   * @param closeButton This button allows the user to close the dialogue box.
+   * @param e points to the ActionEvent class.
    * @param title,pickLabel Label for titles.
    */ 
   public void specifySort ()
@@ -241,6 +251,9 @@ public class DataBaseApp extends JFrame implements ActionListener
         sortDialogue.dispose();
         r.sorter();
         r.tableView ();
+        invalidate();
+        validate();
+        repaint();
       }
     });
   }
@@ -252,6 +265,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param okButton This button allows the suer to submit his choice.
    * @param closeButton This button allows the user to close the dialogue box.
    * @param group2 This holds the second group of buttons.
+   * @param searchLabel creates a new label.
+   * @param e points to the ActionEvent class.
    */ 
   public void specifySearch()
   {
@@ -340,6 +355,10 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.searchText = searchField.getText ();
         searchBox.dispose();    
         r.searcher();
+        r.tableView ();
+                invalidate();
+        validate();
+        repaint();
       }
     });
   }
@@ -425,7 +444,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       if (!currentView.equals ("Graph"))
         currentView = "Graph";
-      
       b = new BarGraph ();
       r.graphView (b);
       b.frame.setVisible (true);
@@ -433,9 +451,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand().equals("Sort")) 
     {
-      if (currentView.equals("Chart"))
-        r.getChartData();
-      specifySort ();
+        if (currentView.equals("Chart"))
+          r.getChartData();
+        specifySort ();
     }
     
     else if (ae.getActionCommand().equals("Search")) 
@@ -456,7 +474,6 @@ public class DataBaseApp extends JFrame implements ActionListener
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
     }
-    
     else if (ae.getActionCommand ().equals ("Quit"))
     {
       r.saveChecker();

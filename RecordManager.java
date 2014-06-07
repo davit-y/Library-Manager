@@ -120,11 +120,11 @@ public class RecordManager extends JPanel implements ActionListener
    */
   String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humour", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
   /**
-   * This is a boolean statement that holds weather or not the current record has been saved.
+   * This is a boolean statement that holds whether or not the current record has been saved.
    */ 
   boolean recSaved;
   /**
-   * 
+   * This is a boolean statement that holds whether or not the current file has been saved.
    */
   boolean fileSaved = true;
   /**
@@ -199,6 +199,9 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
+  /**
+   * This is a boolean statement that holds whether or not the correct password has been entered.
+   */
   boolean successPass;
   
   
@@ -215,6 +218,8 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param help this button displays useful tips to the user.
    * @param ok this button let's the user continue into the program.
+   * @param icon creates the background.
+   * @param label creates a new JLabel.
    */ 
   public void usernameOpener ()
   {  
@@ -246,6 +251,17 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add (label);
   }
   
+  /**
+   * This method triggers the JDialog in which the admin enters their password.
+   * 
+   * @param enterPass creates a new JLabel.
+   * @param ok creates a new JButton.
+   * @param cancel creates a new JButton.
+   * @param PASSFIELD creates a new JTextField.
+   * @param e points to the ActionEvent class.
+   * @param passFile opens the password file.
+   * @param no is for the IOException.
+   */
   public void adminLogin ()
   {
     successPass = false;
@@ -283,7 +299,7 @@ public class RecordManager extends JPanel implements ActionListener
           d.dispose ();
           continueLogIn ();
         }
-        catch (Exception no)
+        catch (IOException no)
         {
         }
       }
@@ -297,6 +313,9 @@ public class RecordManager extends JPanel implements ActionListener
     
   }
   
+  /**
+   * This method either lets the user use the program or repeats the admin login process whether or not the password was correct.
+   */
   public void continueLogIn ()
   {
     if (successPass)
@@ -304,8 +323,8 @@ public class RecordManager extends JPanel implements ActionListener
       newDatabase ();
       fieldView ();
       this.invalidate();
-    this.validate();
-    this.repaint();
+      this.validate();
+      this.repaint();
     }
     else
     {
@@ -313,6 +332,22 @@ public class RecordManager extends JPanel implements ActionListener
     }
   }
   
+  /**
+   * This method lets the user change the password.
+   * 
+   * @param changePassword1 creates a new JLabel.
+   * @param changePassword2 creates a new JLabel.
+   * @param changePassword3 creates a new JLabel.
+   * @param changePassword4 creates a new JLabel.
+   * @param OLDPASSFIELD creates a new JTextField.
+   * @param NEWPASSFIELD creates a new JTextField.
+   * @param NEWPASSFIELD2 creates a new JTextField.
+   * @param ok creates a new JButton.
+   * @param cancel creates a new JButton.
+   * @param newPassFile writes the new password into the file.
+   * @param e points to the ActionEvent class.
+   * @param ie is for the IOException.
+   */
   public void changePassword ()
   {
     d = new JDialog ();
@@ -389,6 +424,26 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+  
+//  public void printDatabase ()
+//  {
+//    Print p = new Print ();
+//    p.println ("Data in Library Manager");
+//    p.println ();
+//    for (int x = 0; x < BookRecord.recNum; x ++)
+//    {
+//      p.println ("Record Number: " + x);
+//      p.println ("Book Title: " + book.get(x).getTitle());
+//      p.println ("Author Name: " + book.get(x).getAuthor());
+//      p.println ("Book Genre: " + book.get(x).getGenre());
+//      p.println ("Location: " + book.get(x).getLocation());
+//      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
+//      p.println ("Return Date: " + book.get(x).getReturnDate());
+//      p.println ();
+//    }
+//  }
+  
+  
   /**
    * Switches from an alternate view to the textfield view.
    * 
@@ -437,7 +492,7 @@ public class RecordManager extends JPanel implements ActionListener
   }
 
 
-    /**
+  /**
    * This method creates the toolbar.
    * 
    * @param button This is a new JButton.
@@ -628,9 +683,6 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param tempBDate stores the borrow date
    * @param tempRDate stores the return date
-   * @param returnDay stores the day the book is returned from 1-28/29/30/31
-   * @param returnMonth stores the month the book is returned from 1-12
-   * @param returnYear stores the year the book is returned
    * @param dateFormat stores the format the date is displayed
    * @param date gets the current date
    * @param isLeapYear true if the year is a leap year, false if not
@@ -661,6 +713,15 @@ public class RecordManager extends JPanel implements ActionListener
     
   }
   
+  /**
+   * Determines the return date based off of the borrow date.
+   * 
+   * @param returnDay stores the day the book is returned from 1-28/29/30/31.
+   * @param returnMonth stores the month the book is returned from 1-12.
+   * @param returnYear stores the year the book is returned.
+   * @param tempBDate gets the borrow date that the return date is based off of.
+   * @param tempRDate stores the new return date.
+   */
   public String determineReturnDate (String tempBDate)
   {
     int returnDay = 0;
@@ -731,6 +792,9 @@ public class RecordManager extends JPanel implements ActionListener
     return (tempRDate + returnYear);
   }
   
+  /**
+   * Returns the book to the library and clears the borrow date data and the location data.
+   */
   public void returnBook ()
   {
     if (!(book.get(currentRec).getBorrowDate() == null || book.get(currentRec).getBorrowDate().equals ("")))
@@ -1183,7 +1247,7 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param original Holds the unsorted array.
    */ 
-  public void sorter ()
+public void sorter ()
   {
     order = new int [BookRecord.recNum];
     for (int i = 0; i < BookRecord.recNum; i++)
@@ -1296,11 +1360,16 @@ public class RecordManager extends JPanel implements ActionListener
     amountFound = 0;
   }  
   
-  
+  /**
+   * Sends the data to the BarGraph class.
+   * 
+   * @param b points to the BarGraph class.
+   */
   public void graphView (BarGraph b)
   {
     b.countValues (book);
   }
+  
   /**
    * Runs the appropriate method according to the action of the user input.
    * 
@@ -1347,17 +1416,15 @@ public class RecordManager extends JPanel implements ActionListener
     else if (LOGINOK.equals(cmd))
     {
       username = usernameField.getText ();
-//      if (username.equals ("admin"))
-//        adminLogin();
-//      else
-//      {
-//        successPass = true;
-//        admin = false;
-//        continueLogIn ();
-//      }
+      if (username.equals ("admin"))
+        adminLogin();
+      else
+      {
+        successPass = true;
+        admin = false;
+        continueLogIn ();
+      }
       toolbarMaker();
-      successPass = true;
-      continueLogIn ();
     }
     this.invalidate();
     this.validate();

@@ -180,12 +180,18 @@ public class DataBaseApp extends JFrame implements ActionListener
    */ 
   public void specifySort ()
   {
+<<<<<<< HEAD
+    sortBox = new JDialog (this,"Field");
+    sortBox.setSize (80,480);
+    sortBox.setResizable (false);
+=======
     sortDialogue = new JDialog (this,"Choose Field");
     sortDialogue.setSize (30,300);
     sortDialogue.setLocationRelativeTo (null);
     sortDialogue.setVisible(true);
     sortDialogue.setLayout (new FlowLayout(FlowLayout.LEADING));
     
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     ButtonGroup group = new ButtonGroup ();
     JButton okButton = new JButton ("          OK          ");
     okButton.setSize (new Dimension (35,40));
@@ -193,8 +199,14 @@ public class DataBaseApp extends JFrame implements ActionListener
     JLabel title = new JLabel ("Specify Search");
     title.setFont (new Font ("Serif", Font.BOLD, 17)); 
     
+<<<<<<< HEAD
+    
+    sortTitle = new JRadioButton ("Title");
+    sortAuthor = new JRadioButton ("Author");
+=======
     sortTitle = new JRadioButton ("Title Field");
     sortAuthor = new JRadioButton ("Author Field");
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     sortGenre = new JRadioButton ("Genre");
     sortLocation = new JRadioButton ("Location");
     sortBorrow = new JRadioButton ("Borrow Date");
@@ -206,6 +218,18 @@ public class DataBaseApp extends JFrame implements ActionListener
     group.add(sortLocation);
     group.add(sortBorrow);
     group.add(sortReturn);
+<<<<<<< HEAD
+
+    sortBox.setLayout (new FlowLayout(FlowLayout.LEADING));
+    sortBox.add(sortGenre);
+    sortBox.add(sortLocation);
+    sortBox.add(sortTitle);
+    sortBox.add(sortAuthor);
+    sortBox.add(sortBorrow);
+    sortBox.add(sortReturn);
+    sortBox.add(closeButton);
+    sortBox.add(okButton);
+=======
     
     sortDialogue.add(title);
     sortDialogue.add(pickLabel);
@@ -216,6 +240,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortDialogue.add(sortBorrow);
     sortDialogue.add(sortReturn);
     sortDialogue.add (okButton);
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     
     okButton.addActionListener (new ActionListener()
                                   {
@@ -243,7 +268,19 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.tableView ();
       }
     });
+<<<<<<< HEAD
+    
+    closeButton.addActionListener(new ActionListener() 
+                                    {
+      public void actionPerformed(ActionEvent e) {
+        sortBox.dispose();
+      }
+    });
+    sortBox.setVisible (true);
+  }  
+=======
   }
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
   
   /**
    * This method opens a dialogue box to choose what to search.
@@ -363,7 +400,11 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
+<<<<<<< HEAD
+
+=======
     
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -379,7 +420,26 @@ public class DataBaseApp extends JFrame implements ActionListener
     
      else if (ae.getActionCommand().equals("Browse")) 
     {
+<<<<<<< HEAD
       if (!currentView.equals ("Browse"))
+=======
+      if (!currentView.equals ("Chart"))
+      {
+        currentView = "Chart";
+        r.sortWhichField = 0;
+        //if (r.recSaved)
+        setSize (600,550);
+<<<<<<< HEAD
+          r.tableView();
+=======
+        r.tableView();
+>>>>>>> 32b206c2bb8a0253d651d7dd6599cb13dd4eb2a3
+      }
+    }
+    else if (ae.getActionCommand().equals("Browse")) 
+    {
+      if (!currentView.equals ("Text"))
+>>>>>>> d67585d0138ea923073863a074fa2f174d31c074
       {
         if (currentView.equals ("Chart") && r.admin == true)
         {
