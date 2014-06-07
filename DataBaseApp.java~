@@ -12,7 +12,7 @@ import java.io.*;
  * @param genre The string that holds the genre number.
  * @param a An instance of the AdressBook class.
  * @param sortGenre, sortLocation,sortEmail, sortPhone The radio buttons that choose which field to sort.
- * @param sortBox The dialog box that allowes the user to choose whih field to sort by.
+ * @param sortDialogue The dialog box that allowes the user to choose whih field to sort by.
  * @param currentView Keeps track of the current view of the program (text or chart).
  * <p>
  * @author David Yeghshatan 
@@ -70,7 +70,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */ 
   JTextField searchField = new JTextField ();
   /**
-   * a Instance of the AdressBook class.
+   * a Instance of the RecordManager class.
    */ 
   RecordManager r = new RecordManager ();
   /**
@@ -78,11 +78,14 @@ public class DataBaseApp extends JFrame implements ActionListener
    */ 
   String currentView = "Browse";
   /**
-   * This is the graph view class.
+   * a Instance of the BarGraph class.
    */ 
   BarGraph b;
   
+<<<<<<< HEAD
   
+=======
+>>>>>>> 116ff89466c681b3230daab30fc21ae7422fa3c1
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
    * @param quitItem creates a new JMenuItem with the title Quit.
@@ -90,11 +93,20 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param aboutItem creates a new JMenuItem with the title About.
    * @param fileMenu creates a JMenu called File.
    * @param helpMenu creates a JMenu called Help.
+   * @param viewMenu creates a JMenu called View.
+   * @param toolsMenu creates a JMenu called Tools.
    * @param myMenus creates a new JMenuBar for the window. 
    * @param newItem creates the JMenuItem "New".
    * @param openItem creates the JMenuItem "Open".
    * @param saveItem creates the JMenuItem "Save".
    * @param saveAsItem creates the JMenuItem "Save As".
+   * @param signOutItem creates the JMenuItem "Sign Out".
+   * @param passItem creates the JMenuItem "Change Admin Password".
+   * @param chartItem creates the JMenuItem "Chart".
+   * @param browseItem creates the JMenuItem "Browse".
+   * @param graphItem creates the JMenuItem "Graph".
+   * @param sortItem creates the JMenuItem "Sort".
+   * @param searchItem creates the JMenuItem "Search".
    * @param ActionListener listens to user input
    * @param DISPOSE_ON_CLOSE clears the RAM and closes the program when it is complete.
    */
@@ -176,6 +188,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * 
    * @param group This holds the group of buttons.
    * @param okButton This button allows the suer to submit his choice.
+   * @param closeButton This button allows the user to close the dialogue box.
+   * @param e points to the ActionEvent class.
    * @param title,pickLabel Label for titles.
    */ 
   public void specifySort ()
@@ -240,7 +254,16 @@ public class DataBaseApp extends JFrame implements ActionListener
         
         sortDialogue.dispose();
         r.sorter();
+<<<<<<< HEAD
         r.tableView ();
+=======
+        setSize (600,(80+(BookRecord.recNum*20)));
+        r.tableView ();
+        currentView = "Chart";
+        invalidate();
+        validate();
+        repaint();
+>>>>>>> 116ff89466c681b3230daab30fc21ae7422fa3c1
       }
     });
   }
@@ -252,6 +275,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param okButton This button allows the suer to submit his choice.
    * @param closeButton This button allows the user to close the dialogue box.
    * @param group2 This holds the second group of buttons.
+   * @param searchLabel creates a new label.
+   * @param e points to the ActionEvent class.
    */ 
   public void specifySearch()
   {
@@ -340,6 +365,12 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.searchText = searchField.getText ();
         searchBox.dispose();    
         r.searcher();
+        setSize (600,(80+(BookRecord.recNum*20)));
+        r.tableView ();
+        currentView = "Chart";
+        invalidate();
+        validate();
+        repaint();
       }
     });
   }
@@ -357,7 +388,16 @@ public class DataBaseApp extends JFrame implements ActionListener
       r.saveChecker();
       r.newDatabase();
       r.fileName = null;
-      r.fieldView();
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+      }
       r.updateDisplay();
     }
     
@@ -368,7 +408,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       r.saveChecker();
       r.openFile ();
-      r.fieldView();
+      if (!currentView.equals ("Browse"))
+      {
+        if (currentView.equals ("Chart") && r.admin == true)
+        {
+          r.getChartData();
+        }
+        currentView = "Browse";
+        setSize (400,550);
+        r.fieldView();
+      }
       r.updateDisplay();
     }    
     else if (ae.getActionCommand ().equals("Save"))
@@ -407,7 +456,10 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       if (!currentView.equals ("Graph"))
         currentView = "Graph";
+<<<<<<< HEAD
       
+=======
+>>>>>>> 116ff89466c681b3230daab30fc21ae7422fa3c1
       b = new BarGraph ();
       r.graphView (b);
       b.frame.setVisible (true);
@@ -415,9 +467,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand().equals("Sort")) 
     {
-      if (currentView.equals("Chart"))
-        r.getChartData();
-      specifySort ();
+        if (currentView.equals("Chart"))
+          r.getChartData();
+        specifySort ();
     }
     
     else if (ae.getActionCommand().equals("Search")) 

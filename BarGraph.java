@@ -17,7 +17,7 @@ public class BarGraph extends JPanel {
   /**
    * values holds all the data to go into the graph. (Temporary data at the moment)
    */
-  int [] values = {23, 56, 68, 100, 23, 45, 45, 25, 26, 78, 91, 12};
+  int [] values = new int [12];
   JFrame frame = new JFrame("BarGraph");
   /**
    * Constructor for the BarGraph class.
@@ -203,15 +203,4 @@ public class BarGraph extends JPanel {
       
     
   }
-
-//  /**
-//   * TEMPORARY main method to test out the class.
-//   * 
-//   * @param args - Args is a parameter pass for the main method
-//   */
-//  public static void main(String[] args) 
-//  {
-//    new BarGraph ();
-//    
-//  }
 }

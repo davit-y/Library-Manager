@@ -59,20 +59,4 @@ public class DataCheck
     return true;
   }
   
-    public static boolean checkGenre (String inputted)
-  {
-    if (inputted == null || inputted.equals(""))
-      return true;
-    
-    if (inputted.equals ("---") || inputted.equals ("Action") || inputted.equals ("Historical") || inputted.equals ("Horror") || inputted.equals ("Humour") 
-          || inputted.equals ("Kids") || inputted.equals ("Mystery") || inputted.equals ("Romance") || inputted.equals ("Sci-fi/Fantasy") 
-          || inputted.equals ("Supernatural") || inputted.equals ("Young Adult") || inputted.equals ("Other"))
-    {
-      return true;
-    }
-    else
-    {
-      return false;
-    }
-  }
 }

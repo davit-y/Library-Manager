@@ -50,7 +50,7 @@ public class RecordManager extends JPanel implements ActionListener
       /**
    * LOGINOK (String) stores a string used to reference the ok button.
    */
-  static final private String LOGINOK = "Log In OK";
+  static final String LOGINOK = "Log In OK";
   /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
@@ -120,11 +120,11 @@ public class RecordManager extends JPanel implements ActionListener
    */
   String [] genreBoxItems = {"---", "Action", "Historical", "Horror", "Humour", "Kids", "Mystery", "Romance", "Sci-fi/Fantasy", "Supernatural", "Young Adult", "Other"};
   /**
-   * This is a boolean statement that holds weather or not the current record has been saved.
+   * This is a boolean statement that holds whether or not the current record has been saved.
    */ 
   boolean recSaved;
   /**
-   * 
+   * This is a boolean statement that holds whether or not the current file has been saved.
    */
   boolean fileSaved = true;
   /**
@@ -167,6 +167,10 @@ public class RecordManager extends JPanel implements ActionListener
    *The constructor creates a new entry in the array list and starts the display method.
    */
   SearchAndSort s = new SearchAndSort ();
+   /**
+   *The constructor creates a new entry in the array list and starts the display method.
+   */
+  DataBaseApp dba;
   /**
    *Boolean variable to identify whether the JTable is sorted.
    */ 
@@ -199,6 +203,9 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
+  /**
+   * This is a boolean statement that holds whether or not the correct password has been entered.
+   */
   boolean successPass;
   
   
@@ -207,112 +214,24 @@ public class RecordManager extends JPanel implements ActionListener
     recSaved = true;
     fileSaved = true;
     currentRec = 0;
-    usernameOpener ();
   }
   
   /**
-   * This method opens the username screen.
+   * This method lets the user change the password.
    * 
-   * @param help this button displays useful tips to the user.
-   * @param ok this button let's the user continue into the program.
-   */ 
-  public void usernameOpener ()
-  {  
-    add (thePanel);
-    thePanel.setPreferredSize (new Dimension (400,500));
-    thePanel.setLayout (null);
-    
-    JButton ok = new JButton ("OK");
-    ok.setBounds (270,200,51,30);
-    ok.setActionCommand ("Log In OK");
-    ok.setToolTipText ("Log In");
-    ok.addActionListener (this);
-    thePanel.add(ok);
-        
-    JButton help = new JButton ("?");
-    help.setBounds (321,200,41,30);
-    help.setActionCommand ("Log In Help");
-    help.setToolTipText ("Help");
-    help.addActionListener (this);
-    thePanel.add(help);
-    
-    usernameField = new JTextField ();
-    usernameField.setBounds(20, 200, 250, 30);
-    thePanel.add (usernameField);
-    
-    Icon icon = new ImageIcon(".//Graphics/Username.gif");
-    JLabel label = new JLabel(icon);
-    label.setBounds (0,0,400,500);
-    thePanel.add (label);
-  }
-  
-  public void adminLogin ()
-  {
-    successPass = false;
-    d = new JDialog ();
-    d.setSize (500, 300);
-    d.setResizable (false);
-    d.setLayout (new FlowLayout());
-    
-    JLabel enterPass = new JLabel ("You are attempting to log in as admin. Please enter the password (CASE SENSITIVE) :");
-    final JTextField PASSFIELD = new JTextField (20);
-    JButton ok = new JButton ("OK");
-    JButton cancel = new JButton ("Cancel");
-    d.add (enterPass);
-    d.add (PASSFIELD);
-    d.add (ok);
-    d.add (cancel);
-    d.setVisible (true);
-    ok.addActionListener (new ActionListener ()
-                            {
-      public void actionPerformed (ActionEvent e)
-      {
-        try
-        {
-          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (PASSFIELD.getText ()))
-          {
-            successPass = true;
-            JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
-            admin = true;
-          }
-          else
-          {
-            JOptionPane.showMessageDialog (thePanel, "Wrong password. Please try again.", "Failed to Log-In", JOptionPane.ERROR_MESSAGE);
-          }
-          d.dispose ();
-          continueLogIn ();
-        }
-        catch (Exception no)
-        {
-        }
-      }
-    });
-    cancel.addActionListener (new ActionListener ()
-                                {
-      public void actionPerformed (ActionEvent e)
-      {
-        d.dispose ();
-      }});
-    
-  }
-  
-  public void continueLogIn ()
-  {
-    if (successPass)
-    {
-      newDatabase ();
-      fieldView ();
-      this.invalidate();
-    this.validate();
-    this.repaint();
-    }
-    else
-    {
-      adminLogin ();
-    }
-  }
-  
+   * @param changePassword1 creates a new JLabel.
+   * @param changePassword2 creates a new JLabel.
+   * @param changePassword3 creates a new JLabel.
+   * @param changePassword4 creates a new JLabel.
+   * @param OLDPASSFIELD creates a new JTextField.
+   * @param NEWPASSFIELD creates a new JTextField.
+   * @param NEWPASSFIELD2 creates a new JTextField.
+   * @param ok creates a new JButton.
+   * @param cancel creates a new JButton.
+   * @param newPassFile writes the new password into the file.
+   * @param e points to the ActionEvent class.
+   * @param ie is for the IOException.
+   */
   public void changePassword ()
   {
     d = new JDialog ();
@@ -389,6 +308,26 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+  
+//  public void printDatabase ()
+//  {
+//    Print p = new Print ();
+//    p.println ("Data in Library Manager");
+//    p.println ();
+//    for (int x = 0; x < BookRecord.recNum; x ++)
+//    {
+//      p.println ("Record Number: " + x);
+//      p.println ("Book Title: " + book.get(x).getTitle());
+//      p.println ("Author Name: " + book.get(x).getAuthor());
+//      p.println ("Book Genre: " + book.get(x).getGenre());
+//      p.println ("Location: " + book.get(x).getLocation());
+//      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
+//      p.println ("Return Date: " + book.get(x).getReturnDate());
+//      p.println ();
+//    }
+//  }
+  
+  
   /**
    * Switches from an alternate view to the textfield view.
    * 
@@ -399,7 +338,7 @@ public class RecordManager extends JPanel implements ActionListener
   {
     thePanel.removeAll();
     thePanel.setLayout(null);
-    
+    thePanel.setPreferredSize(new Dimension (400,500));
     entryLabel = new JLabel ("Entry " + (currentRec + 1) + " of " + BookRecord.recNum);
     entryLabel.setFont (new Font ("Calibri", Font.PLAIN, 24)); 
     
@@ -436,8 +375,41 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add (bg);
   }
 
-
-    /**
+  /**
+   * Switches from an alternate view to the JTable view, and creates the JTable.
+   * 
+   * @param tableModel sets the table model for the JTable.
+   * @param scroll creates a scroll bar.
+   */
+  public void tableView() 
+  {
+    thePanel.removeAll();
+    thePanel.setLayout(new BorderLayout());
+    thePanel.setPreferredSize(new Dimension (580,(80+(BookRecord.recNum*20))));
+    createColumns();
+    createData();
+    DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
+    myTable.setModel (tableModel);
+    myTable.setColumnSelectionAllowed(false);
+    myTable.setCellSelectionEnabled(false);
+    myTable.setRowSelectionAllowed(false);
+    myTable.setRowHeight(20);
+    myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
+    myTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+    myTable.getColumnModel().getColumn(1).setPreferredWidth(140);
+    myTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+    myTable.getColumnModel().getColumn(3).setPreferredWidth(78);
+    myTable.getColumnModel().getColumn(4).setPreferredWidth(87);
+    myTable.getColumnModel().getColumn(6).setPreferredWidth(73);
+    myTable.setShowVerticalLines(true);
+    myTable.setShowHorizontalLines(true);
+    myTable.setGridColor(Color.LIGHT_GRAY);
+    
+    JScrollPane scroll = new JScrollPane (myTable);
+    thePanel.add(scroll, BorderLayout.CENTER);
+  }
+  
+  /**
    * This method creates the toolbar.
    * 
    * @param button This is a new JButton.
@@ -628,9 +600,6 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param tempBDate stores the borrow date
    * @param tempRDate stores the return date
-   * @param returnDay stores the day the book is returned from 1-28/29/30/31
-   * @param returnMonth stores the month the book is returned from 1-12
-   * @param returnYear stores the year the book is returned
    * @param dateFormat stores the format the date is displayed
    * @param date gets the current date
    * @param isLeapYear true if the year is a leap year, false if not
@@ -661,6 +630,15 @@ public class RecordManager extends JPanel implements ActionListener
     
   }
   
+  /**
+   * Determines the return date based off of the borrow date.
+   * 
+   * @param returnDay stores the day the book is returned from 1-28/29/30/31.
+   * @param returnMonth stores the month the book is returned from 1-12.
+   * @param returnYear stores the year the book is returned.
+   * @param tempBDate gets the borrow date that the return date is based off of.
+   * @param tempRDate stores the new return date.
+   */
   public String determineReturnDate (String tempBDate)
   {
     int returnDay = 0;
@@ -731,6 +709,9 @@ public class RecordManager extends JPanel implements ActionListener
     return (tempRDate + returnYear);
   }
   
+  /**
+   * Returns the book to the library and clears the borrow date data and the location data.
+   */
   public void returnBook ()
   {
     if (!(book.get(currentRec).getBorrowDate() == null || book.get(currentRec).getBorrowDate().equals ("")))
@@ -1050,51 +1031,19 @@ public class RecordManager extends JPanel implements ActionListener
   }
   
   /**
-   * Switches from an alternate view to the JTable view, and creates the JTable.
-   * 
-   * @param tableModel sets the table model for the JTable.
-   * @param scroll creates a scroll bar.
-   */
-  public void tableView() 
-  {
-    thePanel.removeAll();
-    thePanel.setLayout(new BorderLayout());
-    createColumns();
-    createData();
-    DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
-    myTable.setModel (tableModel);
-    myTable.setColumnSelectionAllowed(false);
-    myTable.setCellSelectionEnabled(true);
-    myTable.setRowSelectionAllowed(true);
-    myTable.setRowHeight(20);
-    myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
-    myTable.setShowVerticalLines(true);
-    myTable.setShowHorizontalLines(true);
-    
-    myTable.setSelectionForeground(Color.red);
-    myTable.setSelectionBackground(Color.orange);
-    myTable.setGridColor(Color.blue);
-    
-    JScrollPane scroll = new JScrollPane(myTable);
-    thePanel.add(scroll, BorderLayout.CENTER);
-  }
-  
-  /**
    * Sets the name of the columns.
    */
   private void createColumns ()
   {
     columnNames = new Object [7];
     
-    columnNames [0] = "Record Number";
+    columnNames [0] = "#";
     columnNames [1] = "Book Title";
     columnNames [2] = "Author Name";
     columnNames [3] = "Genre";
     columnNames [4] = "Location";
     columnNames [5] = "Borrow Date";
     columnNames [6] = "Return Date";
-    
-
   }
   
   /**
@@ -1182,7 +1131,7 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param original Holds the unsorted array.
    */ 
-  public void sorter ()
+public void sorter ()
   {
     order = new int [BookRecord.recNum];
     for (int i = 0; i < BookRecord.recNum; i++)
@@ -1295,11 +1244,16 @@ public class RecordManager extends JPanel implements ActionListener
     amountFound = 0;
   }  
   
-  
+  /**
+   * Sends the data to the BarGraph class.
+   * 
+   * @param b points to the BarGraph class.
+   */
   public void graphView (BarGraph b)
   {
     b.countValues (book);
   }
+  
   /**
    * Runs the appropriate method according to the action of the user input.
    * 
@@ -1338,25 +1292,6 @@ public class RecordManager extends JPanel implements ActionListener
     else if (RETURN.equals (cmd))
     {
       returnBook ();
-    }
-    else if (LOGINHELP.equals(cmd))
-    {
-      JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);  
-    }
-    else if (LOGINOK.equals(cmd))
-    {
-      username = usernameField.getText ();
-//      if (username.equals ("admin"))
-//        adminLogin();
-//      else
-//      {
-//        successPass = true;
-//        admin = false;
-//        continueLogIn ();
-//      }
-      toolbarMaker();
-      successPass = true;
-      continueLogIn ();
     }
     this.invalidate();
     this.validate();
