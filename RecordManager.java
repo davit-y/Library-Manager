@@ -1226,6 +1226,7 @@ public class RecordManager extends JPanel implements ActionListener
     {
       tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
       tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
+      tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
       tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
       if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
       {
