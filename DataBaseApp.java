@@ -611,6 +611,21 @@ public class DataBaseApp extends JFrame implements ActionListener
       r.updateDisplay();
     }
     
+<<<<<<< HEAD
+=======
+    else if (ae.getActionCommand ().equals("About"))
+    {
+      String progpath = new String ("hh.exe about.chm");
+      try
+      {
+        Runtime.getRuntime ().exec (progpath);
+      }
+      catch (Exception e)
+      {
+        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
+      }
+    }
+>>>>>>> c7352c6ce140e5c33b3aafb37435f4d27703bb96
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
