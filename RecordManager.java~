@@ -2,7 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.io.*; 
+import java.io.*;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -43,14 +43,6 @@ public class RecordManager extends JPanel implements ActionListener
    * toolBarTop This is the toolbar at the top of the window.
    */ 
   JToolBar toolBarTop = new JToolBar ("Top Bar");
-    /**
-   * LOGINHELP (String) stores a string used to reference the help button.
-   */
-  static final private String LOGINHELP = "Log In Help";
-      /**
-   * LOGINOK (String) stores a string used to reference the ok button.
-   */
-  static final String LOGINOK = "Log In OK";
   /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
@@ -83,10 +75,6 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable holds the username of the current user.
    */ 
   String username;
-   /**
-   * This text field allows he user to input their username.
-   */ 
-  JTextField usernameField;
   /**
    * entryLabel (JLabel) points to the JLabel class.
    */
@@ -155,7 +143,7 @@ public class RecordManager extends JPanel implements ActionListener
    * myTable creates a new JTable
    */
   JTable myTable = new JTable ();
-    /**
+  /**
    * This is the order of the records to be displayed
    */
   int [] order;
@@ -167,7 +155,7 @@ public class RecordManager extends JPanel implements ActionListener
    *The constructor creates a new entry in the array list and starts the display method.
    */
   SearchAndSort s = new SearchAndSort ();
-   /**
+  /**
    *The constructor creates a new entry in the array list and starts the display method.
    */
   DataBaseApp dba;
@@ -203,10 +191,6 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
-  /**
-   * This is a boolean statement that holds whether or not the correct password has been entered.
-   */
-  boolean successPass;
   
   
   public RecordManager ()
@@ -235,8 +219,8 @@ public class RecordManager extends JPanel implements ActionListener
   public void changePassword ()
   {
     d = new JDialog ();
-    d.setSize (300, 300);
-    d.setResizable (false);
+    d.setSize (300, 270);
+    d.setResizable (true);
     JLabel changePassword1 = new JLabel ("Change the admin password");
     JLabel changePassword2 = new JLabel ("Old password");
     JLabel changePassword3 = new JLabel ("New password");
@@ -268,7 +252,7 @@ public class RecordManager extends JPanel implements ActionListener
       public void actionPerformed(ActionEvent e) {
         try
         {
-        BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
           if (passFile.readLine ().equals (OLDPASSFIELD.getText ()))
           {
             if (NEWPASSFIELD.getText ().equals (NEWPASSFIELD2.getText ()))
@@ -358,7 +342,7 @@ public class RecordManager extends JPanel implements ActionListener
     locationField.setBounds (30,320,170, 25);
     borrowField.setBounds (30,380,170, 25);
     returnField.setBounds (30,440,170, 25);
-      
+    
     Icon icon = new ImageIcon(".//Graphics/TextFieldBG.jpg");
     JLabel bg = new JLabel(icon);
     bg.setBounds (0,50,400,450);
@@ -374,7 +358,7 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add (returnField);
     thePanel.add (bg);
   }
-
+  
   /**
    * Switches from an alternate view to the JTable view, and creates the JTable.
    * 
@@ -423,7 +407,7 @@ public class RecordManager extends JPanel implements ActionListener
     toolBarTop.add (button);
     button = makeNavigationButton ("next", NEXT, "Next Record", "Next");
     toolBarTop.add (button);   
-    if (admin == true)
+    if (admin)
     {
       button = makeNavigationButton ("save", SAVE, "Save Record", "Save");
       toolBarTop.add (button);
@@ -570,12 +554,12 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (!(titleField.getText ().equals ("") && recSaved == false))
     {
-        book.add (new BookRecord());
-        currentRec = BookRecord.recNum - 1;
-        updateDisplay ();
-        genreBox.setSelectedItem ("---");
-        recSaved = false;
-        fileSaved = false;
+      book.add (new BookRecord());
+      currentRec = BookRecord.recNum - 1;
+      updateDisplay ();
+      genreBox.setSelectedItem ("---");
+      recSaved = false;
+      fileSaved = false;
     }
   }
   
@@ -756,44 +740,44 @@ public class RecordManager extends JPanel implements ActionListener
   {
     if (!title.equals (""))
     {
-        if (DataCheck.checkDate (borrowD) == false)
+      if (DataCheck.checkDate (borrowD) == false)
+      {
+        borrowD = "";
+        JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
+      }
+      else if (DataCheck.checkDate (returnD) == false)
+      {
+        returnD = "";
+        JOptionPane.showMessageDialog (this, "The return date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
+      }
+      else
+      {
+        if (!(borrowD == null || borrowD.equals ("")))
         {
-          borrowD = "";
-          JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
-        }
-        else if (DataCheck.checkDate (returnD) == false)
-        {
-          returnD = "";
-          JOptionPane.showMessageDialog (this, "The return date is improperly formatted.", "INVALID DATE", JOptionPane.WARNING_MESSAGE);
+          location = "Borrowed";
+          returnD = determineReturnDate (borrowD);
         }
         else
         {
-          if (!(borrowD == null || borrowD.equals ("")))
+          if (!(location == null || location.equals ("")))
           {
-            location = "Borrowed";
-            returnD = determineReturnDate (borrowD);
-          }
-          else
-          {
-            if (!(location == null || location.equals ("")))
+            if (location.charAt (0) == 'B')
             {
-                if (location.charAt (0) == 'B')
-                {
-                  if (location.substring (0, 8).equals ("Borrowed"))
-                  {
-                    location = "";
-                  }
+              if (location.substring (0, 8).equals ("Borrowed"))
+              {
+                location = "";
               }
-              returnD = "";
             }
+            returnD = "";
           }
-          book.get(currentRec).setTitle (title);
-          book.get(currentRec).setAuthor (author);
-          book.get(currentRec).setGenre (genre);
-          book.get(currentRec).setLocation (location);
-          book.get(currentRec).setBorrowDate (borrowD);
-          book.get(currentRec).setReturnDate(returnD);
         }
+        book.get(currentRec).setTitle (title);
+        book.get(currentRec).setAuthor (author);
+        book.get(currentRec).setGenre (genre);
+        book.get(currentRec).setLocation (location);
+        book.get(currentRec).setBorrowDate (borrowD);
+        book.get(currentRec).setReturnDate(returnD);
+      }
     }
     else
       JOptionPane.showMessageDialog (this, "You must fill in at least the book title for a valid entry!", "BOOK FIELD EMPTY", JOptionPane.INFORMATION_MESSAGE);
@@ -1095,35 +1079,38 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void getChartData ()
   {
-    ArrayList <BookRecord> tempBook = new ArrayList<BookRecord>();
-    TableModel tableModel = myTable.getModel ();
-    int [] order = new int [tableModel.getRowCount ()];
-    
-    
-    for (int x = 0; x < tableModel.getRowCount () ; x++)
+    if (!(searchMode && amountFound == 0))
     {
-      tempBook.add (new BookRecord ());
-      order [x] = Integer.parseInt ((String)(tableModel.getValueAt (x, 0))) - 1;
-    }
-    
-    for (int x = 0; x < tableModel.getRowCount () ; x++)
-    {
-      tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
-      tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
-      tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
-      tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
-      if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+      ArrayList <BookRecord> tempBook = new ArrayList<BookRecord>();
+      TableModel tableModel = myTable.getModel ();
+      int [] order = new int [tableModel.getRowCount ()];
+      
+      
+      for (int x = 0; x < tableModel.getRowCount () ; x++)
       {
-        tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+        tempBook.add (new BookRecord ());
+        order [x] = Integer.parseInt ((String)(tableModel.getValueAt (x, 0))) - 1;
       }
-      if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
+      
+      for (int x = 0; x < tableModel.getRowCount () ; x++)
       {
-        tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
+        tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
+        tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
+        tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
+        tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
+        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+        {
+          tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+        }
+        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
+        {
+          tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
+        }
       }
+      
+      BookRecord.recNum = tableModel.getRowCount ();
+      book = tempBook;
     }
-    
-    BookRecord.recNum = tableModel.getRowCount ();
-    book = tempBook;
   }
   
   /**
@@ -1131,7 +1118,7 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param original Holds the unsorted array.
    */ 
-public void sorter ()
+  public void sorter ()
   {
     order = new int [BookRecord.recNum];
     for (int i = 0; i < BookRecord.recNum; i++)
@@ -1144,7 +1131,7 @@ public void sorter ()
       {
         if (sortWhichField == 1)
         {
-                    if ((book.get(i).getTitle()).equals (""))
+          if ((book.get(i).getTitle()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getTitle()).toUpperCase();
@@ -1152,7 +1139,7 @@ public void sorter ()
         }
         else if (sortWhichField == 2)
         {
-                    if ((book.get(i).getAuthor()).equals (""))
+          if ((book.get(i).getAuthor()).equals (""))
             original [i] = " ";
           else
             original [i] = (book.get(i).getAuthor());
@@ -1171,14 +1158,14 @@ public void sorter ()
           else
             original [i] = (book.get(i).getLocation()).toUpperCase();
         }
-         else if (sortWhichField == 5)
+        else if (sortWhichField == 5)
         {
           if ((book.get(i).getBorrowDate()).equals (""))
             original [i] = (" ");
           else
             original [i] = (book.get(i).getBorrowDate()).toUpperCase();
         }
-         else if (sortWhichField == 4)
+        else if (sortWhichField == 4)
         {
           if ((book.get(i).getReturnDate()).equals (""))
             original [i] = (" ");
@@ -1186,7 +1173,7 @@ public void sorter ()
             original [i] = (book.get(i).getReturnDate()).toUpperCase();
         }
       } 
-        order = s.bubbleSort (original);
+      order = s.bubbleSort (original);
     }
   }
   /**
@@ -1209,7 +1196,11 @@ public void sorter ()
         else if (searchWhichField == 3)
           original [i] = (book.get(i).getGenre()).toUpperCase();
         else if (searchWhichField == 4)
-          original [i] = (book.get(i).getLocation());
+          original [i] = (book.get(i).getLocation()).toUpperCase();
+        else if (searchWhichField == 5)
+          original [i] = (book.get(i).getBorrowDate()).toUpperCase();
+        else if (searchWhichField == 6)
+          original [i] = (book.get(i).getReturnDate()).toUpperCase();
       }
     }
     else
@@ -1223,8 +1214,11 @@ public void sorter ()
         else if (searchWhichField == 3)
           original [i] = (book.get(i).getGenre()).toUpperCase() + "                                            ";
         else if (searchWhichField == 4)
-          original [i] = (book.get(i).getLocation() + "                                            ");
-        
+          original [i] = (book.get(i).getLocation()).toUpperCase() + "                                            ";
+        else if (searchWhichField == 5)
+          original [i] = (book.get(i).getBorrowDate()).toUpperCase() + "                                            ";
+        else if (searchWhichField == 6)
+          original [i] = (book.get(i).getReturnDate()).toUpperCase() + "                                            ";
         original [i] = original[i].substring (0,searchText.length());
       }
     }

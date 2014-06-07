@@ -130,6 +130,14 @@ public class DataBaseApp extends JFrame implements ActionListener
    * a Instance of the BarGraph class.
    */ 
   BarGraph b;
+    /**
+   * This is a boolean statement that holds whether or not the correct password has been entered.
+   */
+  boolean successPass;
+     /**
+   * This text field allows he user to input their username.
+   */ 
+  JTextField usernameField;
   
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
@@ -157,7 +165,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+   // SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -257,9 +265,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     help.addActionListener (this);
     r.thePanel.add(help);
     
-    r.usernameField = new JTextField ();
-    r.usernameField.setBounds(20, 200, 250, 30);
-    r.thePanel.add (r.usernameField);
+    usernameField = new JTextField ();
+    usernameField.setBounds(20, 200, 250, 30);
+    r.thePanel.add (usernameField);
     
     Icon icon = new ImageIcon(".//Graphics/Username.gif");
     JLabel label = new JLabel(icon);
@@ -280,7 +288,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public void adminLogin ()
   {
-    r.successPass = false;
+    successPass = false;
     d = new JDialog ();
     d.setLocationRelativeTo (null);
     d.setSize (450, 100);
@@ -306,12 +314,12 @@ public class DataBaseApp extends JFrame implements ActionListener
           BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
           if (passFile.readLine ().equals (passField.getText ()))
           {
-            r.successPass = true;
+            successPass = true;
             r.admin = true;
             buttonEnable ("enable all");
           }
           else
-            JOptionPane.showMessageDialog (d, "Please enter a previously used username. If this is your first time using this application ","Help", JOptionPane.WARNING_MESSAGE);  
+            JOptionPane.showMessageDialog (d, "That password is incorrect, please try again.","Password Error", JOptionPane.WARNING_MESSAGE);  
           d.dispose ();
           continueLogIn ();
         }
@@ -333,7 +341,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public void continueLogIn ()
   {
-    if (r.successPass)
+    if (successPass)
     {
       r.newDatabase ();
       r.fieldView ();
@@ -429,51 +437,6 @@ public class DataBaseApp extends JFrame implements ActionListener
   }
   
   /**
-   * This method disables all menus items.
-   */ 
-  public void buttonEnable (String choice)
-  {
-    if (choice.equals ("disable all"))
-    {
-      newItem.setEnabled(false);
-      saveItem.setEnabled(false);
-      saveAsItem.setEnabled(false);
-      openItem.setEnabled(false);
-      signOutItem.setEnabled(false);
-      passItem.setEnabled(false);
-      chartItem.setEnabled(false);
-      browseItem.setEnabled(false);
-      graphItem.setEnabled(false);
-      sortItem.setEnabled(false);
-      searchItem.setEnabled(false);
-    }
-    if (choice.equals ("enable guest"))
-    {
-      openItem.setEnabled(true);
-      signOutItem.setEnabled(true);
-      chartItem.setEnabled(true);
-      browseItem.setEnabled(true);
-      graphItem.setEnabled(true);
-      sortItem.setEnabled(true);
-      searchItem.setEnabled(true);
-    }
-    if (choice.equals ("enable all"))
-    {
-      newItem.setEnabled(true);
-      saveItem.setEnabled(true);
-      saveAsItem.setEnabled(true);
-      openItem.setEnabled(true);
-      signOutItem.setEnabled(true);
-      passItem.setEnabled(true);
-      chartItem.setEnabled(true);
-      browseItem.setEnabled(true);
-      graphItem.setEnabled(true);
-      sortItem.setEnabled(true);
-      searchItem.setEnabled(true);
-    }
-  }
-  
-  /**
    * This method opens a dialogue box to choose what to search.
    * 
    * @param group This holds the group of buttons.
@@ -507,7 +470,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     searchGenre = new JRadioButton ("Genre");
     searchBorrow = new JRadioButton ("Borrow Date");
     searchReturn = new JRadioButton ("Return Date");
-    partialSearch = new JRadioButton ("Partial Search");
+    partialSearch = new JRadioButton ("Begins With");
     wholeSearch = new JRadioButton ("Entire Field");
     
     group.add(searchTitle);
@@ -567,11 +530,10 @@ public class DataBaseApp extends JFrame implements ActionListener
         if (wholeSearch.isSelected ())
           r.partialOrWhole = 2;
         
-        r.searchText = searchField.getText ();
+        r.searchText = (searchField.getText()).toUpperCase();
         searchBox.dispose();    
         r.searcher();
         setSize (600,(80+(BookRecord.recNum*20)));
-        r.tableView ();
         currentView = "Chart";
         invalidate();
         validate();
@@ -580,6 +542,50 @@ public class DataBaseApp extends JFrame implements ActionListener
     });
   }
   
+    /**
+   * This method disables all menus items.
+   */ 
+  public void buttonEnable (String choice)
+  {
+    if (choice.equals ("disable all"))
+    {
+      newItem.setEnabled(false);
+      saveItem.setEnabled(false);
+      saveAsItem.setEnabled(false);
+      openItem.setEnabled(false);
+      signOutItem.setEnabled(false);
+      passItem.setEnabled(false);
+      chartItem.setEnabled(false);
+      browseItem.setEnabled(false);
+      graphItem.setEnabled(false);
+      sortItem.setEnabled(false);
+      searchItem.setEnabled(false);
+    }
+    if (choice.equals ("enable guest"))
+    {
+      openItem.setEnabled(true);
+      signOutItem.setEnabled(true);
+      chartItem.setEnabled(true);
+      browseItem.setEnabled(true);
+      graphItem.setEnabled(true);
+      sortItem.setEnabled(true);
+      searchItem.setEnabled(true);
+    }
+    if (choice.equals ("enable all"))
+    {
+      newItem.setEnabled(true);
+      saveItem.setEnabled(true);
+      saveAsItem.setEnabled(true);
+      openItem.setEnabled(true);
+      signOutItem.setEnabled(true);
+      passItem.setEnabled(true);
+      chartItem.setEnabled(true);
+      browseItem.setEnabled(true);
+      graphItem.setEnabled(true);
+      sortItem.setEnabled(true);
+      searchItem.setEnabled(true);
+    }
+  }
     
   /**
    * This method assigns actions to buttons based on user input.
@@ -708,14 +714,19 @@ public class DataBaseApp extends JFrame implements ActionListener
     }
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-      r.username = r.usernameField.getText ();
-      if (r.username.equals (""))
+      r.username = usernameField.getText ();
+      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+            (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+            (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+            r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+      {
         JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+      }
       else if (r.username.equals ("admin"))
         adminLogin();
       else
       {
-        r.successPass = true;
+        successPass = true;
         r.admin = false;
         buttonEnable("enable guest");
         continueLogIn ();
