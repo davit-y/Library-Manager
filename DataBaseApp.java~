@@ -108,7 +108,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+    //SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -250,7 +250,9 @@ public class DataBaseApp extends JFrame implements ActionListener
         
         sortDialogue.dispose();
         r.sorter();
+        setSize (600,(80+(BookRecord.recNum*20)));
         r.tableView ();
+        currentView = "Chart";
         invalidate();
         validate();
         repaint();
@@ -355,8 +357,10 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.searchText = searchField.getText ();
         searchBox.dispose();    
         r.searcher();
+        setSize (600,(80+(BookRecord.recNum*20)));
         r.tableView ();
-                invalidate();
+        currentView = "Chart";
+        invalidate();
         validate();
         repaint();
       }

@@ -50,7 +50,7 @@ public class RecordManager extends JPanel implements ActionListener
       /**
    * LOGINOK (String) stores a string used to reference the ok button.
    */
-  static final private String LOGINOK = "Log In OK";
+  static final String LOGINOK = "Log In OK";
   /**
    * PREVIOUS (String) stores a string used to reference the button.
    */
@@ -167,6 +167,10 @@ public class RecordManager extends JPanel implements ActionListener
    *The constructor creates a new entry in the array list and starts the display method.
    */
   SearchAndSort s = new SearchAndSort ();
+   /**
+   *The constructor creates a new entry in the array list and starts the display method.
+   */
+  DataBaseApp dba;
   /**
    *Boolean variable to identify whether the JTable is sorted.
    */ 
@@ -210,126 +214,6 @@ public class RecordManager extends JPanel implements ActionListener
     recSaved = true;
     fileSaved = true;
     currentRec = 0;
-    usernameOpener ();
-  }
-  
-  /**
-   * This method opens the username screen.
-   * 
-   * @param help this button displays useful tips to the user.
-   * @param ok this button let's the user continue into the program.
-   * @param icon creates the background.
-   * @param label creates a new JLabel.
-   */ 
-  public void usernameOpener ()
-  {  
-    add (thePanel);
-    thePanel.setPreferredSize (new Dimension (400,500));
-    thePanel.setLayout (null);
-    
-    JButton ok = new JButton ("OK");
-    ok.setBounds (270,200,51,30);
-    ok.setActionCommand ("Log In OK");
-    ok.setToolTipText ("Log In");
-    ok.addActionListener (this);
-    thePanel.add(ok);
-        
-    JButton help = new JButton ("?");
-    help.setBounds (321,200,41,30);
-    help.setActionCommand ("Log In Help");
-    help.setToolTipText ("Help");
-    help.addActionListener (this);
-    thePanel.add(help);
-    
-    usernameField = new JTextField ();
-    usernameField.setBounds(20, 200, 250, 30);
-    thePanel.add (usernameField);
-    
-    Icon icon = new ImageIcon(".//Graphics/Username.gif");
-    JLabel label = new JLabel(icon);
-    label.setBounds (0,0,400,500);
-    thePanel.add (label);
-  }
-  
-  /**
-   * This method triggers the JDialog in which the admin enters their password.
-   * 
-   * @param enterPass creates a new JLabel.
-   * @param ok creates a new JButton.
-   * @param cancel creates a new JButton.
-   * @param PASSFIELD creates a new JTextField.
-   * @param e points to the ActionEvent class.
-   * @param passFile opens the password file.
-   * @param no is for the IOException.
-   */
-  public void adminLogin ()
-  {
-    successPass = false;
-    d = new JDialog ();
-    d.setSize (500, 300);
-    d.setResizable (false);
-    d.setLayout (new FlowLayout());
-    
-    JLabel enterPass = new JLabel ("You are attempting to log in as admin. Please enter the password (CASE SENSITIVE) :");
-    final JTextField PASSFIELD = new JTextField (20);
-    JButton ok = new JButton ("OK");
-    JButton cancel = new JButton ("Cancel");
-    d.add (enterPass);
-    d.add (PASSFIELD);
-    d.add (ok);
-    d.add (cancel);
-    d.setVisible (true);
-    ok.addActionListener (new ActionListener ()
-                            {
-      public void actionPerformed (ActionEvent e)
-      {
-        try
-        {
-          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (PASSFIELD.getText ()))
-          {
-            successPass = true;
-            JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
-            admin = true;
-          }
-          else
-          {
-            JOptionPane.showMessageDialog (thePanel, "Wrong password. Please try again.", "Failed to Log-In", JOptionPane.ERROR_MESSAGE);
-          }
-          d.dispose ();
-          continueLogIn ();
-        }
-        catch (IOException no)
-        {
-        }
-      }
-    });
-    cancel.addActionListener (new ActionListener ()
-                                {
-      public void actionPerformed (ActionEvent e)
-      {
-        d.dispose ();
-      }});
-    
-  }
-  
-  /**
-   * This method either lets the user use the program or repeats the admin login process whether or not the password was correct.
-   */
-  public void continueLogIn ()
-  {
-    if (successPass)
-    {
-      newDatabase ();
-      fieldView ();
-      this.invalidate();
-      this.validate();
-      this.repaint();
-    }
-    else
-    {
-      adminLogin ();
-    }
   }
   
   /**
@@ -1408,23 +1292,6 @@ public void sorter ()
     else if (RETURN.equals (cmd))
     {
       returnBook ();
-    }
-    else if (LOGINHELP.equals(cmd))
-    {
-      JOptionPane.showMessageDialog (this, "The borrow date is improperly formatted.", "INVALID DATE", JOptionPane.INFORMATION_MESSAGE);  
-    }
-    else if (LOGINOK.equals(cmd))
-    {
-      username = usernameField.getText ();
-      if (username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        admin = false;
-        continueLogIn ();
-      }
-      toolbarMaker();
     }
     this.invalidate();
     this.validate();

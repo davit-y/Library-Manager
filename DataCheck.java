@@ -58,5 +58,4 @@ public class DataCheck
     
     return true;
   }
-  
 }
