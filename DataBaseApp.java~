@@ -113,6 +113,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem saveAsItem = new JMenuItem ("Save As");
     JMenuItem openItem = new JMenuItem ("Open");
     JMenuItem signOutItem = new JMenuItem ("Sign Out");
+    JMenuItem passItem = new JMenuItem ("Change Admin Password");
     JMenuItem chartItem = new JMenuItem("Chart");
     JMenuItem browseItem = new JMenuItem("Browse");
     JMenuItem graphItem = new JMenuItem ("Graph");
@@ -124,6 +125,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
     fileMenu.add (signOutItem);
+    fileMenu.add (passItem);
     fileMenu.add (quitItem);
     helpMenu.add (helpItem);
     helpMenu.add (aboutItem);
@@ -150,6 +152,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveItem.addActionListener (this);
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
+    passItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -177,12 +180,13 @@ public class DataBaseApp extends JFrame implements ActionListener
   public void chooseSort()
   {
     sortBox = new JDialog (this,"Field");
+    sortBox.setSize (80,480);
     sortBox.setResizable (false);
     ButtonGroup group = new ButtonGroup ();
     JButton okButton = new JButton ("Ok");
     JButton closeButton = new JButton("Close");  
     
-    sortBox.setSize (80,480);
+    
     sortTitle = new JRadioButton ("Title");
     sortAuthor = new JRadioButton ("Author");
     sortGenre = new JRadioButton ("Genre");
@@ -198,7 +202,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     group.add(sortReturn);
 
     sortBox.setLayout (new FlowLayout(FlowLayout.LEADING));
-    sortBox.setVisible (true);
     sortBox.add(sortGenre);
     sortBox.add(sortLocation);
     sortBox.add(sortTitle);
@@ -247,6 +250,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         sortBox.dispose();
       }
     });
+    sortBox.setVisible (true);
   }  
   
   /**
@@ -364,10 +368,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals("About"))
       JOptionPane.showMessageDialog(this,"Program by JDL");
-<<<<<<< HEAD
-      
-=======
->>>>>>> 16a7824889f49a8dcaa75c519b4a527f3b5c4cee
+
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -388,6 +389,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         currentView = "Chart";
         r.sortWhichField = 0;
         //if (r.recSaved)
+        setSize (600,550);
           r.tableView();
       }
     }
@@ -395,12 +397,12 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       if (!currentView.equals ("Text"))
       {
-        if (currentView.equals ("Chart"))
+        if (currentView.equals ("Chart") && r.admin == true)
         {
           r.getChartData();
         }
         currentView = "Text";
-        
+        setSize (400,550);
         r.fieldView();
         r.updateDisplay();
       }
@@ -445,6 +447,13 @@ public class DataBaseApp extends JFrame implements ActionListener
     {
       r.saveChecker();
       System.exit (0);
+    }
+    else if (ae.getActionCommand ().equals ("Change Admin Password"))
+    {
+      if (r.admin)
+      {
+        r.changePassword ();
+      }
     }
     this.invalidate();
     this.validate();

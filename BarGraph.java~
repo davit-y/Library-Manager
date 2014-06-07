@@ -214,8 +214,4 @@ public class BarGraph extends JPanel {
 //    new BarGraph ();
 //    
 //  }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> d1fa3aa2cb46faeea4353d97670feaa1e101a1af
