@@ -491,7 +491,40 @@ public class RecordManager extends JPanel implements ActionListener
     thePanel.add (bg);
   }
 
-
+  /**
+   * Switches from an alternate view to the JTable view, and creates the JTable.
+   * 
+   * @param tableModel sets the table model for the JTable.
+   * @param scroll creates a scroll bar.
+   */
+  public void tableView() 
+  {
+    thePanel.removeAll();
+    thePanel.setLayout(new BorderLayout());
+    thePanel.setPreferredSize(new Dimension (580,(80+(BookRecord.recNum*20))));
+    createColumns();
+    createData();
+    DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
+    myTable.setModel (tableModel);
+    myTable.setColumnSelectionAllowed(false);
+    myTable.setCellSelectionEnabled(false);
+    myTable.setRowSelectionAllowed(false);
+    myTable.setRowHeight(20);
+    myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
+    myTable.getColumnModel().getColumn(0).setPreferredWidth(25);
+    myTable.getColumnModel().getColumn(1).setPreferredWidth(140);
+    myTable.getColumnModel().getColumn(2).setPreferredWidth(100);
+    myTable.getColumnModel().getColumn(3).setPreferredWidth(78);
+    myTable.getColumnModel().getColumn(4).setPreferredWidth(87);
+    myTable.getColumnModel().getColumn(6).setPreferredWidth(73);
+    myTable.setShowVerticalLines(true);
+    myTable.setShowHorizontalLines(true);
+    myTable.setGridColor(Color.LIGHT_GRAY);
+    
+    JScrollPane scroll = new JScrollPane (myTable);
+    thePanel.add(scroll, BorderLayout.CENTER);
+  }
+  
   /**
    * This method creates the toolbar.
    * 
@@ -1111,40 +1144,6 @@ public class RecordManager extends JPanel implements ActionListener
         save (fileName);
       }
     }
-  }
-  
-  /**
-   * Switches from an alternate view to the JTable view, and creates the JTable.
-   * 
-   * @param tableModel sets the table model for the JTable.
-   * @param scroll creates a scroll bar.
-   */
-  public void tableView() 
-  {
-    thePanel.removeAll();
-    thePanel.setLayout(new BorderLayout());
-    thePanel.setPreferredSize(new Dimension (580,(80+(BookRecord.recNum*20))));
-    createColumns();
-    createData();
-    DefaultTableModel tableModel = new DefaultTableModel (dataValues, columnNames);
-    myTable.setModel (tableModel);
-    myTable.setColumnSelectionAllowed(false);
-    myTable.setCellSelectionEnabled(false);
-    myTable.setRowSelectionAllowed(false);
-    myTable.setRowHeight(20);
-    myTable.setAutoResizeMode (JTable.AUTO_RESIZE_OFF);
-    myTable.getColumnModel().getColumn(0).setPreferredWidth(25);
-    myTable.getColumnModel().getColumn(1).setPreferredWidth(140);
-    myTable.getColumnModel().getColumn(2).setPreferredWidth(100);
-    myTable.getColumnModel().getColumn(3).setPreferredWidth(78);
-    myTable.getColumnModel().getColumn(4).setPreferredWidth(87);
-    myTable.getColumnModel().getColumn(6).setPreferredWidth(73);
-    myTable.setShowVerticalLines(true);
-    myTable.setShowHorizontalLines(true);
-    myTable.setGridColor(Color.LIGHT_GRAY);
-    
-    JScrollPane scroll = new JScrollPane (myTable);
-    thePanel.add(scroll, BorderLayout.CENTER);
   }
   
   /**
