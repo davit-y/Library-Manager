@@ -552,7 +552,6 @@ public class DataBaseApp extends JFrame implements ActionListener
         searchBox.dispose();    
         r.searcher();
         setSize (600,(80+(BookRecord.recNum*20)));
-        currentView = "Chart";
         invalidate();
         validate();
         repaint();
@@ -691,6 +690,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       if (currentView.equals("Chart"))
         r.getChartData();
       specifySearch ();
+      currentView = "Not Chart";
     }
     
     else if (ae.getActionCommand ().equals ("Change Password"))

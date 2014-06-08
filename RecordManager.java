@@ -1120,6 +1120,7 @@ public class RecordManager extends JPanel implements ActionListener
         if (!(myTable.getValueAt (x,1).toString().equals ("")))
         {
           tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
+          
           tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
           tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
           tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
@@ -1133,7 +1134,15 @@ public class RecordManager extends JPanel implements ActionListener
           }
         }
         else
+        {
           JOptionPane.showMessageDialog(this,"The title for book #"+ (order[x]+1) +" is empty, no changes will be made to that book.","Empty Title",JOptionPane.WARNING_MESSAGE);
+          tempBook.get(order [x]).setTitle (book.get(order [x]).getTitle ());        
+          tempBook.get(order [x]).setAuthor (book.get(order [x]).getAuthor ());
+          tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
+          tempBook.get(order [x]).setLocation (book.get(order [x]).getLocation ());
+          tempBook.get(order [x]).setBorrowDate (book.get(order [x]).getBorrowDate ());
+          tempBook.get(order [x]).setReturnDate (book.get(order [x]).getReturnDate ());
+        }
       }
       
       BookRecord.recNum = tableModel.getRowCount ();
@@ -1212,40 +1221,24 @@ public class RecordManager extends JPanel implements ActionListener
   {
     String [] original = new String [BookRecord.recNum];
     
-    if (partialOrWhole == 2)
+    for (int i = 0; i < BookRecord.recNum; i++)
     {
-      for (int i = 0; i < BookRecord.recNum; i++)
+      if (searchWhichField == 1)
+        original [i] = (book.get(i).getTitle()).toUpperCase();
+      else if (searchWhichField == 2)
+        original [i] = (book.get(i).getAuthor()).toUpperCase();
+      else if (searchWhichField == 3)
+        original [i] = (book.get(i).getGenre()).toUpperCase();
+      else if (searchWhichField == 4)
+        original [i] = (book.get(i).getLocation()).toUpperCase();
+      else if (searchWhichField == 5)
+        original [i] = (book.get(i).getBorrowDate()).toUpperCase();
+      else if (searchWhichField == 6)
+        original [i] = (book.get(i).getReturnDate()).toUpperCase();
+      
+      if (partialOrWhole != 2)
       {
-        if (searchWhichField == 1)
-          original [i] = (book.get(i).getTitle()).toUpperCase();
-        else if (searchWhichField == 2)
-          original [i] = (book.get(i).getAuthor()).toUpperCase();
-        else if (searchWhichField == 3)
-          original [i] = (book.get(i).getGenre()).toUpperCase();
-        else if (searchWhichField == 4)
-          original [i] = (book.get(i).getLocation()).toUpperCase();
-        else if (searchWhichField == 5)
-          original [i] = (book.get(i).getBorrowDate()).toUpperCase();
-        else if (searchWhichField == 6)
-          original [i] = (book.get(i).getReturnDate()).toUpperCase();
-      }
-    }
-    else
-    {
-      for (int i = 0; i < BookRecord.recNum; i++)
-      {
-        if (searchWhichField == 1)
-          original [i] = (book.get(i).getTitle()).toUpperCase() + "                                            ";
-        else if (searchWhichField == 2)
-          original [i] = (book.get(i).getAuthor()).toUpperCase() + "                                            ";
-        else if (searchWhichField == 3)
-          original [i] = (book.get(i).getGenre()).toUpperCase() + "                                            ";
-        else if (searchWhichField == 4)
-          original [i] = (book.get(i).getLocation()).toUpperCase() + "                                            ";
-        else if (searchWhichField == 5)
-          original [i] = (book.get(i).getBorrowDate()).toUpperCase() + "                                            ";
-        else if (searchWhichField == 6)
-          original [i] = (book.get(i).getReturnDate()).toUpperCase() + "                                            ";
+        original [i] = original [i] + "                                            ";
         original [i] = original[i].substring (0,searchText.length());
       }
     }
