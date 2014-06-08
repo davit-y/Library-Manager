@@ -94,6 +94,10 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   JMenuItem searchItem;
   /**
+   * searchItem creates the JMenuItem "Search".
+   */
+  JMenuItem printItem;
+  /**
    * This is the radio buttons to choose which field to sort.
    */ 
   JRadioButton sortTitle, sortAuthor, sortGenre, sortLocation, sortBorrow, sortReturn;
@@ -174,12 +178,14 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem quitItem = new JMenuItem ("Quit");
     JMenuItem helpItem = new JMenuItem ("Help");
     JMenuItem aboutItem = new JMenuItem ("About");
+
     newItem = new JMenuItem ("New");
     saveItem = new JMenuItem ("Save");
     saveAsItem = new JMenuItem ("Save As");
     openItem = new JMenuItem ("Open");
     logOutItem = new JMenuItem ("Log Out");
     passItem = new JMenuItem ("Change Password");
+    printItem = new JMenuItem("Print");
     chartItem = new JMenuItem("Chart");
     browseItem = new JMenuItem("Browse");
     graphItem = new JMenuItem ("Graph");
@@ -190,6 +196,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (openItem);
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
+    fileMenu.add (printItem);
     fileMenu.add (logOutItem);
     fileMenu.add (quitItem);
     toolsMenu.add (searchItem);
@@ -219,6 +226,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
     passItem.addActionListener (this);
+    printItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -554,6 +562,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveAsItem.setEnabled(false);
       openItem.setEnabled(false);
       logOutItem.setEnabled(false);
+      printItem.setEnabled(false);
       passItem.setEnabled(false);
       chartItem.setEnabled(false);
       browseItem.setEnabled(false);
@@ -564,6 +573,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     if (choice.equals ("enable guest"))
     {
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       chartItem.setEnabled(true);
       browseItem.setEnabled(true);
@@ -577,6 +587,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveItem.setEnabled(true);
       saveAsItem.setEnabled(true);
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       passItem.setEnabled(true);
       chartItem.setEnabled(true);
@@ -734,23 +745,28 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-      r.username = usernameField.getText ();
-      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
-                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
-                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
-                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
-      {
-        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
-      }
-      else if (r.username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        r.admin = false;
-        buttonEnable("enable guest");
-        continueLogIn ();
-      }
+//      r.username = usernameField.getText ();
+//      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+//                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+//                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+//                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+//      {
+//        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+//      }
+//      else if (r.username.equals ("admin"))
+//        adminLogin();
+//      else
+//      {
+//        successPass = true;
+//        r.admin = false;
+//        buttonEnable("enable guest");
+//        continueLogIn ();
+//      }
+      successPass = true;
+      r.admin = true;
+      buttonEnable ("enable all");
+      continueLogIn ();
+      
       r.toolbarMaker();
       r.invalidate();
       r.validate();
@@ -763,7 +779,12 @@ public class DataBaseApp extends JFrame implements ActionListener
                                      "type in a desired username into the field. If you would like to edit the data, type 'admin'.",
                                      "Help", JOptionPane.INFORMATION_MESSAGE);  
     }
-    
+
+    else if (ae.getActionCommand ().equals ("Print"))
+    {
+      r.printDatabase ();
+    }
+
     this.invalidate();
     this.validate();
     this.repaint();

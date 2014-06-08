@@ -1,7 +1,7 @@
-// Daniel Chen
-// May 15 2014 (15/05/2014)
-// NOTE: Try with printer before handing in, my printer prints with extra large margins. Might add image loading (logo) 
-// function later if I'm bored enough.
+//// Daniel Chen
+//// May 15 2014 (15/05/2014)
+//// NOTE: Try with printer before handing in, my printer prints with extra large margins. Might add image loading (logo) 
+//// function later if I'm bored enough.
 //public class Print implements Printable 
 //{
 //  private ArrayList <String> list;

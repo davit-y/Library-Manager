@@ -94,6 +94,10 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   JMenuItem searchItem;
   /**
+   * searchItem creates the JMenuItem "Search".
+   */
+  JMenuItem printItem;
+  /**
    * This is the radio buttons to choose which field to sort.
    */ 
   JRadioButton sortTitle, sortAuthor, sortGenre, sortLocation, sortBorrow, sortReturn;
@@ -174,12 +178,14 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem quitItem = new JMenuItem ("Quit");
     JMenuItem helpItem = new JMenuItem ("Help");
     JMenuItem aboutItem = new JMenuItem ("About");
+
     newItem = new JMenuItem ("New");
     saveItem = new JMenuItem ("Save");
     saveAsItem = new JMenuItem ("Save As");
     openItem = new JMenuItem ("Open");
     logOutItem = new JMenuItem ("Log Out");
     passItem = new JMenuItem ("Change Password");
+    printItem = new JMenuItem("Print");
     chartItem = new JMenuItem("Chart");
     browseItem = new JMenuItem("Browse");
     graphItem = new JMenuItem ("Graph");
@@ -190,6 +196,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (openItem);
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
+    fileMenu.add (printItem);
     fileMenu.add (logOutItem);
     fileMenu.add (quitItem);
     toolsMenu.add (searchItem);
@@ -219,6 +226,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
     passItem.addActionListener (this);
+    printItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -610,22 +618,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       }
       r.updateDisplay();
     }
-    
-<<<<<<< HEAD
-=======
-    else if (ae.getActionCommand ().equals("About"))
-    {
-      String progpath = new String ("hh.exe about.chm");
-      try
-      {
-        Runtime.getRuntime ().exec (progpath);
-      }
-      catch (Exception e)
-      {
-        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
-      }
-    }
->>>>>>> c7352c6ce140e5c33b3aafb37435f4d27703bb96
+
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -733,9 +726,19 @@ public class DataBaseApp extends JFrame implements ActionListener
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
     }
-    
+            
     else if (ae.getActionCommand ().equals("About"))
-      JOptionPane.showMessageDialog(this,"Copyright JDL Development 2014   -   Version 1.0.0");
+    {
+      String progpath = new String ("hh.exe about.chm");
+      try
+      {
+        Runtime.getRuntime ().exec (progpath);
+      }
+      catch (Exception e)
+      {
+        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
+      }
+    }
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
@@ -768,7 +771,12 @@ public class DataBaseApp extends JFrame implements ActionListener
                                      "type in a desired username into the field. If you would like to edit the data, type 'admin'.",
                                      "Help", JOptionPane.INFORMATION_MESSAGE);  
     }
-    
+
+    else if (ae.getActionCommand ().equals ("Print"))
+    {
+      r.printDatabase ();
+    }
+
     this.invalidate();
     this.validate();
     this.repaint();

@@ -10,6 +10,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.AlphaComposite;
+import java.security.*;
+import java.util.logging.Logger;
 
 
 /**
@@ -191,13 +193,135 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
+  boolean successPass = true;
   
+  private static MessageDigest md;
   
   public RecordManager ()
   {
     recSaved = true;
     fileSaved = true;
     currentRec = 0;
+    usernameOpener ();
+  }
+  
+  /**
+   * This method opens the username screen.
+   * 
+   * @param help this button displays useful tips to the user.
+   * @param ok this button let's the user continue into the program.
+   * @param icon creates the background.
+   * @param label creates a new JLabel.
+   */ 
+  public void usernameOpener ()
+  {  
+    add (thePanel);
+    thePanel.setPreferredSize (new Dimension (400,500));
+    thePanel.setLayout (null);
+    
+    JButton ok = new JButton ("OK");
+    ok.setBounds (270,200,51,30);
+    ok.setActionCommand ("Log In OK");
+    ok.setToolTipText ("Log In");
+    ok.addActionListener (this);
+    thePanel.add(ok);
+        
+    JButton help = new JButton ("?");
+    help.setBounds (321,200,41,30);
+    help.setActionCommand ("Log In Help");
+    help.setToolTipText ("Help");
+    help.addActionListener (this);
+    thePanel.add(help);
+    
+    JTextField usernameField = new JTextField ();
+    usernameField.setBounds(20, 200, 250, 30);
+    thePanel.add (usernameField);
+    
+    Icon icon = new ImageIcon(".//Graphics/Username.gif");
+    JLabel label = new JLabel(icon);
+    label.setBounds (0,0,400,500);
+    thePanel.add (label);
+  }
+  
+  /**
+   * This method triggers the JDialog in which the admin enters their password.
+   * 
+   * @param enterPass creates a new JLabel.
+   * @param ok creates a new JButton.
+   * @param cancel creates a new JButton.
+   * @param PASSFIELD creates a new JTextField.
+   * @param e points to the ActionEvent class.
+   * @param passFile opens the password file.
+   * @param no is for the IOException.
+   */
+  public void adminLogin ()
+  {
+    successPass = false;
+    d = new JDialog ();
+    d.setSize (500, 300);
+    d.setResizable (false);
+    d.setLayout (new FlowLayout());
+    
+    JLabel enterPass = new JLabel ("You are attempting to log in as admin. Please enter the password (CASE SENSITIVE) :");
+    final JTextField PASSFIELD = new JTextField (20);
+    JButton ok = new JButton ("OK");
+    JButton cancel = new JButton ("Cancel");
+    d.add (enterPass);
+    d.add (PASSFIELD);
+    d.add (ok);
+    d.add (cancel);
+    d.setVisible (true);
+    ok.addActionListener (new ActionListener ()
+                            {
+      public void actionPerformed (ActionEvent e)
+      {
+        try
+        {
+          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          if (passFile.readLine ().equals (encryptPassword(PASSFIELD.getText ())))
+          {
+            successPass = true;
+            JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
+            admin = true;
+          }
+          else
+          {
+            JOptionPane.showMessageDialog (thePanel, "Wrong password. Please try again.", "Failed to Log-In", JOptionPane.ERROR_MESSAGE);
+          }
+          d.dispose ();
+          continueLogIn ();
+        }
+        catch (IOException no)
+        {
+        }
+      }
+    });
+    cancel.addActionListener (new ActionListener ()
+                                {
+      public void actionPerformed (ActionEvent e)
+      {
+        d.dispose ();
+      }});
+    
+  }
+  
+  /**
+   * This method either lets the user use the program or repeats the admin login process whether or not the password was correct.
+   */
+  public void continueLogIn ()
+  {
+    if (successPass)
+    {
+      newDatabase ();
+      fieldView ();
+      this.invalidate();
+      this.validate();
+      this.repaint();
+    }
+    else
+    {
+      adminLogin ();
+    }
   }
   
   /**
@@ -252,13 +376,13 @@ public class RecordManager extends JPanel implements ActionListener
       public void actionPerformed(ActionEvent e) {
         try
         {
-          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (OLDPASSFIELD.getText ()))
+        BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          if (passFile.readLine ().equals (encryptPassword(OLDPASSFIELD.getText ())))
           {
             if (NEWPASSFIELD.getText ().equals (NEWPASSFIELD2.getText ()))
             {
               PrintWriter newPassFile = new PrintWriter (new FileWriter ("pass.txt"));
-              newPassFile.print (NEWPASSFIELD.getText ());
+              newPassFile.print (encryptPassword(NEWPASSFIELD.getText ()));
               newPassFile.close ();
               JOptionPane.showMessageDialog (thePanel, "You have successfully changed your password.", "Successful", JOptionPane.INFORMATION_MESSAGE);
               d.dispose ();
@@ -292,24 +416,45 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+  public static String encryptPassword(String pass)
+  {
+    try 
+    {
+      md = MessageDigest.getInstance("MD5");
+      byte[] passBytes = pass.getBytes();
+      md.reset();
+      byte[] digested = md.digest(passBytes);
+      StringBuffer sb = new StringBuffer();
+      for(int i=0;i<digested.length;i++){
+        sb.append(Integer.toHexString(0xff & digested[i]));
+      }
+      return sb.toString();
+    } 
+    catch (NoSuchAlgorithmException ex) 
+    {
+    }
+    return null;
+  }
   
-//  public void printDatabase ()
-//  {
-//    Print p = new Print ();
-//    p.println ("Data in Library Manager");
-//    p.println ();
-//    for (int x = 0; x < BookRecord.recNum; x ++)
-//    {
-//      p.println ("Record Number: " + x);
-//      p.println ("Book Title: " + book.get(x).getTitle());
-//      p.println ("Author Name: " + book.get(x).getAuthor());
-//      p.println ("Book Genre: " + book.get(x).getGenre());
-//      p.println ("Location: " + book.get(x).getLocation());
-//      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
-//      p.println ("Return Date: " + book.get(x).getReturnDate());
-//      p.println ();
-//    }
-//  }
+  
+  public void printDatabase ()
+  {
+    Printer p = new Printer ();
+    p.println ("Data in Library Manager");
+    p.println ();
+    for (int x = 0; x < BookRecord.recNum; x ++)
+    {
+      p.println ("Record Number: " + x);
+      p.println ("Book Title: " + book.get(x).getTitle());
+      p.println ("Author Name: " + book.get(x).getAuthor());
+      p.println ("Book Genre: " + book.get(x).getGenre());
+      p.println ("Location: " + book.get(x).getLocation());
+      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
+      p.println ("Return Date: " + book.get(x).getReturnDate());
+      p.println ();
+    } 
+    p.printUsingDialog ();
+  }
   
   
   /**
@@ -1079,8 +1224,6 @@ public class RecordManager extends JPanel implements ActionListener
    */
   public void getChartData ()
   {
-    if (!(searchMode && amountFound == 0))
-    {
       ArrayList <BookRecord> tempBook = new ArrayList<BookRecord>();
       TableModel tableModel = myTable.getModel ();
       int [] order = new int [tableModel.getRowCount ()];
@@ -1093,23 +1236,27 @@ public class RecordManager extends JPanel implements ActionListener
       
       for (int x = 0; x < tableModel.getRowCount () ; x++)
       {
-        tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
-        tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
-        tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
-        tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
-        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+        if (!(myTable.getValueAt (x,1).toString().equals ("")))
         {
-          tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+          tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
+          tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
+          tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
+          tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
+          if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+          {
+            tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+          }
+          if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
+          {
+            tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
+          }
         }
-        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
-        {
-          tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
-        }
+        else
+          JOptionPane.showMessageDialog(this,"The title for book #"+ (order[x]+1) +" is empty, no changes will be made to that book.","Empty Title",JOptionPane.WARNING_MESSAGE);
       }
       
       BookRecord.recNum = tableModel.getRowCount ();
       book = tempBook;
-    }
   }
   
   /**
