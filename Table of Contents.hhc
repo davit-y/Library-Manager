@@ -13,8 +13,16 @@
 		<param name="Local" value="General.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Usernames &amp; Passwords">
+		<param name="Local" value="Username.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Borrowing Books">
 		<param name="Local" value="Borrow.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Returning Books">
+		<param name="Local" value="Return.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Saving Files">
@@ -25,20 +33,20 @@
 		<param name="Local" value="Open.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Table">
-		<param name="Local" value="JTable.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
-		<param name="Name" value="Using the Chart">
-		<param name="Local" value="Chart.htm">
-		</OBJECT>
-	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Sort">
 		<param name="Local" value="Sort.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Search">
 		<param name="Local" value="Search.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Using the Chart">
+		<param name="Local" value="Chart.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Using the Graph">
+		<param name="Local" value="JTable.htm">
 		</OBJECT>
 </UL>
 </BODY></HTML>

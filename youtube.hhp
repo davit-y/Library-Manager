@@ -1,12 +1,21 @@
 [OPTIONS]
-Contents file=C:\Users\Jacob\Desktop\Term-Project-master\Table of Contents.hhc
+Compatibility=1.1 or later
+Compiled file=youtube.chm
+Contents file=C:\Users\Jacob\Documents\GitHub\Term-Project\Table of Contents.hhc
+Default topic=..\..\..\Desktop\Term-Project-master\Borrow.htm
+Display compile progress=No
+Language=0x1009 English (Canada)
+
 
 [FILES]
-C:\Users\Jacob\Desktop\Term-Project-master\Borrow.htm
-C:\Users\Jacob\Desktop\Term-Project-master\Chart.htm
-C:\Users\Jacob\Desktop\Term-Project-master\General.htm
-C:\Users\Jacob\Desktop\Term-Project-master\JTable.htm
-C:\Users\Jacob\Desktop\Term-Project-master\Open.htm
-C:\Users\Jacob\Desktop\Term-Project-master\Save.htm
-C:\Users\Jacob\Desktop\Term-Project-master\Search.htm
-C:\Users\Jacob\Desktop\Term-Project-master\Sort.htm
+..\..\..\Desktop\Term-Project-master\Borrow.htm
+..\..\..\Desktop\Term-Project-master\Chart.htm
+..\..\..\Desktop\Term-Project-master\General.htm
+..\..\..\Desktop\Term-Project-master\JTable.htm
+..\..\..\Desktop\Term-Project-master\Open.htm
+..\..\..\Desktop\Term-Project-master\Save.htm
+..\..\..\Desktop\Term-Project-master\Search.htm
+..\..\..\Desktop\Term-Project-master\Sort.htm
+
+[INFOTYPES]
+
