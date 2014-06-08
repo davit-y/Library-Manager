@@ -9,9 +9,9 @@ public class DataCheck
 {
   /**
    * This method checks the Author and Title and Location to make sure all letters are alpha numeric.
-   * @param inputted String The phone number to be checked.
+   * @param inputted String The string to be checked.
    */ 
-  public static boolean checkPhone (String inputted)
+  public static boolean checkName (String inputted)
   {
     if (inputted == null || inputted.equals(""))
       return true;
@@ -58,5 +58,4 @@ public class DataCheck
     
     return true;
   }
-  
 }
