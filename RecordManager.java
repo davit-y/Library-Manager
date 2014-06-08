@@ -297,7 +297,7 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
-  public static String encryptPassword(String pass)
+  public String encryptPassword(String pass)
   {
     try 
     {

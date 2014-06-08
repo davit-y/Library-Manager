@@ -330,7 +330,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         try
         {
           BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (passField.getText ()))
+          if (passFile.readLine ().equals (r.encryptPassword (passField.getText ())))
           {
             successPass = true;
             r.admin = true;

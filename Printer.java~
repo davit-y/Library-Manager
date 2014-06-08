@@ -62,7 +62,7 @@ public class Printer implements Printable, Pageable
   /**
    * Boolean keeping track of whether or not it is a new line.
    */
-  private boolean newLine = true;
+  private boolean newLine;
   /**
    * PageFormat for all of the pages.
    */
