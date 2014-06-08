@@ -385,16 +385,16 @@ public class DataBaseApp extends JFrame implements ActionListener
   public void specifySort ()
   {
     sortDialogue = new JDialog (this,"Choose Field");
-    sortDialogue.setSize (30,300);
+    sortDialogue.setSize (45,300);
     sortDialogue.setLocationRelativeTo (null);
     sortDialogue.setVisible(true);
     sortDialogue.setLayout (new FlowLayout(FlowLayout.LEADING));
     
     ButtonGroup group = new ButtonGroup ();
-    JButton okButton = new JButton ("          OK          ");
+    JButton okButton = new JButton ("          OK         ");
     okButton.setSize (new Dimension (35,40));
     JLabel pickLabel = new JLabel ("Pick a field to sort:");
-    JLabel title = new JLabel ("Specify Search");
+    JLabel title = new JLabel ("Specify Sort");
     title.setFont (new Font ("Serif", Font.BOLD, 17)); 
     
     sortTitle = new JRadioButton ("Title Field");
@@ -420,6 +420,8 @@ public class DataBaseApp extends JFrame implements ActionListener
     sortDialogue.add(sortBorrow);
     sortDialogue.add(sortReturn);
     sortDialogue.add (okButton);
+    
+    sortTitle.setSelected(true);
     
     okButton.addActionListener (new ActionListener()
                                   {
@@ -520,6 +522,9 @@ public class DataBaseApp extends JFrame implements ActionListener
     searchBox.add(searchField);
     searchBox.add(Box.createRigidArea(new Dimension(0,10))); 
     searchBox.add(okButton);
+    
+    searchTitle.setSelected(true);
+    partialSearch.setSelected(true);
     
     okButton.addActionListener (new ActionListener()
                                   {
@@ -680,17 +685,23 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand().equals("Sort")) 
     {
-      if (currentView.equals("Chart"))
-        r.getChartData();
-      specifySort ();
+      if (BookRecord.recNum > 1)
+      {
+        if (currentView.equals("Chart"))
+          r.getChartData();
+        specifySort ();
+      }
     }
     
     else if (ae.getActionCommand().equals("Search")) 
     {
-      if (currentView.equals("Chart"))
-        r.getChartData();
-      specifySearch ();
-      currentView = "Not Chart";
+      if (BookRecord.recNum > 1)
+      {
+        if (currentView.equals("Chart"))
+          r.getChartData();
+        specifySearch ();
+        currentView = "Not Chart";
+      }
     }
     
     else if (ae.getActionCommand ().equals ("Change Password"))
