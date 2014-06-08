@@ -264,6 +264,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     ok.setActionCommand ("Log In OK");
     ok.setToolTipText ("Log In");
     ok.addActionListener (this);
+    
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    
     r.thePanel.add(ok);
     
     JButton help = new JButton ("?");
@@ -580,6 +590,8 @@ public class DataBaseApp extends JFrame implements ActionListener
       graphItem.setEnabled(true);
       sortItem.setEnabled(true);
       searchItem.setEnabled(true);
+      
+      openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
     }
     if (choice.equals ("enable all"))
     {
@@ -595,6 +607,10 @@ public class DataBaseApp extends JFrame implements ActionListener
       graphItem.setEnabled(true);
       sortItem.setEnabled(true);
       searchItem.setEnabled(true);
+      
+      openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+      saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+      newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
     }
   }
   
