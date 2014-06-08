@@ -562,6 +562,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveAsItem.setEnabled(false);
       openItem.setEnabled(false);
       logOutItem.setEnabled(false);
+      printItem.setEnabled(false);
       passItem.setEnabled(false);
       chartItem.setEnabled(false);
       browseItem.setEnabled(false);
@@ -572,6 +573,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     if (choice.equals ("enable guest"))
     {
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       chartItem.setEnabled(true);
       browseItem.setEnabled(true);
@@ -585,6 +587,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveItem.setEnabled(true);
       saveAsItem.setEnabled(true);
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       passItem.setEnabled(true);
       chartItem.setEnabled(true);
@@ -742,23 +745,28 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-      r.username = usernameField.getText ();
-      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
-                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
-                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
-                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
-      {
-        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
-      }
-      else if (r.username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        r.admin = false;
-        buttonEnable("enable guest");
-        continueLogIn ();
-      }
+//      r.username = usernameField.getText ();
+//      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+//                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+//                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+//                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+//      {
+//        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+//      }
+//      else if (r.username.equals ("admin"))
+//        adminLogin();
+//      else
+//      {
+//        successPass = true;
+//        r.admin = false;
+//        buttonEnable("enable guest");
+//        continueLogIn ();
+//      }
+      successPass = true;
+      r.admin = true;
+      buttonEnable ("enable all");
+      continueLogIn ();
+      
       r.toolbarMaker();
       r.invalidate();
       r.validate();
