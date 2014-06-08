@@ -124,6 +124,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem openItem = new JMenuItem ("Open");
     JMenuItem signOutItem = new JMenuItem ("Sign Out");
     JMenuItem passItem = new JMenuItem ("Change Admin Password");
+    JMenuItem printItem = new JMenuItem("Print");
     JMenuItem chartItem = new JMenuItem("Chart");
     JMenuItem browseItem = new JMenuItem("Browse");
     JMenuItem graphItem = new JMenuItem ("Graph");
@@ -136,6 +137,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (saveAsItem);
     fileMenu.add (signOutItem);
     fileMenu.add (passItem);
+    fileMenu.add (printItem);
     fileMenu.add (quitItem);
     helpMenu.add (helpItem);
     helpMenu.add (aboutItem);
@@ -163,6 +165,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
     passItem.addActionListener (this);
+    printItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -467,6 +470,10 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         r.changePassword ();
       }
+    }
+    else if (ae.getActionCommand ().equals ("Print"))
+    {
+      r.printDatabase ();
     }
     this.invalidate();
     this.validate();

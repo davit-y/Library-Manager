@@ -10,6 +10,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.AlphaComposite;
+import java.security.*;
+import java.util.logging.Logger;
 
 
 /**
@@ -204,6 +206,7 @@ public class RecordManager extends JPanel implements ActionListener
    */
   boolean successPass;
   
+  private static MessageDigest md;
   
   public RecordManager ()
   {
@@ -286,7 +289,7 @@ public class RecordManager extends JPanel implements ActionListener
         try
         {
           BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (PASSFIELD.getText ()))
+          if (passFile.readLine ().equals (encryptPassword(PASSFIELD.getText ())))
           {
             successPass = true;
             JOptionPane.showMessageDialog (thePanel, "You have been logged in as admin.", "Successful Log-In", JOptionPane.INFORMATION_MESSAGE);
@@ -385,12 +388,12 @@ public class RecordManager extends JPanel implements ActionListener
         try
         {
         BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (OLDPASSFIELD.getText ()))
+          if (passFile.readLine ().equals (encryptPassword(OLDPASSFIELD.getText ())))
           {
             if (NEWPASSFIELD.getText ().equals (NEWPASSFIELD2.getText ()))
             {
               PrintWriter newPassFile = new PrintWriter (new FileWriter ("pass.txt"));
-              newPassFile.print (NEWPASSFIELD.getText ());
+              newPassFile.print (encryptPassword(NEWPASSFIELD.getText ()));
               newPassFile.close ();
               JOptionPane.showMessageDialog (thePanel, "You have successfully changed your password.", "Successful", JOptionPane.INFORMATION_MESSAGE);
               d.dispose ();
@@ -424,24 +427,45 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+  public static String encryptPassword(String pass)
+  {
+    try 
+    {
+      md = MessageDigest.getInstance("MD5");
+      byte[] passBytes = pass.getBytes();
+      md.reset();
+      byte[] digested = md.digest(passBytes);
+      StringBuffer sb = new StringBuffer();
+      for(int i=0;i<digested.length;i++){
+        sb.append(Integer.toHexString(0xff & digested[i]));
+      }
+      return sb.toString();
+    } 
+    catch (NoSuchAlgorithmException ex) 
+    {
+    }
+    return null;
+  }
   
-//  public void printDatabase ()
-//  {
-//    Print p = new Print ();
-//    p.println ("Data in Library Manager");
-//    p.println ();
-//    for (int x = 0; x < BookRecord.recNum; x ++)
-//    {
-//      p.println ("Record Number: " + x);
-//      p.println ("Book Title: " + book.get(x).getTitle());
-//      p.println ("Author Name: " + book.get(x).getAuthor());
-//      p.println ("Book Genre: " + book.get(x).getGenre());
-//      p.println ("Location: " + book.get(x).getLocation());
-//      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
-//      p.println ("Return Date: " + book.get(x).getReturnDate());
-//      p.println ();
-//    }
-//  }
+  
+  public void printDatabase ()
+  {
+    Printer p = new Printer ();
+    p.println ("Data in Library Manager");
+    p.println ();
+    for (int x = 0; x < BookRecord.recNum; x ++)
+    {
+      p.println ("Record Number: " + x);
+      p.println ("Book Title: " + book.get(x).getTitle());
+      p.println ("Author Name: " + book.get(x).getAuthor());
+      p.println ("Book Genre: " + book.get(x).getGenre());
+      p.println ("Location: " + book.get(x).getLocation());
+      p.println ("Borrow Date: " + book.get(x).getBorrowDate());
+      p.println ("Return Date: " + book.get(x).getReturnDate());
+      p.println ();
+    } 
+    p.printUsingDialog ();
+  }
   
   
   /**
@@ -1223,7 +1247,7 @@ public class RecordManager extends JPanel implements ActionListener
     
     for (int x = 0; x < tableModel.getRowCount () ; x++)
     {
-      tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
+      tempBook.get(order [x]).setTitle (book.get(order [x]).getTitle ());
       tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
       tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
       tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
