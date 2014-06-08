@@ -1093,18 +1093,23 @@ public class RecordManager extends JPanel implements ActionListener
       
       for (int x = 0; x < tableModel.getRowCount () ; x++)
       {
-        tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
-        tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
-        tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
-        tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
-        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+        if (!(myTable.getValueAt (x,1).toString().equals ("")))
         {
-          tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+          tempBook.get(order [x]).setTitle (tableModel.getValueAt (x , 1).toString ());
+          tempBook.get(order [x]).setAuthor (tableModel.getValueAt (x , 2).toString ());
+          tempBook.get(order [x]).setGenre (book.get(order [x]).getGenre ());
+          tempBook.get(order [x]).setLocation (tableModel.getValueAt (x , 4).toString ());
+          if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 5))) == true && (String)(tableModel.getValueAt (x , 5)) != null)
+          {
+            tempBook.get(order [x]).setBorrowDate (tableModel.getValueAt (x , 5).toString ());
+          }
+          if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
+          {
+            tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
+          }
         }
-        if (DataCheck.checkDate ((String)(tableModel.getValueAt (x , 6))) == true && (String)(tableModel.getValueAt (x , 6)) != null)
-        {
-          tempBook.get(order [x]).setReturnDate (tableModel.getValueAt (x , 6).toString ());
-        }
+        else
+          JOptionPane.showMessageDialog(this,"The title for book #"+ (order[x]+1) +" is empty, no changes will be made to that book.","Empty Title",JOptionPane.WARNING_MESSAGE);
       }
       
       BookRecord.recNum = tableModel.getRowCount ();

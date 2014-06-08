@@ -1085,7 +1085,6 @@ public class RecordManager extends JPanel implements ActionListener
       TableModel tableModel = myTable.getModel ();
       int [] order = new int [tableModel.getRowCount ()];
       
-      
       for (int x = 0; x < tableModel.getRowCount () ; x++)
       {
         tempBook.add (new BookRecord ());
