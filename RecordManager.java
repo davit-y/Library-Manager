@@ -444,7 +444,7 @@ public class RecordManager extends JPanel implements ActionListener
     p.println ();
     for (int x = 0; x < BookRecord.recNum; x ++)
     {
-      p.println ("Record Number: " + x);
+      p.println ("Record Number: " + (x + 1));
       p.println ("Book Title: " + book.get(x).getTitle());
       p.println ("Author Name: " + book.get(x).getAuthor());
       p.println ("Book Genre: " + book.get(x).getGenre());
