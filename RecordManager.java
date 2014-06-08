@@ -803,13 +803,13 @@ public class RecordManager extends JPanel implements ActionListener
         book.get(currentRec).setLocation (location);
         book.get(currentRec).setBorrowDate (borrowD);
         book.get(currentRec).setReturnDate(returnD);
+        recSaved = true;
+        fileSaved = false;
       }
     }
     else
       JOptionPane.showMessageDialog (this, "You must fill in at least the book title for a valid entry!", "BOOK FIELD EMPTY", JOptionPane.INFORMATION_MESSAGE);
     
-    recSaved = true;
-    fileSaved = false;
     updateDisplay ();
   }
   
