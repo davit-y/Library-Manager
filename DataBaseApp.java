@@ -264,6 +264,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     ok.setActionCommand ("Log In OK");
     ok.setToolTipText ("Log In");
     ok.addActionListener (this);
+    
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    
     r.thePanel.add(ok);
     
     JButton help = new JButton ("?");
@@ -562,6 +572,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveAsItem.setEnabled(false);
       openItem.setEnabled(false);
       logOutItem.setEnabled(false);
+      printItem.setEnabled(false);
       passItem.setEnabled(false);
       chartItem.setEnabled(false);
       browseItem.setEnabled(false);
@@ -572,12 +583,15 @@ public class DataBaseApp extends JFrame implements ActionListener
     if (choice.equals ("enable guest"))
     {
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       chartItem.setEnabled(true);
       browseItem.setEnabled(true);
       graphItem.setEnabled(true);
       sortItem.setEnabled(true);
       searchItem.setEnabled(true);
+      
+      openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
     }
     if (choice.equals ("enable all"))
     {
@@ -585,6 +599,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveItem.setEnabled(true);
       saveAsItem.setEnabled(true);
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       passItem.setEnabled(true);
       chartItem.setEnabled(true);
@@ -592,6 +607,10 @@ public class DataBaseApp extends JFrame implements ActionListener
       graphItem.setEnabled(true);
       sortItem.setEnabled(true);
       searchItem.setEnabled(true);
+      
+      openItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+      saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+      newItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
     }
   }
   
@@ -742,23 +761,28 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-      r.username = usernameField.getText ();
-      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
-                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
-                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
-                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
-      {
-        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
-      }
-      else if (r.username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        r.admin = false;
-        buttonEnable("enable guest");
-        continueLogIn ();
-      }
+//      r.username = usernameField.getText ();
+//      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+//                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+//                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+//                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+//      {
+//        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+//      }
+//      else if (r.username.equals ("admin"))
+//        adminLogin();
+//      else
+//      {
+//        successPass = true;
+//        r.admin = false;
+//        buttonEnable("enable guest");
+//        continueLogIn ();
+//      }
+      successPass = true;
+      r.admin = true;
+      buttonEnable ("enable all");
+      continueLogIn ();
+      
       r.toolbarMaker();
       r.invalidate();
       r.validate();

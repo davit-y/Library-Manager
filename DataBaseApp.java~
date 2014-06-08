@@ -94,6 +94,10 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   JMenuItem searchItem;
   /**
+   * searchItem creates the JMenuItem "Search".
+   */
+  JMenuItem printItem;
+  /**
    * This is the radio buttons to choose which field to sort.
    */ 
   JRadioButton sortTitle, sortAuthor, sortGenre, sortLocation, sortBorrow, sortReturn;
@@ -129,8 +133,6 @@ public class DataBaseApp extends JFrame implements ActionListener
    * a Instance of the BarGraph class.
    */ 
   BarGraph b;
-<<<<<<< HEAD
-=======
   /**
    * This is a boolean statement that holds whether or not the correct password has been entered.
    */
@@ -139,7 +141,6 @@ public class DataBaseApp extends JFrame implements ActionListener
    * This text field allows he user to input their username.
    */ 
   JTextField usernameField;
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
   
   /**
    *The constructor creates a new instance of AdressBook and sets up the window.
@@ -155,13 +156,8 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param openItem creates the JMenuItem "Open".
    * @param saveItem creates the JMenuItem "Save".
    * @param saveAsItem creates the JMenuItem "Save As".
-<<<<<<< HEAD
-   * @param signOutItem creates the JMenuItem "Sign Out".
-   * @param passItem creates the JMenuItem "Change Admin Password".
-=======
    * @param logOutItem creates the JMenuItem "Sign Out".
    * @param passItem creates the JMenuItem "Change Password".
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
    * @param chartItem creates the JMenuItem "Chart".
    * @param browseItem creates the JMenuItem "Browse".
    * @param graphItem creates the JMenuItem "Graph".
@@ -172,11 +168,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-<<<<<<< HEAD
-    SplashScreen ss = new SplashScreen ();
-=======
     // SplashScreen ss = new SplashScreen ();
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -186,12 +178,14 @@ public class DataBaseApp extends JFrame implements ActionListener
     JMenuItem quitItem = new JMenuItem ("Quit");
     JMenuItem helpItem = new JMenuItem ("Help");
     JMenuItem aboutItem = new JMenuItem ("About");
+
     newItem = new JMenuItem ("New");
     saveItem = new JMenuItem ("Save");
     saveAsItem = new JMenuItem ("Save As");
     openItem = new JMenuItem ("Open");
     logOutItem = new JMenuItem ("Log Out");
     passItem = new JMenuItem ("Change Password");
+    printItem = new JMenuItem("Print");
     chartItem = new JMenuItem("Chart");
     browseItem = new JMenuItem("Browse");
     graphItem = new JMenuItem ("Graph");
@@ -202,6 +196,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     fileMenu.add (openItem);
     fileMenu.add (saveItem);
     fileMenu.add (saveAsItem);
+    fileMenu.add (printItem);
     fileMenu.add (logOutItem);
     fileMenu.add (quitItem);
     toolsMenu.add (searchItem);
@@ -231,6 +226,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     saveAsItem.addActionListener (this);
     openItem.addActionListener (this);
     passItem.addActionListener (this);
+    printItem.addActionListener (this);
     browseItem.addActionListener (this);
     chartItem.addActionListener (this);
     graphItem.addActionListener (this);
@@ -438,13 +434,9 @@ public class DataBaseApp extends JFrame implements ActionListener
         
         sortDialogue.dispose();
         r.sorter();
-<<<<<<< HEAD
-        r.tableView ();
-=======
         setSize (600,(80+(BookRecord.recNum*20)));
         r.tableView ();
         currentView = "Chart";
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
         invalidate();
         validate();
         repaint();
@@ -549,14 +541,9 @@ public class DataBaseApp extends JFrame implements ActionListener
         r.searchText = (searchField.getText()).toUpperCase();
         searchBox.dispose();    
         r.searcher();
-<<<<<<< HEAD
-        r.tableView ();
-                invalidate();
-=======
         setSize (600,(80+(BookRecord.recNum*20)));
         currentView = "Chart";
         invalidate();
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
         validate();
         repaint();
       }
@@ -575,6 +562,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveAsItem.setEnabled(false);
       openItem.setEnabled(false);
       logOutItem.setEnabled(false);
+      printItem.setEnabled(false);
       passItem.setEnabled(false);
       chartItem.setEnabled(false);
       browseItem.setEnabled(false);
@@ -585,6 +573,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     if (choice.equals ("enable guest"))
     {
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       chartItem.setEnabled(true);
       browseItem.setEnabled(true);
@@ -598,6 +587,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       saveItem.setEnabled(true);
       saveAsItem.setEnabled(true);
       openItem.setEnabled(true);
+      printItem.setEnabled(true);
       logOutItem.setEnabled(true);
       passItem.setEnabled(true);
       chartItem.setEnabled(true);
@@ -631,28 +621,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       }
       r.updateDisplay();
     }
-    
-<<<<<<< HEAD
-    else if (ae.getActionCommand ().equals("About"))
-      JOptionPane.showMessageDialog(this,"Program by JDL");
-    
-=======
-<<<<<<< HEAD
-=======
-    else if (ae.getActionCommand ().equals("About"))
-    {
-      String progpath = new String ("hh.exe about.chm");
-      try
-      {
-        Runtime.getRuntime ().exec (progpath);
-      }
-      catch (Exception e)
-      {
-        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
-      }
-    }
->>>>>>> c7352c6ce140e5c33b3aafb37435f4d27703bb96
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
+
     else if (ae.getActionCommand ().equals("Open"))
     {
       r.saveChecker();
@@ -675,9 +644,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     else if (ae.getActionCommand ().equals("Save As"))
       r.saveAs ();
     
-<<<<<<< HEAD
-     else if (ae.getActionCommand().equals("Browse")) 
-=======
     if (ae.getActionCommand ().equals("Log Out"))
     {
       r.thePanel.removeAll();
@@ -718,28 +684,19 @@ public class DataBaseApp extends JFrame implements ActionListener
     }
     
     else if (ae.getActionCommand().equals("Browse")) 
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
     {
       if (!currentView.equals ("Browse"))
       {
         if (currentView.equals ("Chart") && r.admin == true)
           r.getChartData();
-<<<<<<< HEAD
-        }
-=======
         
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
         currentView = "Browse";
         setSize (400,550);
         r.fieldView();
         r.updateDisplay();
       }
     }
-<<<<<<< HEAD
-     
-=======
     
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
     else if (ae.getActionCommand().equals("Chart")) 
     {
       if (!currentView.equals ("Chart"))
@@ -760,22 +717,6 @@ public class DataBaseApp extends JFrame implements ActionListener
       b.frame.setVisible (true);
     }
     
-<<<<<<< HEAD
-    else if (ae.getActionCommand().equals("Sort")) 
-    {
-        if (currentView.equals("Chart"))
-          r.getChartData();
-        specifySort ();
-    }
-    
-    else if (ae.getActionCommand().equals("Search")) 
-    {
-      if (currentView.equals("Chart"))
-        r.getChartData();
-      specifySearch ();
-    }
-=======
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
     else if (ae.getActionCommand().equals("Help"))
     {
       String progpath = new String ("hh.exe youtube.chm");
@@ -788,29 +729,44 @@ public class DataBaseApp extends JFrame implements ActionListener
         JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
       }
     }
-    
+            
     else if (ae.getActionCommand ().equals("About"))
-      JOptionPane.showMessageDialog(this,"Copyright JDL Development 2014   -   Version 1.0.0");
+    {
+      String progpath = new String ("hh.exe about.chm");
+      try
+      {
+        Runtime.getRuntime ().exec (progpath);
+      }
+      catch (Exception e)
+      {
+        JOptionPane.showMessageDialog(this,"Couldn't find the Help File");
+      }
+    }
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-      r.username = usernameField.getText ();
-      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
-                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
-                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
-                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
-      {
-        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
-      }
-      else if (r.username.equals ("admin"))
-        adminLogin();
-      else
-      {
-        successPass = true;
-        r.admin = false;
-        buttonEnable("enable guest");
-        continueLogIn ();
-      }
+//      r.username = usernameField.getText ();
+//      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+//                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+//                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+//                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+//      {
+//        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
+//      }
+//      else if (r.username.equals ("admin"))
+//        adminLogin();
+//      else
+//      {
+//        successPass = true;
+//        r.admin = false;
+//        buttonEnable("enable guest");
+//        continueLogIn ();
+//      }
+      successPass = true;
+      r.admin = true;
+      buttonEnable ("enable all");
+      continueLogIn ();
+      
       r.toolbarMaker();
       r.invalidate();
       r.validate();
@@ -823,15 +779,16 @@ public class DataBaseApp extends JFrame implements ActionListener
                                      "type in a desired username into the field. If you would like to edit the data, type 'admin'.",
                                      "Help", JOptionPane.INFORMATION_MESSAGE);  
     }
-    
+
+    else if (ae.getActionCommand ().equals ("Print"))
+    {
+      r.printDatabase ();
+    }
+
     this.invalidate();
     this.validate();
     this.repaint();
-<<<<<<< HEAD
-  }  
-=======
   }
->>>>>>> 2d88155fa5a791a2d0d70d0e952392c47b4af9e2
   
   /**
    * This is the main method of the program.
