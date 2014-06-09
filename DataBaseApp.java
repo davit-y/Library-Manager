@@ -292,6 +292,10 @@ public class DataBaseApp extends JFrame implements ActionListener
                                                        KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
                               KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
                               JComponent.WHEN_IN_FOCUSED_WINDOW);
+    
+    invalidate();
+    validate();
+    repaint();
   }  
   
   /**
