@@ -186,6 +186,7 @@ public class BookRecord
    * @param name String the name to be formatted.
    * @param firstLetter String holds the first letter.
    * @param theRest String holds the rest of the string.
+   * @return the formatted name.
    */ 
   private String formatName (String name)
   {

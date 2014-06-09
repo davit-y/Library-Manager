@@ -10,6 +10,7 @@ public class DataCheck
   /**
    * This method checks the Author and Title and Location to make sure all letters are alpha numeric.
    * @param inputted String The string to be checked.
+   * @return whether the name is correct or not
    */ 
   public static boolean checkName (String inputted)
   {
@@ -25,10 +26,12 @@ public class DataCheck
   }
   
   /**
-   * This method checks the email.
-   * @param emailToCheck String The email to be checked.
-   * @param atAmount int The amount of at signs.
-   * @param atPlacement int The location of the at sign.
+   * This method checks the date.
+   * @param inputted String The email to be checked.
+   * @param day stores the day
+   * @param month stores the month
+   * @param year stores the year
+   * @return whether the date is correct or not
    */ 
   public static boolean checkDate (String inputted)
   {

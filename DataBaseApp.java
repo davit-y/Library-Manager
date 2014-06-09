@@ -143,7 +143,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   JTextField usernameField;
   
   /**
-   *The constructor creates a new instance of AdressBook and sets up the window.
+   *The constructor creates a new instance of RecordManager and sets up the window.
    * @param quitItem creates a new JMenuItem with the title Quit.
    * @param helpItem creates a new JMenuItem with the title Help.
    * @param aboutItem creates a new JMenuItem with the title About.
@@ -157,6 +157,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param saveItem creates the JMenuItem "Save".
    * @param saveAsItem creates the JMenuItem "Save As".
    * @param logOutItem creates the JMenuItem "Sign Out".
+   * @param printItem creates the JMenuItem "Print".
    * @param passItem creates the JMenuItem "Change Password".
    * @param chartItem creates the JMenuItem "Chart".
    * @param browseItem creates the JMenuItem "Browse".
@@ -168,7 +169,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    // SplashScreen ss = new SplashScreen ();
+    SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -265,15 +266,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     ok.setToolTipText ("Log In");
     ok.addActionListener (this);
     
-    ok.registerKeyboardAction(ok.getActionForKeyStroke(
-                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
-                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
-                              JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ok.registerKeyboardAction(ok.getActionForKeyStroke(
-                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
-                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
-                              JComponent.WHEN_IN_FOCUSED_WINDOW);
-    
     r.thePanel.add(ok);
     
     JButton help = new JButton ("?");
@@ -291,6 +283,15 @@ public class DataBaseApp extends JFrame implements ActionListener
     JLabel label = new JLabel(icon);
     label.setBounds (0,0,400,500);
     r.thePanel.add (label);
+    
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
   }  
   
   /**
@@ -330,7 +331,7 @@ public class DataBaseApp extends JFrame implements ActionListener
         try
         {
           BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
-          if (passFile.readLine ().equals (passField.getText ()))
+          if (passFile.readLine ().equals (r.encryptPassword (passField.getText ())))
           {
             successPass = true;
             r.admin = true;
@@ -621,7 +622,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * This method assigns actions to buttons based on user input.
    * 
-   * @param actionPerformed is the action performed by the user
+   * @param ae is the action performed by the user
    */ 
   public void actionPerformed (ActionEvent ae)
   {
@@ -772,27 +773,24 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand ().equals ("Log In OK"))
     {
-//      r.username = usernameField.getText ();
-//      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
-//                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
-//                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
-//                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
-//      {
-//        JOptionPane.showMessageDialog (this, "Please enter a username to continue,", "No Username", JOptionPane.ERROR_MESSAGE);
-//      }
-//      else if (r.username.equals ("admin"))
-//        adminLogin();
-//      else
-//      {
-//        successPass = true;
-//        r.admin = false;
-//        buttonEnable("enable guest");
-//        continueLogIn ();
-//      }
-      successPass = true;
-      r.admin = true;
-      buttonEnable ("enable all");
-      continueLogIn ();
+      r.username = usernameField.getText ();
+      if (r.username.equals ("") || !((r.username.charAt (0) >= 48 && r.username.charAt (0) <= 57) ||
+                                      (r.username.charAt (0) >= 64 && r.username.charAt (0) <= 90) ||
+                                      (r.username.charAt (0) >= 97 && r.username.charAt (0) <= 122) ||
+                                      r.username.charAt (0) == 95 || r.username.charAt (0) == 46 || r.username.charAt (0) == 45))
+      {
+        JOptionPane.showMessageDialog (this, "Please enter a proper username to continue.", "No Username", JOptionPane.ERROR_MESSAGE);
+      }
+      else if (r.username.equals ("admin"))
+        adminLogin();
+      else
+      {
+        successPass = true;
+        r.admin = false;
+        buttonEnable("enable guest");
+        r.toolBarTop.removeAll();
+        continueLogIn ();
+      }
       
       r.toolbarMaker();
       r.invalidate();

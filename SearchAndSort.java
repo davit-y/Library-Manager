@@ -18,6 +18,7 @@ public class SearchAndSort
    * @param theOrder [] (int) An array that holds the order of the indices
    * @param temp2 Temporary variable used for the sort.
    * @param original Holds the original values of the array.
+   * @return the ordered indexes.
    */ 
   public int [] bubbleSort (String [] sortedList)
   {
@@ -51,6 +52,7 @@ public class SearchAndSort
    * 
    * @param searchIndex this variable holds the index of found text
    * @param counter this variable is used to keep track of indecies
+   * @return the ordered indexes.
    */ 
   public int [] sequentialSearch (String [] original, String search)
   {
