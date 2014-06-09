@@ -193,10 +193,19 @@ public class RecordManager extends JPanel implements ActionListener
    * This variable keeps track of amount of searches found.
    */ 
   int amountFound = 0;
+  /**
+   * This is a boolean statement that holds whether or not the correct password has been entered.
+   */
   boolean successPass = true;
-  
+  /**
+   * Points to the MessageDigest class.
+   */
   private static MessageDigest md;
   
+  
+  /**
+   * Constructor for the RecordManager class.
+   */
   public RecordManager ()
   {
     recSaved = true;
@@ -220,6 +229,7 @@ public class RecordManager extends JPanel implements ActionListener
    * @param newPassFile writes the new password into the file.
    * @param e points to the ActionEvent class.
    * @param ie is for the IOException.
+   * @e IOException catches IO errors.
    */
   public void changePassword ()
   {
@@ -297,6 +307,13 @@ public class RecordManager extends JPanel implements ActionListener
     d.setVisible (true);
   }
   
+  /**
+   * Encrypts the password.
+   * 
+   * @param ex for the NoSuchAlgorithmException.
+   * @return the encrypted password.
+   * @e NoSuchAlgorithmException catches algorithm errors.
+   */
   public String encryptPassword(String pass)
   {
     try 
@@ -306,7 +323,8 @@ public class RecordManager extends JPanel implements ActionListener
       md.reset();
       byte[] digested = md.digest(passBytes);
       StringBuffer sb = new StringBuffer();
-      for(int i=0;i<digested.length;i++){
+      for(int i = 0; i < digested.length ; i++)
+      {
         sb.append(Integer.toHexString(0xff & digested[i]));
       }
       return sb.toString();
@@ -317,7 +335,11 @@ public class RecordManager extends JPanel implements ActionListener
     return null;
   }
   
-  
+  /**
+   * Prints the database.
+   * 
+   * @param p points to the Printer class.
+   */
   public void printDatabase ()
   {
     Printer p = new Printer ();
@@ -461,6 +483,7 @@ public class RecordManager extends JPanel implements ActionListener
    * @param imgLocation is the location of the image to be added
    * @param imageGIF is the image that will be added to the button
    * @param button is a new JButton
+   * @return the new button on the toolbar.
    */ 
   protected JButton makeNavigationButton (String imageName, String actionCommand, String toolTipText, String altText)
   {
@@ -618,7 +641,6 @@ public class RecordManager extends JPanel implements ActionListener
   {
     String tempBDate = "";
     String tempRDate = "";
-    //Get the current date
     if (!(book.get(currentRec).getBorrowDate() == null || book.get(currentRec).getBorrowDate().equals ("") || book.get(currentRec).getLocation().substring (12).equals (username)))
     {
       JOptionPane.showMessageDialog (this, "This book has already been borrowed by someone else!", "Unavailable", JOptionPane.ERROR_MESSAGE);
@@ -648,6 +670,7 @@ public class RecordManager extends JPanel implements ActionListener
    * @param returnYear stores the year the book is returned.
    * @param tempBDate gets the borrow date that the return date is based off of.
    * @param tempRDate stores the new return date.
+   * @return the determined return date.
    */
   public String determineReturnDate (String tempBDate)
   {
@@ -818,7 +841,8 @@ public class RecordManager extends JPanel implements ActionListener
    * 
    * @param pw References the PrintWriter class and makes its methods and features available.
    * @param fileNameString passes a string value through.
-   * @e IOException catches FileIO errors.
+   * @param e IOException catches FileIO errors
+   * @e IOException catches FileIO errors..
    */
   public void save (String fileName)
   {
@@ -858,6 +882,7 @@ public class RecordManager extends JPanel implements ActionListener
    * @param result stores the action commands of the user in the JFileChooser dialog.
    * @param br references the BufferedReader class.
    * @param e catches FileIO errors.
+   * @e IOException catches FileIO errors.
    */
   public void saveAs ()
   {
@@ -896,6 +921,7 @@ public class RecordManager extends JPanel implements ActionListener
    * This method adds the ".lmf" extension
    * 
    * @param fileName the original filename to be added onto.
+   * @return the filename with the extension added.
    */ 
   public String addExtension (String fileName)
   {
@@ -922,6 +948,8 @@ public class RecordManager extends JPanel implements ActionListener
    * @param filter instance of the ExampleFileFilter class.
    * @param openDialog opens the dialogue to allow the user to pick a file.
    * @param input stores the input from reading the file.
+   * @param e catches IOException errors.
+   * @e IOException catches IO errors.
    */ 
   public void openFile ()
   {

@@ -143,7 +143,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   JTextField usernameField;
   
   /**
-   *The constructor creates a new instance of AdressBook and sets up the window.
+   *The constructor creates a new instance of RecordManager and sets up the window.
    * @param quitItem creates a new JMenuItem with the title Quit.
    * @param helpItem creates a new JMenuItem with the title Help.
    * @param aboutItem creates a new JMenuItem with the title About.
@@ -157,6 +157,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    * @param saveItem creates the JMenuItem "Save".
    * @param saveAsItem creates the JMenuItem "Save As".
    * @param logOutItem creates the JMenuItem "Sign Out".
+   * @param printItem creates the JMenuItem "Print".
    * @param passItem creates the JMenuItem "Change Password".
    * @param chartItem creates the JMenuItem "Chart".
    * @param browseItem creates the JMenuItem "Browse".
@@ -168,7 +169,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    // SplashScreen ss = new SplashScreen ();
+    SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -621,7 +622,7 @@ public class DataBaseApp extends JFrame implements ActionListener
   /**
    * This method assigns actions to buttons based on user input.
    * 
-   * @param actionPerformed is the action performed by the user
+   * @param ae is the action performed by the user
    */ 
   public void actionPerformed (ActionEvent ae)
   {

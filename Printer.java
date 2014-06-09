@@ -262,7 +262,6 @@ public class Printer implements Printable, Pageable
     {
       if (i >= left.size ())
         break;
-      System.out.println (page + " " + i + " " + left.get (i));
       g2d.drawString(left.get (i), (int) pf.getImageableX (), y);
       g2d.drawString(center.get (i), (int) (pf.getImageableX () + pf.getImageableWidth ()/2 - fm.stringWidth (center.get (i))/2.0), y); //Roughly center, will lose precision due to double -> int
       g2d.drawString(right.get (i), (int) (pf.getImageableX () + pf.getImageableWidth () - fm.stringWidth (right.get (i))), y);
