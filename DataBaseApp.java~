@@ -266,15 +266,6 @@ public class DataBaseApp extends JFrame implements ActionListener
     ok.setToolTipText ("Log In");
     ok.addActionListener (this);
     
-    ok.registerKeyboardAction(ok.getActionForKeyStroke(
-                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
-                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
-                              JComponent.WHEN_IN_FOCUSED_WINDOW);
-    ok.registerKeyboardAction(ok.getActionForKeyStroke(
-                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
-                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
-                              JComponent.WHEN_IN_FOCUSED_WINDOW);
-    
     r.thePanel.add(ok);
     
     JButton help = new JButton ("?");
@@ -292,6 +283,19 @@ public class DataBaseApp extends JFrame implements ActionListener
     JLabel label = new JLabel(icon);
     label.setBounds (0,0,400,500);
     r.thePanel.add (label);
+    
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    
+    invalidate();
+    validate();
+    repaint();
   }  
   
   /**

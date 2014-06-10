@@ -328,6 +328,16 @@ public class DataBaseApp extends JFrame implements ActionListener
     d.add (ok);
     d.add (cancel);
     d.setVisible (true);
+    
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ok.registerKeyboardAction(ok.getActionForKeyStroke(
+                                                       KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true)),
+                              KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true),
+                              JComponent.WHEN_IN_FOCUSED_WINDOW);
+    
     ok.addActionListener (new ActionListener ()
                             {
       public void actionPerformed (ActionEvent e)
@@ -340,6 +350,7 @@ public class DataBaseApp extends JFrame implements ActionListener
             successPass = true;
             r.admin = true;
             buttonEnable ("enable all");
+            r.toolbarMaker();
           }
           else
             JOptionPane.showMessageDialog (d, "That password is incorrect, please try again.","Password Error", JOptionPane.WARNING_MESSAGE);  
@@ -794,9 +805,8 @@ public class DataBaseApp extends JFrame implements ActionListener
         buttonEnable("enable guest");
         r.toolBarTop.removeAll();
         continueLogIn ();
+        r.toolbarMaker();
       }
-      
-      r.toolbarMaker();
       r.invalidate();
       r.validate();
       r.repaint();
