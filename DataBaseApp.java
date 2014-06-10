@@ -169,7 +169,7 @@ public class DataBaseApp extends JFrame implements ActionListener
    */
   public DataBaseApp ()
   { 
-    SplashScreen ss = new SplashScreen ();
+    //SplashScreen ss = new SplashScreen ();
     
     JMenu fileMenu = new JMenu ("File");
     JMenu helpMenu = new JMenu ("Help");
@@ -682,9 +682,11 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     if (ae.getActionCommand ().equals("Log Out"))
     {
+      r.saveChecker();
       r.thePanel.removeAll();
       r.removeAll();
       r.toolBarTop.removeAll();
+      buttonEnable ("disable all");
       
       usernameOpener();
       
