@@ -1,8 +1,8 @@
 [OPTIONS]
 Compatibility=1.1 or later
-Compiled file=youtube.chm
-Contents file=C:\Users\Jacob\Documents\GitHub\Term-Project\Table of Contents.hhc
-Default topic=..\..\..\Desktop\Term-Project-master\Borrow.htm
+Compiled file=Help.chm
+Contents file=Help\Table of Contents.hhc
+Default topic=Help\General.htm
 Display compile progress=No
 Language=0x1009 English (Canada)
 

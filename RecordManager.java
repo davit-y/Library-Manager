@@ -6,12 +6,8 @@ import java.io.*;
 import java.util.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import javax.swing.event.TableModelListener;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
-import java.awt.AlphaComposite;
 import java.security.*;
-import java.util.logging.Logger;
 
 
 /**
@@ -267,12 +263,12 @@ public class RecordManager extends JPanel implements ActionListener
       public void actionPerformed(ActionEvent e) {
         try
         {
-        BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+        BufferedReader passFile = new BufferedReader (new FileReader ("Misc/pass.txt"));
           if (passFile.readLine ().equals (encryptPassword(OLDPASSFIELD.getText ())))
           {
             if (NEWPASSFIELD.getText ().equals (NEWPASSFIELD2.getText ()))
             {
-              PrintWriter newPassFile = new PrintWriter (new FileWriter ("pass.txt"));
+              PrintWriter newPassFile = new PrintWriter (new FileWriter ("Misc/pass.txt"));
               newPassFile.print (encryptPassword(NEWPASSFIELD.getText ()));
               newPassFile.close ();
               JOptionPane.showMessageDialog (thePanel, "You have successfully changed your password.", "Successful", JOptionPane.INFORMATION_MESSAGE);

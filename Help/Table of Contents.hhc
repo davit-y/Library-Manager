@@ -10,43 +10,43 @@
 <UL>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="How to Use Library Manager">
-		<param name="Local" value="General.htm">
+		<param name="Local" value="Help/General.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Usernames &amp; Passwords">
-		<param name="Local" value="Username.htm">
+		<param name="Local" value="Help/Username.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Borrowing Books">
-		<param name="Local" value="Borrow.htm">
+		<param name="Local" value="Help/Borrow.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Returning Books">
-		<param name="Local" value="Return.htm">
+		<param name="Local" value="Help/Return.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Saving Files">
-		<param name="Local" value="Save.htm">
+		<param name="Local" value="Help/Save.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Opening Files">
-		<param name="Local" value="Open.htm">
+		<param name="Local" value="Help/Open.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Sort">
-		<param name="Local" value="Sort.htm">
+		<param name="Local" value="Help/Sort.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Search">
-		<param name="Local" value="Search.htm">
+		<param name="Local" value="Help/Search.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Using the Chart">
-		<param name="Local" value="Chart.htm">
+		<param name="Local" value="Help/Chart.htm">
 		</OBJECT>
 	<LI> <OBJECT type="text/sitemap">
 		<param name="Name" value="Using the Graph">
-		<param name="Local" value="JTable.htm">
+		<param name="Local" value="Help/JTable.htm">
 		</OBJECT>
 </UL>
 </BODY></HTML>

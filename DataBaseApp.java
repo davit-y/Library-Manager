@@ -344,7 +344,7 @@ public class DataBaseApp extends JFrame implements ActionListener
       {
         try
         {
-          BufferedReader passFile = new BufferedReader (new FileReader ("pass.txt"));
+          BufferedReader passFile = new BufferedReader (new FileReader ("Misc/pass.txt"));
           if (passFile.readLine ().equals (r.encryptPassword (passField.getText ())))
           {
             successPass = true;
@@ -764,7 +764,7 @@ public class DataBaseApp extends JFrame implements ActionListener
     
     else if (ae.getActionCommand().equals("Help"))
     {
-      String progpath = new String ("hh.exe youtube.chm");
+      String progpath = new String ("hh.exe Help/Help.chm");
       try
       {
         Runtime.getRuntime ().exec (progpath);
@@ -777,7 +777,7 @@ public class DataBaseApp extends JFrame implements ActionListener
             
     else if (ae.getActionCommand ().equals("About"))
     {
-      String progpath = new String ("hh.exe about.chm");
+      String progpath = new String ("hh.exe Help/about.chm");
       try
       {
         Runtime.getRuntime ().exec (progpath);
